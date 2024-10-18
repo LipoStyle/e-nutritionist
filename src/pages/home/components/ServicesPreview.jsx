@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import Slider from "react-slick";
+import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
-import "./servicepreview.css";
+import './servicepreview.css';
 
 const API_BASE_URL = 'https://e-nutritionist-08e05a1c6652.herokuapp.com'; 
-const API_Local_Host = "http://localhost:3000"
+// const API_Local_Host = "http://localhost:3000"; // Uncomment if needed for local testing
 
 const ServicesPreview = () => {
   const url = API_BASE_URL;
@@ -27,7 +27,7 @@ const ServicesPreview = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [url]);
 
   useEffect(() => {
     fetchServices();
@@ -38,7 +38,7 @@ const ServicesPreview = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 3, // Default to 3 slides for large screens
     slidesToScroll: 1,
     initialSlide: 0,
     responsive: [
@@ -47,26 +47,23 @@ const ServicesPreview = () => {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 1,
-          infinite: true,
-          dots: true
-        }
+        },
       },
       {
         breakpoint: 768,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-          initialSlide: 2
-        }
+        },
       },
       {
         breakpoint: 500,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
+          slidesToScroll: 1,
+        },
+      },
+    ],
   }), []);
 
   // Display error or loading state
@@ -79,16 +76,15 @@ const ServicesPreview = () => {
   }
 
   return (
-    <div className='service-preview'>
-      <div className='background'></div>
+    <div className='carusel-section-services'>
       <h2 className='title'>Explore Our Exceptional Services Designed Just for You</h2>
       <Slider {...sliderSettings}>
         {services.map((service, index) => (
           <div className='service-container-outer' key={index}>
             <div className='service-container-inner'>
-              <h2>{service.title}</h2>
-              <p>{service.description}</p>
-              <Link to="/services">Go To Service</Link>
+              <h2 className='title-of-service'>{service.title}</h2>
+              <p className='description-of-service'>{service.description}</p>
+              <Link to="/services" className='go-button'>Go To Service</Link>
             </div>
           </div>
         ))}

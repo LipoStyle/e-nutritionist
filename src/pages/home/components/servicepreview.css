@@ -1,146 +1,138 @@
-/* Service Preview Section */
-.service-preview {
-  position: relative; /* Establish positioning context */
-  overflow: hidden; /* Ensure content doesn't overflow */
-  padding: 30px 0; /* Add necessary padding */
-  background-color: #ffffff56;
+.carusel-section-services{
+  padding: 50px 0px;
+}
+.carusel-section-services .title {
+  text-align: center;
+  font-size: 38px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #333; /* Darker color for the title */
+}
+.carusel-section-services .service-container-inner{
+ padding: 12px 24px;
+ height: 420px;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ gap: 24px; 
+}
+.carusel-section-services .title-of-service {
+  font-size: 39px; /* Consistent title size */
+  color: #333; /* Dark color for visibility */
+  text-align: center;
+}
+.carusel-section-services .description-of-service {
+  font-size: 12px; /* Description font size */
+  letter-spacing: 2px;
+  color: #666; /* Slightly lighter color for description */
+  text-align: center;
+
 }
 
-/* Background Image */
-.service-preview .background {
-  position: absolute; /* Absolute positioning within .service-preview */
+/* Background color for carousel items */
+.carusel-section-services .slick-track > :nth-child(n){
+  background-color: #2ecc71;
+}
+
+.carusel-section-services .slick-track > :nth-child(n) .title-of-service,
+.carusel-section-services .slick-track > :nth-child(n) .description-of-service {
+  color: #f5f5f5;
+}
+
+.carusel-section-services .slick-track > :nth-child(2n){
+  background-color: #313a43;
+}
+
+.carusel-section-services .slick-track > :nth-child(2n) .title-of-service{
+  color: #2ecc71;
+}
+
+.carusel-section-services .slick-track > :nth-child(2n) .description-of-service{
+  color: #f5f5f5;
+}
+
+.carusel-section-services .slick-track > :nth-child(3n){
+  background-color: #f5f5f5;
+}
+
+.carusel-section-services .slick-track > :nth-child(3n) .title-of-service{
+  color: #2ecc71;
+}
+
+.carusel-section-services .slick-track > :nth-child(3n) .description-of-service{
+  color: #313a43;
+}
+
+
+/* ---------------------------- go button -----------------------*/.carusel-section-services .go-button {
+  position: relative;
+  padding: 12px 20px;
+  text-decoration: none;
+  overflow: hidden; /* Ensure the pseudo-element does not overflow the button */
+  color: inherit; /* Inherit text color */
+  font-weight: bold; /* Optional: Make the text bold */
+  z-index: 1; /* Ensure text stays above the background */
+  transition: color 0.3s ease-in-out; /* Smooth color transition for text */
+  border-radius: 5px; /* Add rounded corners for buttons */
+}
+
+/* Pseudo-element for the sliding background effect */
+.carusel-section-services .go-button::before {
+  content: '';
+  position: absolute;
   top: 0;
-  left: 0;
+  left: -100%; /* Start off-screen to the left */
   width: 100%;
   height: 100%;
-  background-image: url(../../../images/servicesimages/body-background.jpg);
-  background-size: cover; /* Cover entire .service-preview */
-  background-position: center; /* Center the background image */
-  z-index: -1; /* Place behind other content */
+  background-color: inherit; /* Use the same color as the button */
+  z-index: -1; /* Place behind the text */
+  transition: left 0.3s ease-in-out; /* Smooth sliding effect */
 }
 
-/* Title Styling */
-.title {
-  color: var(--color-mainDarkBlue);
-  font-size: 2.5rem; /* Modern font size */
-  font-family: 'Poppins', sans-serif; /* Modern font */
-  font-weight: 600;
-  padding: 15px;
-  text-align: center;
+/* Set the default button background colors */
+.carusel-section-services .slick-track > :nth-child(n) .go-button {
+  background-color: #f5f5f5;
+  color: #2ecc71;
 }
 
-.service-preview .slick-slide {
-  margin: 20px 0px;
+/* On hover, slide the background color in from the left */
+.carusel-section-services .slick-track > :nth-child(n) .go-button:hover::before {
+  left: 0; /* Move the background to cover the entire button */
+  background-color: #313a43; /* Change background color on hover */
 }
 
-/* Outer Container */
-.service-containerOuter {
-  padding: 15px;
+/* For the second child, different colors */
+.carusel-section-services .slick-track > :nth-child(2n) .go-button {
+  background-color: #f5f5f5;
+  color: #313a43;
 }
 
-/* Inner Container */
-.service-container-inner {
-  margin: 0 auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  width: 90%;
-  background-color: rgba(89, 196, 143, 0.51);
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Modern subtle shadow */
+.carusel-section-services .slick-track > :nth-child(2n) .go-button:hover::before {
+  left: 0;
+  background-color: #2ecc71;
 }
 
-/* Headings */
-.service-container-inner h2 {
-  text-align: center;
-  font-size: 2rem; /* Modern heading size */
-  font-family: 'Poppins', sans-serif;
-  color: var(--color-mainDarkBlue);
+/* For the third child */
+.carusel-section-services .slick-track > :nth-child(3n) .go-button {
+  background-color: #2ecc71;
+  color: #f5f5f5;
 }
 
-/* Paragraph */
-.service-container-inner p {
-  font-size: 1.1rem; /* More readable size */
-  font-family: 'Open Sans', sans-serif; /* Clean, modern font */
-  font-style: italic;
-  text-align: center;
-  width: 85%;
-  line-height: 1.6;
+.carusel-section-services .slick-track > :nth-child(3n) .go-button:hover::before {
+  left: 0;
+  background-color: #313a43;
 }
 
-/* Link/Button */
-.service-container-inner a {
-  text-decoration: none;
-  background-color: var(--color-mainDarkBlue);
-  color: #fff;
-  padding: 8px 16px;
-  font-family: 'Poppins', sans-serif;
-  font-size: 1rem;
-  border-radius: 12px;
-  transition: all 0.2s ease-in-out;
+/* Optional: Adjust the text color on hover */
+.carusel-section-services .slick-track > :nth-child(n) .go-button:hover {
+  color: #f5f5f5; /* Change text color on hover */
 }
 
-.service-container-inner a:hover {
-  transform: translateY(3px);
-  background-color: var(--color-lightBlue);
+.carusel-section-services .slick-track > :nth-child(2n) .go-button:hover {
+  color: #f5f5f5;
 }
 
-/* Responsive Styles */
-
-/* Tablet Styles (max-width: 1088px) */
-@media (max-width: 1088px) {
-  .title {
-    font-size: 2rem; /* Slightly smaller for tablets */
-  }
-}
-
-/* Tablet and Mobile Styles (max-width: 768px) */
-@media (max-width: 768px) {
-  .service-container-inner h2 {
-    font-size: 1.8rem; /* Smaller for tablets */
-  }
-
-  .service-container-inner p,
-  .service-container-inner a {
-    font-size: 1rem; /* Adjust text size for better readability */
-  }
-}
-
-/* Small Mobile Styles (max-width: 600px) */
-@media (max-width: 600px) {
-  .title {
-    font-size: 1.75rem; /* Smaller for mobile */
-  }
-
-  .service-container-inner h2 {
-    font-size: 1.6rem;
-  }
-
-  .service-container-inner p {
-    font-size: 0.9rem;
-  }
-}
-
-/* Extra Small Mobile Styles (max-width: 500px) */
-@media (max-width: 500px) {
-  .service-container-inner {
-    width: 85%;
-  }
-
-  .service-container-inner h2 {
-    font-size: 1.5rem;
-  }
-
-  .service-container-inner p {
-    font-size: 0.85rem;
-    width: 90%;
-  }
-
-  .service-container-inner a {
-    font-size: 0.9rem;
-    padding: 6px 12px;
-  }
+.carusel-section-services .slick-track > :nth-child(3n) .go-button:hover {
+  color: #f5f5f5;
 }

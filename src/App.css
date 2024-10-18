@@ -1,4 +1,4 @@
-.home,
+
 .services,
 .blogs,
 .about,
@@ -12,7 +12,6 @@
 }
 /* responsive design */
 @media (max-width:768px) {
-  .home,
   .services,
   .blogs,
   .about,

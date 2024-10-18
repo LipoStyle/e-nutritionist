@@ -1,17 +1,106 @@
-header {
-  padding: 10px 0px;
 
+header {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center; /* Changed from align-content to align-items for vertical centering */
-  
+  align-items: center; 
   position: fixed;
   top: 0;
-  left: 0; /* Ensure the header spans the full width */
+  left: 0;
   width: 100%;
-  z-index: 1000; /* Increased z-index to ensure it appears above other elements */
-  background-color: var(--color-backgroundGreen);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Optional: Adds a shadow to distinguish the header */
-  transition: background-color 0.3s; /* Optional: Smooth background color transition */
+  z-index: 1000; 
+  transition: background-color 0.3s ease; 
+  font-family: 'Poppins', sans-serif; /* Modern, professional font */
+}
+
+/* ----------------------------------- logo section ---------------------------- */
+.homepg-logo {
+  box-sizing: border-box;
+  margin: 0 auto;
+  width: fit-content;
+  background-color: rgba(49, 58, 67, 0.9);
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.homepg-logo a {
+  width: fit-content;
+  text-decoration: none;
+}
+
+.logo-pack {
+  padding: 15px 30px;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-pack img {
+  width: 50px; /* Slightly smaller for modern minimalism */
+}
+
+.logo-pack p {
+  width: fit-content;
+}
+
+.author-name {
+  color: #fff;
+  font-size: 28px; /* Balanced, professional font size */
+  font-weight: 600; /* Slightly bolder for better readability */
+}
+
+.author-job {
+  color: var(--color-backgroundGreen);
+  font-size: 24px; /* Reduced for better balance with the name */
+  font-style: italic;
+}
+
+/* ----------------------------------- navigation section ---------------------------- */
+.navigation-menu {
+  padding: 20px 100px;
+  width: 100%;
+  background-color: rgba(49, 58, 67, 0.9); /* Slightly more opaque */
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 80px; /* Reduced gap for modern compactness */
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 20px; /* Reduced font size for a sleeker appearance */
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+  color: var(--color-backgroundGreen); /* Adds hover effect */
+}
+
+/* --------------------- green button ------------------------ */
+.green-button {
+  background: #2ecc71;
+  color: #fff;
+  padding: 8px 30px;
+  font-size: 16px; /* Slightly larger font for clarity */
+  font-weight: 600; /* Increased weight for button emphasis */
+  border-radius: 5px; /* Softened corners */
+  transition: all 0.3s ease-in-out;
+  text-decoration: none;
+}
+
+.green-button:hover {
+  background-color: var(--color-backgroundGreenDarker2); /* Softer hover effect */
+  color: #fff;
 }
