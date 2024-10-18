@@ -1,0 +1,146 @@
+/* Service Preview Section */
+.service-preview {
+  position: relative; /* Establish positioning context */
+  overflow: hidden; /* Ensure content doesn't overflow */
+  padding: 30px 0; /* Add necessary padding */
+  background-color: #ffffff56;
+}
+
+/* Background Image */
+.service-preview .background {
+  position: absolute; /* Absolute positioning within .service-preview */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(../../../images/servicesimages/body-background.jpg);
+  background-size: cover; /* Cover entire .service-preview */
+  background-position: center; /* Center the background image */
+  z-index: -1; /* Place behind other content */
+}
+
+/* Title Styling */
+.title {
+  color: var(--color-mainDarkBlue);
+  font-size: 2.5rem; /* Modern font size */
+  font-family: 'Poppins', sans-serif; /* Modern font */
+  font-weight: 600;
+  padding: 15px;
+  text-align: center;
+}
+
+.service-preview .slick-slide {
+  margin: 20px 0px;
+}
+
+/* Outer Container */
+.service-containerOuter {
+  padding: 15px;
+}
+
+/* Inner Container */
+.service-container-inner {
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  width: 90%;
+  background-color: rgba(89, 196, 143, 0.51);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Modern subtle shadow */
+}
+
+/* Headings */
+.service-container-inner h2 {
+  text-align: center;
+  font-size: 2rem; /* Modern heading size */
+  font-family: 'Poppins', sans-serif;
+  color: var(--color-mainDarkBlue);
+}
+
+/* Paragraph */
+.service-container-inner p {
+  font-size: 1.1rem; /* More readable size */
+  font-family: 'Open Sans', sans-serif; /* Clean, modern font */
+  font-style: italic;
+  text-align: center;
+  width: 85%;
+  line-height: 1.6;
+}
+
+/* Link/Button */
+.service-container-inner a {
+  text-decoration: none;
+  background-color: var(--color-mainDarkBlue);
+  color: #fff;
+  padding: 8px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+.service-container-inner a:hover {
+  transform: translateY(3px);
+  background-color: var(--color-lightBlue);
+}
+
+/* Responsive Styles */
+
+/* Tablet Styles (max-width: 1088px) */
+@media (max-width: 1088px) {
+  .title {
+    font-size: 2rem; /* Slightly smaller for tablets */
+  }
+}
+
+/* Tablet and Mobile Styles (max-width: 768px) */
+@media (max-width: 768px) {
+  .service-container-inner h2 {
+    font-size: 1.8rem; /* Smaller for tablets */
+  }
+
+  .service-container-inner p,
+  .service-container-inner a {
+    font-size: 1rem; /* Adjust text size for better readability */
+  }
+}
+
+/* Small Mobile Styles (max-width: 600px) */
+@media (max-width: 600px) {
+  .title {
+    font-size: 1.75rem; /* Smaller for mobile */
+  }
+
+  .service-container-inner h2 {
+    font-size: 1.6rem;
+  }
+
+  .service-container-inner p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Extra Small Mobile Styles (max-width: 500px) */
+@media (max-width: 500px) {
+  .service-container-inner {
+    width: 85%;
+  }
+
+  .service-container-inner h2 {
+    font-size: 1.5rem;
+  }
+
+  .service-container-inner p {
+    font-size: 0.85rem;
+    width: 90%;
+  }
+
+  .service-container-inner a {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
+}

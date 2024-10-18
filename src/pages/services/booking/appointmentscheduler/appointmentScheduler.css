@@ -1,0 +1,107 @@
+/* Full page background image with fixed position */
+.appointment-scheduler-background {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../../../../images/servicesimages/body-background.jpg'); /* Add the path to your background image */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding: clamp(100px, 15vw, 120px) 20px 20px; /* Responsive top padding */
+}
+
+/* Glassy form styling */
+.appointment-scheduler {
+  max-width: 400px;
+  padding: clamp(1.5rem, 2vw, 2rem); /* Responsive padding */
+  border-radius: 16px; /* Modern rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  background: rgba(255, 255, 255, 0.422); /* Glassy effect */
+  backdrop-filter: blur(10px); /* Blur for glass effect */
+}
+
+/* Centered heading */
+.appointment-scheduler h2 {
+  text-align: center;
+  font-size: clamp(1.5rem, 4vw, 2rem); /* Responsive font size */
+  color: var(--color-mainDarkBlue);
+  margin-bottom: 12px;
+}
+
+/* Form elements */
+.appointment-scheduler form div {
+  margin-bottom: 1rem;
+}
+
+.appointment-scheduler label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: clamp(0.85rem, 2.5vw, 1rem); /* Responsive label size */
+  color: var(--color-mainDarkBlue);
+}
+
+.appointment-scheduler input,
+.appointment-scheduler select,
+.appointment-scheduler textarea {
+  width: 100%;
+  padding: 0.75rem; /* Increased padding for better UX */
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.8); /* Slight transparency */
+  color: #333; /* Good readability */
+  font-size: clamp(0.85rem, 2vw, 1rem); /* Responsive input text size */
+}
+
+/* Glassy buttons */
+.appointment-scheduler button {
+  display: block;
+  width: 100%;
+  padding: clamp(0.6rem, 2vw, 0.75rem); /* Responsive padding */
+  background-color: rgba(40, 167, 69, 0.8); /* Glassy button effect */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: clamp(0.85rem, 2vw, 1rem); /* Responsive font size */
+  transition: background-color 0.3s ease;
+}
+
+.appointment-scheduler button:hover {
+  background-color: rgba(33, 136, 56, 0.9); /* Darker hover effect */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .appointment-scheduler {
+    max-width: 90%; /* Full width on tablets */
+    padding: 1.5rem; /* Adjusted padding */
+  }
+
+  .appointment-scheduler-background {
+    padding: clamp(70px, 10vw, 90px) 20px 20px; /* Adjusted padding */
+  }
+}
+
+@media (max-width: 500px) {
+  .appointment-scheduler {
+    padding: 1rem; /* Less padding on mobile */
+  }
+
+  .appointment-scheduler h2 {
+    font-size: clamp(1.2rem, 4vw, 1.5rem); /* Smaller font for mobile */
+  }
+
+  .appointment-scheduler input,
+  .appointment-scheduler select,
+  .appointment-scheduler textarea {
+    padding: 0.5rem; /* Adjusted padding for smaller screens */
+    font-size: clamp(0.8rem, 2vw, 0.9rem); /* Responsive input font size */
+  }
+
+  .appointment-scheduler button {
+    padding: 0.5rem; /* Adjusted padding for buttons */
+    font-size: clamp(0.75rem, 2vw, 0.85rem); /* Smaller button font size */
+  }
+}

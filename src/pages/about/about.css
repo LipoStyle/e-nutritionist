@@ -1,0 +1,236 @@
+/* Grid Container for About Section */
+.grid-container-about {
+  margin-top: 90px;
+  padding-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  justify-content: center;
+  align-items: center;
+  background-color: #d9e6de;
+}
+
+/* Name of Doctor */
+.name-of-doctor {
+  margin: 20px auto;
+  width: 90%;
+  color: #0b2c52;
+  text-align: center;
+  font-style: italic;
+  font-size: clamp(2rem, 4vw, 2.5rem); /* Responsive font size */
+  grid-column: 1/7;
+  grid-row: 1/2;
+  font-family: 'Poppins', sans-serif; /* Modern font */
+}
+
+/* Quote After Doctor's Name */
+.name-of-doctor::after {
+  display: block;
+  content: '"Wellness Begins with What You Eat"';
+  font-size: clamp(1rem, 2.5vw, 1.5rem); /* Responsive quote size */
+  text-align: center;
+  letter-spacing: 1px;
+  color: #0b2c52;
+}
+
+/* Proficient Label */
+.proficient {
+  color: #47b973;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem); /* Responsive font size */
+}
+
+/* Tagline or Quote */
+.tag-quote {
+  margin: 10px auto;
+  width: 90%;
+  color: #0b2c52;
+  font-size: clamp(0.85rem, 2vw, 1.1rem); /* Responsive font size */
+  letter-spacing: 1px;
+  grid-column: 1/7;
+  grid-row: 2/3;
+  text-align: center;
+}
+
+/* Doctor's Image */
+.image-of-me {
+  box-sizing: border-box;
+  border-radius: 20px;
+  padding: 10px;
+  grid-column: 1/4;
+  grid-row: 3/8;
+  width: 100%;
+  object-fit: cover; /* Ensures proper image cropping */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds subtle shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Image Hover Effect */
+.image-of-me:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+/* Information Section */
+.informations {
+  cursor: pointer;
+  text-align: center;
+  padding: 10px;
+  grid-column: 4/7;
+  transition: all 0.4s ease-in-out;
+}
+
+/* Title of Information */
+.title-of-information {
+  margin: 0 auto;
+  padding: 12px 24px;
+  border-radius: 20px;
+  border: 2px solid #0b2c52;
+  width: fit-content;
+  color: #0b2c52;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 2vw, 1.1rem); /* Responsive font size */
+  letter-spacing: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.4s ease-in-out;
+}
+
+/* Description of Information */
+.description-of-information {
+  opacity: 0;
+  transition: all 0.4s ease-in-out;
+  font-size: clamp(0.85rem, 2vw, 1rem); /* Responsive font size */
+  color: #3d3f3f;
+}
+
+/* Active Information State */
+.informations.active .title-of-information {
+  border: 0;
+  border-bottom: 2px solid #0b2c52;
+}
+
+.informations.active .description-of-information {
+  opacity: 1;
+}
+
+.informations.active {
+  margin: 0px auto 20px auto;
+  background-color: rgba(89, 196, 143, 0.6); /* Semi-transparent background */
+}
+
+/* Sign Rotation */
+.sign {
+  font-style: italic;
+  font-size: clamp(1.5rem, 2.5vw, 1.8rem); /* Responsive font size */
+  transition: all 0.3s ease-in-out;
+}
+
+.sign.active {
+  transform: rotate(90deg);
+}
+
+/* Responsive Design for Medium Screens (max-width: 1240px) */
+@media screen and (max-width: 1240px) {
+  .grid-container-about {
+    margin-top: 80px;
+    padding-top: 20px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .name-of-doctor {
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+  }
+
+  .proficient {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+  }
+
+  .name-of-doctor::after {
+    font-size: clamp(0.85rem, 2vw, 1.1rem);
+  }
+
+  .tag-quote {
+    font-size: clamp(0.75rem, 2vw, 1rem);
+  }
+
+  .image-of-me {
+    grid-column: 1/3;
+    display: block;
+    margin: 0px auto;
+    width: 70%;
+  }
+
+  .informations:nth-child(even) {
+    grid-column: 1/2;
+  }
+
+  .informations:nth-child(odd) {
+    grid-column: 2/3;
+  }
+
+  .informations:last-child {
+    grid-column: 1/3;
+  }
+
+  .description-of-information {
+    margin: 10px auto;
+    width: 90%;
+  }
+}
+
+/* Responsive Design for Small Screens (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  .grid-container-about {
+    margin-top: 60px;
+    padding-top: 20px;
+    display: inline-block;
+  }
+
+  .name-of-doctor {
+    font-size: clamp(1.6rem, 4vw, 2rem);
+  }
+
+  .proficient {
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  }
+
+  .tag-quote {
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
+  }
+
+  .image-of-me {
+    display: block;
+    margin: 0px auto;
+    width: 90%;
+  }
+
+  .title-of-information {
+    font-size: clamp(0.85rem, 2vw, 1rem);
+  }
+
+  .informations.active .description-of-information {
+    opacity: 1;
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
+  }
+
+  .sign {
+    font-size: clamp(1.4rem, 2vw, 1.6rem);
+  }
+}
+
+/* Responsive Design for Extra Small Screens (max-width: 490px) */
+@media screen and (max-width: 490px) {
+  .proficient {
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+  }
+
+  .name-of-doctor::after {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+  }
+
+  .title-of-information {
+    padding: 8px 16px;
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+  }
+}

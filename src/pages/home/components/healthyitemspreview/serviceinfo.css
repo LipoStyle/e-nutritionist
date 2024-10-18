@@ -1,0 +1,180 @@
+/* Carousel Section Styles */
+.carusel-section {
+  padding: 40px 0;
+  width: 100%;
+  background-color: #c1daca;
+  box-sizing: border-box;
+}
+
+/* Title Styling */
+.carusel-section .service-info-title {
+  margin-bottom: 24px;
+  font-size: clamp(1.8rem, 4vw, 2.5rem); /* Modern and responsive */
+  font-family: 'Poppins', sans-serif; /* Modern font */
+  font-weight: 600;
+  color: var(--color-mainDarkBlue);
+  text-align: center;
+}
+
+/* Container */
+.carusel-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Carousel Item */
+.carusel-item {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0; /* Spacing between items */
+}
+
+/* Image */
+.carusel-item .image-of-services-section {
+  width: 60%; /* A bit larger for better visibility */
+  border-radius: 21px;
+  margin: 20px auto; /* Better spacing */
+  object-fit: cover; /* Ensures image is properly centered */
+}
+
+/* Service Title */
+.carusel-item .title-of-service {
+  width: 100%;
+  text-align: center;
+  font-size: clamp(1rem, 2.5vw, 1.5rem); /* Responsive font size */
+  font-family: 'Open Sans', sans-serif; /* Simple, clean font */
+  color: var(--color-mainDarkBlue);
+  margin: 10px auto;
+  font-weight: 600;
+}
+
+/* Description of Service */
+.carusel-item .description-of-service {
+  color: var(--color-backgroundGreenDarker2);
+  font-size: clamp(0.9rem, 2vw, 1rem); /* More readable and modern */
+  letter-spacing: 0.8px;
+  margin: 10px auto;
+  padding: 0 0 20px;
+  text-align: center;
+  width: 85%; /* Slightly smaller for better flow */
+  line-height: 1.6; /* Better readability */
+}
+
+.slick-slide {
+  cursor: pointer;
+}
+
+/* Slick Arrows */
+.slick-prev, .slick-next {
+  width: 30px;
+  height: 30px;
+  z-index: 1;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffffff;
+}
+
+.slick-prev:before, .slick-next:before {
+  color: #0b2c52;
+}
+
+.slick-prev {
+  left: 10px;
+}
+
+.slick-next {
+  right: 10px;
+}
+
+/* Full width for carousel item */
+.carusel-item {
+  width: 100% !important;
+}
+
+/* Responsive Styles */
+
+/* Tablet Styles (max-width: 1088px) */
+@media (max-width: 1088px) {
+  .carusel-section .service-info-title {
+    font-size: clamp(1.6rem, 3.5vw, 2rem); /* Slightly smaller for tablet */
+  }
+}
+
+/* Tablet and Mobile Styles (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  .carusel-item .image-of-services-section {
+    width: 70%;
+    height: auto;
+    border-radius: 21px;
+    margin: 0 auto;
+  }
+  .carusel-item .title-of-service {
+    font-size: clamp(0.9rem, 2vw, 1.2rem); /* Reduced for smaller screens */
+  }
+  .carusel-item .description-of-service {
+    font-size: clamp(0.85rem, 2vw, 1rem); /* Adjusted for smaller screens */
+    width: 90%;
+  }
+}
+
+/* Small Mobile Styles (max-width: 600px) */
+@media screen and (max-width: 600px) {
+  .slick-prev, .slick-next {
+    width: 20px;
+    height: 20px;
+  }
+
+  .slick-prev {
+    left: 5px;
+  }
+
+  .slick-next {
+    right: 5px;
+  }
+
+  .carusel-item .image-of-services-section {
+    width: 70%;
+    height: 150px;
+  }
+
+  .carusel-item .title-of-service {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+  }
+
+  .carusel-item .description-of-service {
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
+  }
+}
+
+/* Extra Small Mobile Styles (max-width: 500px) */
+@media (max-width: 500px) {
+  .carusel-section .service-info-title {
+    font-size: clamp(1.4rem, 4vw, 1.75rem);
+  }
+
+  .carusel-item {
+    width: 90%; /* Reduced width for small screens */
+  }
+
+  .carusel-item .image-of-services-section {
+    width: 60%;
+    height: 200px;
+    border-radius: 21px;
+    margin: 0 auto;
+  }
+
+  .carusel-item .title-of-service {
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
+  }
+
+  .carusel-item .description-of-service {
+    font-size: clamp(0.7rem, 2vw, 0.85rem);
+    width: 95%;
+    letter-spacing: 0.5px;
+  }
+}

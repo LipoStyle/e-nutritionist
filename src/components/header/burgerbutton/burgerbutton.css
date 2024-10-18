@@ -1,0 +1,40 @@
+.burger-bars{
+  display: none;
+}
+/* responsive styling */
+@media screen and (max-width: 768px) {
+  
+  .burger-bars{
+    display: block;
+    width: fit-content;
+    
+    margin: 5px;
+    position: absolute;
+    top: 15px;
+    right: 0;
+    z-index: 3;
+  }
+  .burger-bars:hover{
+    cursor: pointer;
+  }
+
+  .bar{
+    display: block;
+    width: 25px;
+    height: 3px;
+    border-radius: 6px;
+    margin: 5px auto;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    background-color: #050611;
+  }
+  .burger-bars.active .bar:nth-child(2){
+    opacity: 0;
+  }
+  .burger-bars.active .bar:nth-child(1){
+    transform: translateY(8px) rotate(45deg);
+  }
+  .burger-bars.active .bar:nth-child(3){
+    transform: translateY(-8px) rotate(-45deg);
+  }
+}

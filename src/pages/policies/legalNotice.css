@@ -1,0 +1,93 @@
+/* Container styling */
+.legal-notice {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 120px 30px 30px;
+  background-color: #fdfdfd;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.8;
+  color: #34495e;
+  /* text-align: center; */
+}
+
+/* Heading styling */
+.legal-notice h1 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.legal-notice h3 {
+  font-size: 1.6rem;
+  color: #2c3e50;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+/* Paragraph styling */
+.legal-notice p {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+.legal-notice p.center {
+  text-align: center;
+  font-weight: 500;
+}
+
+/* List styling */
+.legal-notice ol {
+  list-style-type: decimal;
+  margin-left: 20px;
+  padding-left: 10px;
+  color: #7f8c8d;
+}
+
+.legal-notice li {
+  margin-bottom: 30px;
+}
+
+.legal-notice li h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+/* Last paragraph styling */
+.legal-notice p.last {
+  margin-top: 30px;
+  font-size: 1rem;
+  text-align: center;
+  color: #7f8c8d;
+}
+
+/* Email and phone links styling */
+.legal-notice a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.legal-notice a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .legal-notice {
+    padding: 100px 20px 20px;
+    font-size: 0.9rem;
+  }
+
+  .legal-notice h1 {
+    font-size: 1.8rem;
+  }
+
+  .legal-notice h3 {
+    font-size: 1.4rem;
+  }
+}

@@ -1,0 +1,17 @@
+header {
+  padding: 10px 0px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center; /* Changed from align-content to align-items for vertical centering */
+  
+  position: fixed;
+  top: 0;
+  left: 0; /* Ensure the header spans the full width */
+  width: 100%;
+  z-index: 1000; /* Increased z-index to ensure it appears above other elements */
+  background-color: var(--color-backgroundGreen);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Optional: Adds a shadow to distinguish the header */
+  transition: background-color 0.3s; /* Optional: Smooth background color transition */
+}

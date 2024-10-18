@@ -1,0 +1,132 @@
+/* Contact Info Section */
+.contact-info {
+  background-color: rgba(255, 255, 255, 0.78); /* Semi-transparent background for modern look */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+}
+
+/* Contact Method Section */
+.contact-method {
+  margin: 0 auto;
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Contact Method Images */
+.contact-method img {
+  width: clamp(40px, 5vw, 50px); /* Responsive image size */
+  transition: transform 0.3s ease; /* Hover effect for images */
+}
+
+.contact-method img:hover {
+  transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+/* Title Styling */
+.contact-info .title {
+  padding: 12px;
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 4rem); /* Responsive font size using clamp */
+  font-style: italic;
+  font-family: 'Poppins', sans-serif; /* Modern font */
+  color: #0c4738;
+}
+
+/* Text Styling */
+.contact-info .text {
+  text-align: center;
+  font-size: clamp(1rem, 2.5vw, 1.25rem); /* Responsive text size */
+  font-style: italic;
+  color: #0c4738;
+  width: 80%;
+  margin: 10px auto;
+}
+
+/* Contact Method Text */
+.contact-method .contact-click,
+.contact-method p {
+  text-decoration: none;
+  text-align: center;
+  font-size: clamp(1rem, 2.5vw, 1.25rem); /* Responsive font size */
+  font-style: italic;
+  color: #0c4738;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Hover Effect for Contact Click */
+.contact-info .contact-click:hover {
+  letter-spacing: 3px;
+  font-weight: bold;
+  color: purple;
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Line Divider */
+.contact-info .line {
+  margin: 50px auto;
+  width: 60%;
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem); /* Responsive text size */
+  text-align: center;
+  font-style: italic;
+  border-bottom: 2px solid #0c4738;
+}
+
+/* Responsive Design for Medium Screens (max-width: 1280px) */
+@media screen and (max-width: 1280px) {
+  .contact-method {
+    width: 60%;
+  }
+
+  .contact-info .title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem); /* Smaller title for medium screens */
+  }
+
+  .contact-info .text {
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem); /* Adjusted text size */
+  }
+
+  .contact-info .line {
+    margin: 30px auto;
+    width: 70%;
+  }
+}
+
+/* Responsive Design for Small Screens (max-width: 620px) */
+@media screen and (max-width: 620px) {
+  .contact-method {
+    width: 80%;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .contact-method img {
+    width: clamp(20px, 5vw, 30px); /* Smaller images on mobile */
+  }
+
+  .contact-info .title {
+    font-size: clamp(1.5rem, 4vw, 2rem); /* Smaller title for mobile */
+  }
+
+  .contact-info .text {
+    width: 90%;
+    margin: 10px auto;
+    font-size: clamp(0.85rem, 2.5vw, 1rem); /* Smaller text size */
+  }
+
+  .contact-info .line {
+    width: 80%;
+    margin: 20px auto;
+  }
+
+  .contact-info .contact-click,
+  .contact-method p {
+    font-size: clamp(0.85rem, 2.5vw, 1rem); /* Smaller font size for mobile */
+  }
+}

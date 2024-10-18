@@ -1,0 +1,114 @@
+/* Get In Touch Component */
+.get-in-touch-component {
+  margin: 0 auto 12px auto;
+  width: 90%;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #59c48fb0; /* Transparent green */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #081e13;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px; /* Increased gap for better readability */
+}
+.get-in-touch-component:hover{
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15); /* Lifted on hover */
+}
+/* Title */
+.get-in-touch-component h3 {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(1.5rem, 4vw, 2rem); /* Responsive font size */
+  font-weight: 700;
+  color: #0b2c52;
+}
+
+/* Subtitle (2nd paragraph) */
+.get-in-touch-component p:nth-child(2) {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-weight: 900;
+  font-size: clamp(1rem, 3vw, 1.25rem); /* Responsive */
+  color: #0b2c52;
+}
+
+/* Other Paragraphs */
+.get-in-touch-component p:nth-child(3),
+.get-in-touch-component p:nth-child(4) {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(0.85rem, 2.5vw, 1rem); /* Responsive for smaller text */
+  color: #0b2c52;
+}
+
+/* Button */
+.get-in-touch-component .button {
+  padding: 10px 30px;
+  border-radius: 20px;
+  font-size: clamp(0.85rem, 2vw, 1rem); /* Responsive button text size */
+  background-color: #0b2c52;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.get-in-touch-component .button:hover {
+  background-color: #0a2440;
+  transform: translateY(-3px); /* Lift effect on hover */
+  cursor: pointer;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .get-in-touch-component {
+    width: 95%; /* Slightly wider on smaller screens */
+  }
+
+  .get-in-touch-component h3 {
+    font-size: clamp(1.25rem, 4vw, 1.75rem); /* Slightly smaller for tablets */
+  }
+
+  .get-in-touch-component p:nth-child(2) {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem); /* Smaller font for tablet */
+  }
+
+  .get-in-touch-component p:nth-child(3), .get-in-touch-component p:nth-child(4) {
+    font-size: clamp(0.8rem, 2vw, 0.9rem); /* Smaller font for paragraphs */
+  }
+
+  .get-in-touch-component .button {
+    padding: 8px 20px; /* Slightly smaller button on tablets */
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .get-in-touch-component {
+    padding: 15px; /* Slightly reduced padding on smaller screens */
+  }
+
+  .get-in-touch-component h3 {
+    font-size: clamp(1.1rem, 4vw, 1.5rem); /* Reduced for mobile */
+  }
+
+  .get-in-touch-component p:nth-child(2) {
+    font-size: clamp(0.85rem, 2vw, 1rem); /* Smaller subtitle for mobile */
+  }
+
+  .get-in-touch-component p:nth-child(3), .get-in-touch-component p:nth-child(4) {
+    font-size: clamp(0.75rem, 2vw, 0.9rem); /* Adjusted for smaller text */
+  }
+
+  .get-in-touch-component .button {
+    padding: 6px 15px; /* Smaller button padding for mobile */
+    font-size: clamp(0.75rem, 2vw, 0.85rem); /* Button text responsive */
+  }
+}

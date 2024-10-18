@@ -1,0 +1,13 @@
+.contact-us{
+  margin: -10px auto 0 auto;
+  background: url("../../images/contactusimages/backgorundImage.webp");
+  display: grid;
+  grid-template-columns: 1fr 1fr ;
+}
+
+/* responsive stylesheet */
+@media screen and (max-width: 1280px) {
+  .contact-us{
+    grid-template-columns: 1fr;
+  }
+}

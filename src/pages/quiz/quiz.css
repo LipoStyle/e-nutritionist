@@ -1,0 +1,58 @@
+#screen1,
+#screen2,
+#screen3,
+#screen4,
+#screen5,
+#screen6,
+#screen7
+{
+  background-color: #d7f0dc;
+}
+/* Container for the progress bar */
+.progress-background{
+  background-color: #d7f0dc;
+}
+.progress-container {
+  padding: 120px 0 10px 0 ;
+  width: 60%;
+  background-color: #d7f0dc;
+  /* border-radius: 25px; */
+  /* overflow: hidden; */
+  margin: 0px auto;
+  /* box-shadow: 0 3px 3px -5px #00000070, 0 2px 5px #00000030; */
+}
+
+/* The actual progress bar */
+.progress-bar-background{
+  width: 100%;
+  /* height: 100%; */
+  /* padding: 2px 5px; */
+  background-color: aliceblue;
+  color: white;
+  text-align: center;
+  border-radius: 25px;
+  transition: width 0.3s ease-out;
+}
+/* The actual progress bar */
+.progress-bar {
+  height: 100%;
+  padding: 3px 5px;
+  background-color: #47b973;
+  color: white;
+  text-align: center;
+  border-radius: 25px;
+  transition: width 0.3s ease-out;
+}
+@media screen and (max-width: 768px) {
+  .progress-container {
+    padding: 100px 0 10px 0 ;
+  }
+}
+.nothing{
+  display: none;
+}
+@media screen and (max-width: 480px) {
+  .progress-bar{
+    font-size: 9px;
+  }
+}

@@ -1,0 +1,206 @@
+/* Blog Detail Background */
+.blog-detail-background {
+  position: relative;
+  padding: 110px 20px 40px 20px;
+  background-color: #f9f9f9;
+}
+
+/* Floating Share Section */
+.floating-share {
+  position: fixed;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  background-color: rgba(43, 154, 121, 0.3); /* Semi-transparent background */
+  padding: 10px 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  z-index: 2;
+  width: 120px;
+}
+
+/* Floating Share Title */
+.floating-share h4 {
+  font-size: clamp(0.85rem, 2.5vw, 1rem); /* Responsive font size */
+  margin-bottom: 10px;
+  text-align: center;
+  color: var(--color-mainDarkBlue);
+}
+
+/* Floating Share Links */
+.floating-share a {
+  display: block;
+  margin: 5px 0;
+  font-size: clamp(0.85rem, 2.5vw, 1rem); /* Responsive font size */
+  text-decoration: none;
+  text-align: center;
+  padding: 8px 10px;
+  background-color: var(--color-lightBlue);
+  color: var(--color-backgroundGreenLight);
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.floating-share a:hover {
+  background-color: var(--color-mainDarkBlue);
+}
+
+/* Main Blog Detail Container */
+.blog-detail {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 30px;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+/* Blog Title */
+.blog-detail h1 {
+  font-size: clamp(2.2rem, 5vw, 3rem); /* Responsive title size */
+  line-height: 1.4;
+  font-weight: 700;
+  color: #0c4738; /* Dark green */
+  margin-bottom: 30px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif; /* Modern font */
+  letter-spacing: 1px;
+}
+
+/* Subheadings (h2) */
+.blog-detail h2 {
+  font-size: clamp(1.8rem, 4vw, 2.4rem); /* Responsive subheading size */
+  font-weight: 600;
+  color: #0b2c52; /* Dark blue */
+  margin-top: 30px;
+  margin-bottom: 20px;
+  font-family: 'Poppins', sans-serif; /* Modern font */
+  text-align: center;
+}
+
+/* Paragraph styling */
+.blog-detail p {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem); /* Responsive paragraph size */
+  color: #34495e; /* Dark grayish blue */
+  margin-bottom: 25px;
+  line-height: 1.8;
+}
+
+/* Meta Description */
+.meta-description {
+  font-style: italic;
+  color: #7f8c8d;
+  font-size: clamp(1rem, 2vw, 1.2rem); /* Responsive font size */
+}
+
+/* External Link Styling */
+.external-link {
+  color: #3498db; /* Blue */
+  text-decoration: none;
+}
+
+.external-link:hover {
+  text-decoration: underline;
+}
+
+/* Blog Image Styling */
+.blog-detail .blog-image {
+  width: 100%;
+  max-width: 450px; /* Max width to control image size */
+  height: 300px;
+  margin: 20px auto;
+  display: block;
+  border-radius: 12px; /* Modern rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  object-fit: cover; /* Ensures proper image cropping */
+}
+
+/* Hover Effect on Blog Image */
+.blog-detail .blog-image:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+}
+
+/* Image Caption Styling */
+.blog-detail .image-alt {
+  font-size: clamp(0.9rem, 2vw, 1.1rem); /* Responsive caption size */
+  color: #7f8c8d;
+  text-align: center;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+/* Ordered and Unordered List Styling */
+.blog-detail ol,
+.blog-detail ul {
+  margin-left: 20px;
+  padding-left: 20px;
+  color: #34495e; /* Dark grayish blue */
+  margin-bottom: 30px;
+}
+
+.blog-detail li {
+  margin-bottom: 15px;
+  line-height: 1.6;
+  font-size: clamp(1rem, 2vw, 1.2rem); /* Responsive font size */
+}
+
+/* Highlighted Bold Text */
+.blog-detail b {
+  color: #0c4738; /* Dark green */
+}
+
+/* Special "Underscored" Class for Emphasized Links */
+.underscored {
+  text-decoration: underline;
+  font-weight: bold;
+  color: #3498db; /* Blue for emphasized links */
+}
+
+/* Greet and Conclusion Styling */
+.greet {
+  font-size: clamp(1.4rem, 3vw, 1.8rem); /* Responsive font size */
+  font-weight: 600;
+  color: #0c4738; /* Dark green */
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  font-family: 'Poppins', sans-serif; /* Modern font */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .blog-detail-background {
+    padding: 80px 20px 40px 20px;
+  }
+
+  .floating-share {
+    top: 80%;
+    left: 10px;
+    width: 100px;
+  }
+
+  .blog-detail {
+    padding: 30px 15px;
+  }
+
+  .blog-detail h1 {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+  }
+
+  .blog-detail h2 {
+    font-size: clamp(1.6rem, 3vw, 2rem);
+  }
+
+  .blog-detail p {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+  }
+
+  .greet {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+  }
+}

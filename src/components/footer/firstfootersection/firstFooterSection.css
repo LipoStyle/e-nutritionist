@@ -1,0 +1,114 @@
+.first-footer-section{
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  /* border: 2px solid black; */
+}
+.footer-logo{
+  padding:5px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 12px;
+  width: 120px;
+  height: 40px;
+}
+.copyright{
+  letter-spacing: 1px;
+  align-self: center;
+  color: #ffffff;
+  font-size: 20px;
+}
+/* socialmedia items */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.icon{
+  text-decoration: none;
+  width: 30px;
+  height: 20px;
+  border-radius: 20px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: all .3s ease-in-out;
+}
+.icon:hover{
+  width: 50px;
+  height: 30px;
+}
+.youtube{
+  background-image: url("../../../images/footerimages/youtube.svg");
+}
+.youtube:hover{
+  background-image: url("../../../images/footerimages/youtube-hover.svg");
+}
+.instagram{
+  background-image: url("../../../images/footerimages/instagram.svg");
+}
+.instagram:hover{
+  background-image: url("../../../images/footerimages/instagram-hover.svg");
+}
+.pinterest{
+  background-image: url("../../../images/footerimages/pinterest.svg");
+}
+.pinterest:hover{
+  background-image: url("../../../images/footerimages/pinterest-hover.svg");
+}
+.twitter{
+  background-image: url("../../../images/footerimages/twitter.svg");
+}
+.twitter:hover{
+  background-image: url("../../../images/footerimages/twitter-hover.svg");
+}
+.tiktok{
+  background-image: url("../../../images/footerimages/tiktok.svg");
+}
+.tiktok:hover{
+  background-image: url("../../../images/footerimages/tiktok-hover.svg");
+}
+
+@media(max-width: 768px){
+  footer{
+    padding: 2px;
+    justify-content: space-evenly;
+    gap: 0;
+  }
+  .first-footer-section{
+    flex-direction: column;
+    order: 1;
+  }
+  .social-icons{
+    width: 100%;
+  }
+  .footer-logo{
+    width: 90px;
+    order: 2;
+  }
+  .copyright{
+    text-align: center;
+    font-size: 13px;
+    order: 3;
+  }
+  .social-icons{
+    gap: 14px;
+  }
+  .icon{
+    margin: 0;
+    font-size: 20px;
+  }
+}
+@media (max-width: 530px) {
+ .copyright{
+  font-size: 11px;
+ }
+ .icon{
+  font-size: 15px;
+ }
+}

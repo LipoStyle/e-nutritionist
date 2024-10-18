@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Gupter:wght@400;500;700&display=swap');
+
+
+
+
+:root {
+  /* colors */
+  --color-backgroundGreen: #59c58f;
+  --color-backgroundGreenLight: #c1daca;
+  --color-backgroundGreenDarker: #29A24D;
+  --color-backgroundGreenDarker2: #01150b;
+
+  --color-mainDarkBlue: #0b2c52;
+  --color-lightBlue: #0b2c52a7;
+  
+  /* font size */
+  /* h1 */
+  --fontSize-h1: 48px;
+  --fontSize-h1R1: 30px;
+  --fontSize-h1R2: 21px;
+
+  /* h2 */
+  --fontSize-h2: 18px;
+  --fontSize-h2R1: 15px;
+
+  /* p */
+  --fontSize-p: 14px;
+  --fontSize-pR1: 12px;
+
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Gupter", serif;
+}

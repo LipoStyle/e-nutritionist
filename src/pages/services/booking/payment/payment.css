@@ -1,0 +1,153 @@
+/* Full page background image with fixed position */
+.payment-container-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../../../images/servicesimages/body-background.jpg'); /* Add your actual background image path */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  z-index: -1; /* Puts the background behind the content */
+}
+
+/* Payment container: centers the form */
+.payment-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(100px, 15vw, 120px) 20px 20px; /* Responsive top padding */
+  position: relative; /* Ensures content stays on top of background */
+}
+
+/* Glassy form card styling */
+.payment-card {
+  background: rgba(255, 255, 255, 0.2); /* Semi-transparent background for glass effect */
+  backdrop-filter: blur(10px); /* Blur for glass effect */
+  padding: clamp(1.5rem, 3vw, 2rem); /* Responsive padding */
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  color: #333;
+}
+
+/* Card icons */
+.card-icons{
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+.card-icons img {
+  width: 40px;
+  /* margin-right: 10px; */
+}
+.payment-title{
+  text-align: center;
+  color: var(--color-mainDarkBlue);
+}
+/* Payment form fields */
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-label {
+  font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.card-element {
+  padding: clamp(0.7rem, 2vw, 1rem); /* Responsive padding */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+/* Payment button */
+.payment-button {
+  background-color: #007bff;
+  color: white;
+  padding: clamp(0.75rem, 2vw, 1rem); /* Responsive padding */
+  font-size: clamp(1rem, 2.5vw, 1.125rem); /* Responsive font size */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.payment-button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.payment-button:disabled {
+  background-color: #999;
+}
+
+/* Error message styling */
+.error-message {
+  color: red;
+  text-align: center;
+  font-size: clamp(0.85rem, 2vw, 1rem); /* Responsive font size */
+}
+
+/* Spinner */
+.spinner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Secure payment message */
+.secure-message {
+  font-size: clamp(0.75rem, 2vw, 0.9rem); /* Responsive secure message */
+  color: #777;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .payment-container {
+    padding: clamp(70px, 10vw, 90px) 20px 20px; /* Adjusted padding for tablets */
+  }
+}
+
+@media (max-width: 500px) {
+  .payment-card {
+    padding: 1rem; /* Reduced padding on mobile */
+  }
+
+  .payment-button {
+    padding: clamp(0.5rem, 2vw, 0.75rem); /* Adjusted button padding for smaller screens */
+    font-size: clamp(0.85rem, 2vw, 1rem); /* Adjusted button font size */
+  }
+
+  .error-message {
+    font-size: clamp(0.75rem, 2vw, 0.85rem); /* Smaller error message font */
+  }
+
+  .secure-message {
+    font-size: clamp(0.7rem, 2vw, 0.85rem); /* Smaller secure message */
+  }
+}

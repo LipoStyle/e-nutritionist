@@ -1,0 +1,99 @@
+.second-footer-section{
+  margin: 20px auto;
+  width: 80%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.privicy-policies h3,
+.footer-links-to-website h3,
+.footer-contact-info h3{
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: #fff;
+}
+.privicy-policies,
+.footer-links-to-website,
+.footer-contact-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.privicy-policies .p-links,
+.footer-links-to-website .p-links,
+.footer-contact-info p{
+  text-decoration: none;
+  margin: 5px auto;
+  padding: 0;
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: #333;
+  transition: all .2s ease-in-out;
+}
+.privicy-policies .p-links:hover,
+.footer-links-to-website .p-links:hover{
+  cursor: pointer;
+  color: #fff;
+  letter-spacing: 3px;
+}
+/* responsive design */
+@media screen and (max-width: 1240px) {
+  .second-footer-section{
+    width: 90%;
+  }
+  .privicy-policies h3,
+  .footer-links-to-website h3,
+  .footer-contact-info h3{
+    font-size: 18px;
+  }
+  .privicy-policies .p-links,
+  .footer-links-to-website .p-links,
+  .footer-contact-info p{
+    font-size: 15px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .privicy-policies h3,
+  .footer-links-to-website h3,
+  .footer-contact-info h3{
+    font-size: 15px;
+  }
+  .privicy-policies .p-links,
+  .footer-links-to-website .p-links,
+  .footer-contact-info p{
+    font-size: 12px;
+  }
+}@media screen and (max-width: 600px) {
+  .second-footer-section{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    flex-direction: column;
+  }
+  .privicy-policies,
+  .footer-links-to-website,
+  .footer-contact-info{
+    margin: 10px auto;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .privicy-policies h3,
+  .footer-links-to-website h3,
+  .footer-contact-info h3{
+    margin: 5px auto;
+    padding: 0;
+    font-size: 15px;
+  }
+  .privicy-policies .p-links,
+  .footer-links-to-website .p-links,
+  .footer-contact-info p{
+    margin: 5px auto;
+    padding: 0;
+    font-size: 11px;
+  }
+}

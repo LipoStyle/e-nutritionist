@@ -1,0 +1,130 @@
+/* Outer container */
+.contact-form-container-outer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.78); /* Semi-transparent white background */
+  padding: 0 20px 12px 20px;
+}
+
+/* Inner form container */
+.contact-form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0px auto;
+  padding: 0 0 20px 0;
+  width: 80%;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-color: rgba(150, 209, 179, 0.78); /* Light green background */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.3s ease; /* Added a smooth transition for hover effects */
+}
+
+/* Form heading */
+.contact-form-container h2 {
+  padding: 12px;
+  color: rgba(150, 209, 179, 0.78); /* Light green text */
+  background-color: #0c4738; /* Dark green background */
+  width: 100%;
+  text-align: center;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  font-size: clamp(1.5rem, 4vw, 2.5rem); /* Responsive font size for heading */
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif; /* Modern font */
+}
+
+/* Form styling */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  width: 90%;
+}
+
+/* Label styling */
+.contact-form label {
+  color: #0b2c52; /* Dark blue color */
+  font-size: clamp(1rem, 2.5vw, 1.25rem); /* Responsive font size for labels */
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+/* Input and textarea styles */
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9; /* Light background */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Focus state for inputs */
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #0c4738; /* Focus border color to match the theme */
+  box-shadow: 0 0 5px rgba(12, 71, 56, 0.5);
+  outline: none;
+}
+
+/* Textarea styling */
+.contact-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Submit button styling */
+.contact-form button {
+  width: 40%;
+  padding: 10px;
+  font-size: clamp(0.95rem, 2.5vw, 1.125rem); /* Responsive font size */
+  color: #fff;
+  background-color: #0c4738; /* Dark green */
+  border: none;
+  border-radius: 15px; /* Matches the border-radius of the form */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin: 0 auto;
+}
+
+.contact-form button:hover {
+  color: #0c4738;
+  background-color: #fff;
+  transform: translate(2px, 2px); /* Subtle hover effect */
+}
+
+.contact-form button:active {
+  transform: scale(0.95); /* Scale down on click */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 620px) {
+  .contact-form-container {
+    width: 95%;
+    margin: 0;
+  }
+
+  .contact-form label {
+    font-size: clamp(0.85rem, 2vw, 1rem); /* Smaller font size for labels on mobile */
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    font-size: clamp(0.75rem, 2vw, 0.9rem); /* Adjusted font size for inputs on mobile */
+  }
+
+  .contact-form button {
+    width: 60%; /* Larger button width for smaller screens */
+    padding: 12px;
+    font-size: clamp(0.85rem, 2.5vw, 1rem); /* Adjusted button font size */
+  }
+}

@@ -1,0 +1,155 @@
+#screen5{
+  padding: 20px 0px 0px;
+}
+#screen5 .title{
+  text-align: center;
+  padding: 20px 10px;
+  margin: 0 auto;
+  width: 90%;
+  font-size: 40px;
+  color: #0b2c52;  
+}
+#screen5 .answer-container{
+  width: 60%;
+  margin: 0 auto;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+#screen5 .answer-card{
+  width: 100%;
+  margin: 0; 
+  text-align: center;
+  color: #05360e;
+
+  box-sizing: border-box;
+  padding: 10px 30px;
+
+  border-radius: 20px;
+
+  background-color: #47b973;
+
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  justify-self: center;
+}
+#screen5 .answer-card:last-child{
+  grid-column: span 2;
+  height: 150px;
+}
+
+#screen5 .answer-card:hover{
+  background-color: #159640ab;
+}
+#screen5 .answer-card.active{
+  background-color: #49998e;
+}
+#screen5 .answer-card h4{
+  text-align: center;
+}
+#screen5 .answer-card .image-of-answer{
+  width: 80px;
+}
+#screen5 #other-answer{
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  outline: 0;
+  border: 0;
+  color: #0b2c52;
+  border-radius: 10px;
+  resize: none;
+  text-align: center;
+  padding: 5px;
+}
+#screen5 .answer-container .description{
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: #bbb;
+}
+#screen5 .answer-container .description:first-child,
+#screen5 .answer-container .description:last-child{
+  color: white;
+}
+#screen5 .buttons{
+  padding: 20px 0px;
+  margin: 0;
+  justify-content: center;
+}
+#screen5 .button-back{
+  width: 100px;
+  text-align: center;
+}
+#screen5 .button-next{
+  width: 150px;
+  text-align: center;
+}
+@media screen and (max-width: 768px) {
+  #screen5{
+    padding: 10px 0px;
+  }
+  #screen5 .title{
+    padding: 20px;
+    font-size: 30px;
+  }
+  #screen5 .answer-container{
+    width: 80%;
+    grid-template-columns: 1fr 1fr;
+  }
+  #screen5 .answer-card{
+    width: 100%;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #screen5 .answer-card:nth-child(5){
+    width: 60%;
+    grid-column: span 2;
+    margin: 0 auto;
+  }
+}
+@media screen and (max-width: 590px) {
+  #screen5 .title{
+    font-size: 22px;
+  }
+  #screen5 .screen3-answer-container{
+    margin: 0 auto;
+    gap: 15px;
+    column-gap: 30px;
+  }
+  #screen5 .answer-card{
+    margin: 0;
+    padding: 15px;
+    gap: 2px;
+    width: 150px;
+    height: 150px;
+  }
+  #screen5 .answer-card h4{
+    font-size: 12px;
+  }
+  #screen5 .answer-card .image-of-answer{
+    width: 40px;
+  }
+  #screen5 #other-answer,
+  #screen5 #other-answer:placeholder-shown,
+  #screen5 .screen3-answer-container .description{
+    font-size: 10px;
+  }
+  #screen5 .button-back{
+    width: 50px;
+    text-align: center;
+  }
+  #screen5 .button-next{
+    width: 80px;
+    text-align: center;
+  }
+}

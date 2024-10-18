@@ -1,0 +1,179 @@
+/* Title Service Page */
+.title-service-page {
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 2.5rem); /* Responsive title size */
+  font-weight: 900;
+  font-style: italic;
+  color: #0b2c52;
+  padding: 20px 0 0 0;
+}
+
+/* Background Image */
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(../../images/servicesimages/body-background.jpg);
+  z-index: -1;
+  background-size: cover; /* Ensures background covers the whole area */
+  background-position: center; /* Keeps background centered */
+}
+
+/* Responsive Title Adjustments */
+@media screen and (max-width: 768px) {
+  .title-service-page {
+    font-size: clamp(1.5rem, 4vw, 2rem); /* Slightly smaller for tablets */
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .title-service-page {
+    font-size: clamp(1.2rem, 4vw, 1.8rem); /* Smaller for mobile devices */
+  }
+}
+
+/* About the Services Section */
+.services .grid-container {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+/* Service Plan */
+.service-plan {
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #59c48fb0; /* Transparent green */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #081e13;
+}
+
+.service-plan:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15); /* Lifted on hover */
+}
+
+.title-of-plan {
+  text-align: center;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem); /* Responsive font size */
+  font-weight: 900;
+  font-style: italic;
+  color: #0b2c52;
+}
+
+.price-of-plan::before {
+  content: "Price";
+  display: block;
+  font-size: 0.8rem;
+  color: #182d47;
+}
+
+.price-of-plan {
+  text-align: center;
+  padding: 10px;
+  margin: 0 auto;
+  width: 80%;
+  color: #0b2c52;
+  border-bottom: 2px solid #0b2c52;
+  font-size: clamp(1.5rem, 2vw, 2rem); /* Responsive price font */
+}
+
+.price-of-plan em {
+  padding: 3px;
+  font-size: 0.85rem;
+}
+
+/* Features of Plan */
+.features-of-plan {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  width: 100%;
+  padding: 0;
+}
+
+.feature {
+  text-align: center;
+  margin: 3px auto;
+  font-size: clamp(0.85rem, 1vw, 1rem); /* Responsive font */
+  color: #0b2c52;
+}
+
+.feature::before {
+  content: "✔";
+  padding-right: 5px;
+  color: green; /* Adds checkmark color */
+}
+
+/* Other Text Styling */
+.explainable-question {
+  padding: 10px;
+  text-align: center;
+  font-size: clamp(0.9rem, 2vw, 1rem); /* Responsive */
+  letter-spacing: 1px;
+  color: #0b2c52;
+  font-weight: 900;
+}
+
+.description-of-plan {
+  padding: 10px;
+  font-size: clamp(0.85rem, 1.5vw, 1rem); /* Responsive */
+  color: #0b2c52;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* Button */
+.button {
+  display: block;
+  width: fit-content;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px 20px;
+  margin: 10px auto;
+  border-radius: 20px;
+  background-color: #0b2c52;
+  font-style: italic;
+  font-size: clamp(0.85rem, 2vw, 1rem); /* Responsive */
+  font-weight: 500;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0a2440;
+  transform: translateY(-3px);
+  cursor: pointer;
+}
+
+/* Responsive Styling */
+@media screen and (max-width: 1220px) {
+  .services .grid-container {
+    grid-template-columns: 1fr 1fr; /* Adjusts grid to 2 columns */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .services .grid-container {
+    grid-template-columns: 1fr; /* Stacks the services */
+  }
+  .service-plan {
+    width: 85%; /* Slightly smaller on tablet */
+    margin: 20px auto;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .services .grid-container {
+    padding: 0;
+    display: block;
+  }
+  .service-plan {
+    width: 90%; /* Stacked on smaller screens */
+  }
+}
