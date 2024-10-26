@@ -1,8 +1,9 @@
 {
   "files": {
-    "main.css": "/static/css/main.682fca30.css",
-    "main.js": "/static/js/main.323a9a8b.js",
+    "main.css": "/static/css/main.c103ad5e.css",
+    "main.js": "/static/js/main.3d86aabb.js",
     "static/js/453.8ab44547.chunk.js": "/static/js/453.8ab44547.chunk.js",
+    "static/media/background.jpg": "/static/media/background.b67a16fdafeb243fb19e.jpg",
     "static/media/bmi.png": "/static/media/bmi.3a4dcfd6581aedf78a45.png",
     "static/media/vegan.webp": "/static/media/vegan.4a1adee57a91bcc2182f.webp",
     "static/media/Exercise-Nutrition.webp": "/static/media/Exercise-Nutrition.01a6c39034e2071a4f55.webp",
@@ -14,15 +15,15 @@
     "static/media/Recomposition.webp": "/static/media/Recomposition.6b38f1e9e753c2bc99d3.webp",
     "static/media/Nutricional-education.webp": "/static/media/Nutricional-education.ec0085fd0261982fe444.webp",
     "static/media/digestive.webp": "/static/media/digestive.10d4bb795f6d11b527e1.webp",
-    "static/media/2.svg": "/static/media/2.57d9c68b702cf7f3c3f9338da92194b0.svg",
+    "static/media/2.svg": "/static/media/2.8be070a09605cac2563d2c5c9bac0c57.svg",
     "static/media/master-card.svg": "/static/media/master-card.c233b1d2e1f6af1cc851eced6d16d62c.svg",
     "static/media/backgorundImage.webp": "/static/media/backgorundImage.3661133cf64d30b45daf.webp",
-    "static/media/1.svg": "/static/media/1.a365c5e210eb2f5f7276dcd7bc37ee6a.svg",
+    "static/media/1.svg": "/static/media/1.e0658084497bd16e912cb4a7b7916536.svg",
     "static/media/logo.svg": "/static/media/logo.33220a78f8e9897b3eae825e8789bcb3.svg",
     "static/media/instagram-hover.svg": "/static/media/instagram-hover.0399cc7575e5c255df4b.svg",
     "static/media/instagram.svg": "/static/media/instagram.bc261652c9f0be4413c72644fde7ada2.svg",
     "static/media/whatsapp.svg": "/static/media/whatsapp.be0080a65fffe0aebaaaae563ccc807d.svg",
-    "static/media/slick.svg": "/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.svg": "/static/media/slick.7ba97953187dc2907930.svg",
     "static/media/slick.eot": "/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/visa.svg": "/static/media/visa.4ff6a0fc3d57f16ff76445259cbf2e91.svg",
@@ -34,16 +35,16 @@
     "index.html": "/index.html",
     "static/media/tiktok-hover.svg": "/static/media/tiktok-hover.025e7d52f2b66fbe987e.svg",
     "static/media/tiktok.svg": "/static/media/tiktok.73eef760905e306c8c4d.svg",
-    "static/media/thankyou_icon.svg": "/static/media/thankyou_icon.a0a438602cebbb0d67564b7a21bc2a34.svg",
+    "static/media/thankyou_icon.svg": "/static/media/thankyou_icon.ae0abda0b7ea26202fb46a45841d6b9e.svg",
     "static/media/youtube.svg": "/static/media/youtube.ae3415eaabc1886bd51387f94c8cacb4.svg",
     "static/media/youtube-hover.svg": "/static/media/youtube-hover.6d2a2cd0eac645117c67.svg",
     "static/media/email.svg": "/static/media/email.1f6bbae93b7b47d668109d7e3324c2e7.svg",
-    "main.682fca30.css.map": "/static/css/main.682fca30.css.map",
-    "main.323a9a8b.js.map": "/static/js/main.323a9a8b.js.map",
+    "main.c103ad5e.css.map": "/static/css/main.c103ad5e.css.map",
+    "main.3d86aabb.js.map": "/static/js/main.3d86aabb.js.map",
     "453.8ab44547.chunk.js.map": "/static/js/453.8ab44547.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.682fca30.css",
-    "static/js/main.323a9a8b.js"
+    "static/css/main.c103ad5e.css",
+    "static/js/main.3d86aabb.js"
   ]
 }
