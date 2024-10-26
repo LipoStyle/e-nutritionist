@@ -14,6 +14,8 @@ import ThankYouMessage from './pages/thankmessage/ThankMessage';
 import CookiesPolicy from './pages/policies/CookiesPolicy';
 import PrivacyPolicy from './pages/policies/PrivacyPolicy';
 import LegalNotice from './pages/policies/LegalNotice';
+import Login from './pages/login/Login'; // Import the Login page
+
 
 import Layout from './components/Layout';
 import Payment from './pages/services/booking/payment/PaymentSection';
@@ -38,6 +40,7 @@ const App = () => {
           <Route path="/cookiespolicy" element={<CookiesPolicy />} />
           <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           <Route path="/legalnotice" element={<LegalNotice />} />
+          <Route path="/login" element={<Login />} /> {/* Login page route */}
         </Routes>
       </Layout>
     </Router>

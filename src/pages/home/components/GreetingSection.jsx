@@ -1,3 +1,4 @@
+// GreetingSection.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import nutritionistImg from '../../../images/home-images/greeting-section/NutritionisT-768x450.jpg'; // Adjust the path as needed

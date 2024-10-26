@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react"; 
+import { Link } from 'react-router-dom';
 import "./header.css"
 
 // import NavigationMenu from "./navigationmenu/NavigationMenu";
@@ -29,7 +30,7 @@ const Header = () =>{
           <a href="./about">About</a>
           <a href="./contactus">Contact</a>
         </div>
-        <a href="#" className="green-button">Book A Consultation</a>
+        <Link to="/booking" className="green-button">Book A Consultation</Link>
       </div>
       <div>
         <div className="homepg-logo">

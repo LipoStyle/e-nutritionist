@@ -1,152 +1,98 @@
-/* Blog Items Preview Section */
-.blog-items-preview {
-  padding: 40px 20px;
-  background-color: var(--color-backgroundGreenLight);
-}
-
-/* Title Styling */
-.blog-items-preview .title {
-  color: var(--color-mainDarkBlue);
-  font-size: clamp(1.8rem, 3.5vw, 2.5rem); /* Modern, responsive font size */
-  font-family: 'Poppins', sans-serif; /* Professional font */
-  font-weight: 600;
+/* Title animation - slide-in effect */
+.blog-items-preview .animated-title {
   text-align: center;
+  padding-bottom: 20px;
+  font-size: 2rem; /* Adjust font size for better visibility */
+  color: var(--color-mainDarkBlue);
+
+  opacity: 0;
+  transform: translateY(50px); /* Slide from below */
+  transition: all 1.5s ease-in-out;
 }
 
-/* Outer Container */
+.blog-items-preview .animated-title.animate {
+  opacity: 1;
+  transform: translateY(0); /* Slide into place */
+}
+.blog-items-preview {
+  margin:  0 auto;
+  max-width: 1400px;
+}
+
 .blog-items-container-outer {
-  padding: 10px;
+  padding: 15px;
+  margin: 0 auto;
 }
-
-/* Inner Container */
+.slick-track{
+  width: 80%;
+  margin: 0 auto;
+}
 .blog-items-container-inner {
-  padding-bottom: 12px;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Modern shadow */
+  background-color: #ffffff; /* White background for cards */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px #56635b; /* Subtle shadow */
+  transition: all 0.6s ease-in-out;
+  overflow: hidden; /* Ensures the image doesn't overflow */
+  padding-bottom: 10px;
+
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   gap: 12px;
-  justify-content: space-between;
-  border-radius: 16px;
-  overflow: hidden;
-  transition: transform 0.3s ease; /* Smooth transform */
 }
 
 .blog-items-container-inner:hover {
-  transform: translateY(-5px); /* Subtle lift effect */
+  transform: translateY(-15px); /* Lift effect on hover */
 }
 
-/* Image Styling */
-.blog-items-container-inner img {
+.blog-image {
+  width: 100%; /* Full width */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.blog-items-preview .blog-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: rgb(24, 106, 59); /* Dark text for title */
+}
+
+.blog-items-preview .blog-description {
+  font-size: 1rem;
+  color: rgb(165, 169, 173); /* Lighter text for description */
+  padding: 0 10px;
+}
+.blog-items-preview .blog-link {
+  display: inline-block; /* Make the link a button */
+  padding: 10px 20px; /* Button padding */
+  background-color: #28a745; /* Green primary color */
+  color: white; /* Text color */
+  text-decoration: none; /* Remove underline */
+  border-radius: 5px; /* Rounded corners */
+  position: relative; /* Positioning for the pseudo-element */
+  overflow: hidden; /* Ensure the gradient doesn't overflow */
+  transition: color 0.3s ease; /* Smooth transition for text color */
+  z-index: 2;
+}
+
+.blog-items-preview .blog-link::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: -100%; /* Start off-screen to the left */
+  height: 100%;
   width: 100%;
-  height: 240px;
-  object-fit: cover; /* Ensure image maintains aspect ratio */
-  border-radius: 16px 16px 0 0;
+  background-color: black; /* Black background */
+  color: white;
+  transition: left 0.3s ease; /* Smooth transition for the background */
 }
 
-/* Heading Styling */
-.blog-items-container-inner h3 {
-  font-size: clamp(1.25rem, 2.5vw, 1.75rem); /* Responsive, modern font size */
-  font-family: 'Poppins', sans-serif;
-  color: var(--color-mainDarkBlue);
-  width: 90%;
-  margin: 0 auto 20px auto;
-  text-align: center;
+.blog-items-preview .blog-link:hover::after {
+  left: 0; /* Move black background into view on hover */
 }
 
-/* Paragraph Styling */
-.blog-items-container-inner p {
-  font-size: clamp(0.9rem, 2.5vw, 1rem); /* Responsive font size */
-  font-family: 'Open Sans', sans-serif; /* Clean, professional font */
-  font-style: italic;
-  text-align: center;
-  width: 90%;
-  line-height: 1.6; /* Improved readability */
-}
-
-/* Button/Link Styling */
-.blog-items-container-inner a {
-  text-decoration: none;
-  background-color: var(--color-mainDarkBlue);
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: clamp(0.85rem, 2vw, 1rem); /* Responsive button text */
-  font-family: 'Poppins', sans-serif;
-  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
-}
-
-.blog-items-container-inner a:hover {
-  transform: translateY(-3px);
-  background-color: var(--color-lightBlue);
-}
-
-/* Tablet Styles (max-width: 1088px) */
-@media (max-width: 1088px) {
-  .blog-items-preview .title {
-    font-size: clamp(1.6rem, 3vw, 2rem); /* Adjust for smaller screens */
-  }
-
-  .blog-items-container-inner img {
-    height: 200px; /* Scale down images */
-  }
-}
-
-/* Tablet and Mobile Styles (max-width: 768px) */
-@media (max-width: 768px) {
-  .blog-items-container-inner img {
-    height: 180px; /* Adjust image height */
-  }
-
-  .blog-items-container-inner h3 {
-    font-size: clamp(1rem, 2.5vw, 1.5rem); /* Scale font sizes */
-  }
-
-  .blog-items-container-inner p {
-    font-size: clamp(0.85rem, 2.5vw, 1rem); /* Adjust text size */
-  }
-
-  .blog-items-container-inner a {
-    font-size: clamp(0.8rem, 2vw, 0.95rem); /* Button text size */
-  }
-}
-
-/* Small Mobile Styles (max-width: 600px) */
-@media (max-width: 600px) {
-  .blog-items-preview .title {
-    font-size: clamp(1.4rem, 4vw, 2rem);
-  }
-
-  .blog-items-container-inner {
-    width: 90%; /* Adjust width on smaller screens */
-  }
-
-  .blog-items-container-inner img {
-    height: 150px; /* Reduce image height */
-  }
-
-  .blog-items-container-inner p {
-    font-size: clamp(0.85rem, 1vw, 1rem); /* Adjust paragraph font size */
-  }
-}
-
-/* Extra Small Mobile Styles (max-width: 500px) */
-@media (max-width: 500px) {
-  .blog-items-container-inner {
-    margin: 0 auto;
-    width: 95%; /* Full width on small screens */
-  }
-
-  .blog-items-container-inner img {
-    height: 130px; /* Further reduce image height */
-  }
-
-  .blog-items-container-inner h3 {
-    font-size: clamp(1rem, 3vw, 1.4rem); /* Adjust title size */
-  }
-
-  .blog-items-container-inner p {
-    font-size: clamp(0.8rem, 1.5vw, 0.9rem); /* Scale description text */
-  }
+.blog-items-preview .blog-link:hover {
+  color: white; /* Keep text color white on hover */
 }

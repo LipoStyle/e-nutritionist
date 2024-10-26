@@ -1,180 +1,133 @@
-/* Carousel Section Styles */
-.carusel-section {
-  padding: 40px 0;
-  width: 100%;
-  background-color: #c1daca;
-  box-sizing: border-box;
+.service-info-section {
+  background-color: var(--color-backgroundGreenLight);
+  padding: 30px 15px;
 }
 
-/* Title Styling */
-.carusel-section .service-info-title {
-  margin-bottom: 24px;
-  font-size: clamp(1.8rem, 4vw, 2.5rem); /* Modern and responsive */
-  font-family: 'Poppins', sans-serif; /* Modern font */
-  font-weight: 600;
-  color: var(--color-mainDarkBlue);
+@keyframes title-slide-up {
+  0% {
+    transform: translateY(40px); /* Start slightly below */
+    opacity: 0; /* Fully transparent */
+  }
+  100% {
+    transform: translateY(0); /* Original position */
+    opacity: 1; /* Fully opaque */
+  }
+}
+
+.service-info-title {
   text-align: center;
+  padding-bottom: 20px;
+  font-size: 2rem; /* Adjust font size for better visibility */
+  color: var(--color-mainDarkBlue);
+
+  /* Initial state (hidden) */
+  opacity: 0;
+  transform: translateY(20px); /* Start slightly below */
+  transition:  all 2s ease-in-out;
 }
 
-/* Container */
-.carusel-container {
-  width: 100%;
+.service-info-title.visible {
+  /* When it becomes visible */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* Carousel Item Wrapper */
+.carousel-item-wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  box-sizing: border-box;
+
+  padding: 20px;
 }
 
-/* Carousel Item */
+/* Carousel Item Styles */
 .carusel-item {
-  display: flex !important;
+  width: 100%; /* Allow full width for responsiveness */
+  background-color: #ffffffc5;
+  border: 2px solid #7e7979;
+  padding: 15px 30px 60px 30px;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10px 0; /* Spacing between items */
-}
-
-/* Image */
-.carusel-item .image-of-services-section {
-  width: 60%; /* A bit larger for better visibility */
-  border-radius: 21px;
-  margin: 20px auto; /* Better spacing */
-  object-fit: cover; /* Ensures image is properly centered */
-}
-
-/* Service Title */
-.carusel-item .title-of-service {
-  width: 100%;
-  text-align: center;
-  font-size: clamp(1rem, 2.5vw, 1.5rem); /* Responsive font size */
-  font-family: 'Open Sans', sans-serif; /* Simple, clean font */
-  color: var(--color-mainDarkBlue);
-  margin: 10px auto;
-  font-weight: 600;
-}
-
-/* Description of Service */
-.carusel-item .description-of-service {
-  color: var(--color-backgroundGreenDarker2);
-  font-size: clamp(0.9rem, 2vw, 1rem); /* More readable and modern */
-  letter-spacing: 0.8px;
-  margin: 10px auto;
-  padding: 0 0 20px;
-  text-align: center;
-  width: 85%; /* Slightly smaller for better flow */
-  line-height: 1.6; /* Better readability */
-}
-
-.slick-slide {
+  gap: 12px;
+  border-radius: 18px;
   cursor: pointer;
+  box-shadow: 0px 0px 18px 0px rgb(10 27 95 / 10%);
+  transition: transform 0.9s ease; /* Smooth transition for hover effect */
+  position: relative; /* Allows for stacking context for absolute elements */
 }
 
-/* Slick Arrows */
+/* Hover effect */
+.carusel-item:hover {
+  transform: translateY(-5px); /* Slight upward movement */
+}
+
+/* Image Styles */
+.carusel-item img {
+  width: 320px;
+  height: auto; /* Maintain aspect ratio */
+  max-height: 210px; /* Set max height for uniformity */
+  border-radius: 12px;
+}
+
+/* Title and Description Styles */
+.carusel-item .title-of-service {
+  color: #313a43;
+  font-size: 18px;
+  text-align: center;
+}
+
+.carusel-item .description-of-service {
+  color: rgb(68, 68, 68);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* arrows for component  */
+/* Position the arrows inside the carousel */
 .slick-prev, .slick-next {
-  width: 30px;
-  height: 30px;
-  z-index: 1;
-  top: 50%;
+  position: absolute;
+  top: 50%; /* Vertically center the arrows */
   transform: translateY(-50%);
-  color: #ffffff;
+  z-index: 1; /* Ensure they appear on top of the content */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* Optional: round arrow background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white; /* Set arrow icon color */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition */
 }
 
-.slick-prev:before, .slick-next:before {
-  color: #0b2c52;
-}
-
+/* Override Slick's default margin to pull arrows inside the component */
 .slick-prev {
-  left: 10px;
+  left: 10px; /* Position the left arrow inside the content */
 }
 
 .slick-next {
-  right: 10px;
+  right: 10px; /* Position the right arrow inside the content */
 }
 
-/* Full width for carousel item */
-.carusel-item {
-  width: 100% !important;
+/* Hover state for the arrows */
+.slick-prev:hover, .slick-next:hover {
+  color: #313a43e6; /* Ensure the arrow icon stays white */
 }
 
-/* Responsive Styles */
-
-/* Tablet Styles (max-width: 1088px) */
-@media (max-width: 1088px) {
-  .carusel-section .service-info-title {
-    font-size: clamp(1.6rem, 3.5vw, 2rem); /* Slightly smaller for tablet */
-  }
+/* Active state for the arrows */
+.slick-prev:active, .slick-next:active {
+  color: #313a43e6; /* Ensure the arrow icon stays white */
 }
 
-/* Tablet and Mobile Styles (max-width: 768px) */
-@media screen and (max-width: 768px) {
-  .carusel-item .image-of-services-section {
-    width: 70%;
-    height: auto;
-    border-radius: 21px;
-    margin: 0 auto;
-  }
-  .carusel-item .title-of-service {
-    font-size: clamp(0.9rem, 2vw, 1.2rem); /* Reduced for smaller screens */
-  }
-  .carusel-item .description-of-service {
-    font-size: clamp(0.85rem, 2vw, 1rem); /* Adjusted for smaller screens */
-    width: 90%;
-  }
+/* Optional: Override default arrow icons if needed */
+.slick-prev:before, .slick-next:before {
+  font-size: 1.5rem; /* Adjust the size of the arrow icon */
+  color: #313a43e6; /* Ensure the arrow icon stays white */
 }
 
-/* Small Mobile Styles (max-width: 600px) */
-@media screen and (max-width: 600px) {
-  .slick-prev, .slick-next {
-    width: 20px;
-    height: 20px;
-  }
 
-  .slick-prev {
-    left: 5px;
-  }
 
-  .slick-next {
-    right: 5px;
-  }
-
-  .carusel-item .image-of-services-section {
-    width: 70%;
-    height: 150px;
-  }
-
-  .carusel-item .title-of-service {
-    font-size: clamp(0.8rem, 2vw, 1rem);
-  }
-
-  .carusel-item .description-of-service {
-    font-size: clamp(0.75rem, 2vw, 0.9rem);
-  }
-}
-
-/* Extra Small Mobile Styles (max-width: 500px) */
-@media (max-width: 500px) {
-  .carusel-section .service-info-title {
-    font-size: clamp(1.4rem, 4vw, 1.75rem);
-  }
-
-  .carusel-item {
-    width: 90%; /* Reduced width for small screens */
-  }
-
-  .carusel-item .image-of-services-section {
-    width: 60%;
-    height: 200px;
-    border-radius: 21px;
-    margin: 0 auto;
-  }
-
-  .carusel-item .title-of-service {
-    font-size: clamp(0.75rem, 2vw, 0.9rem);
-  }
-
-  .carusel-item .description-of-service {
-    font-size: clamp(0.7rem, 2vw, 0.85rem);
-    width: 95%;
-    letter-spacing: 0.5px;
-  }
-}

@@ -18,7 +18,7 @@ header {
   box-sizing: border-box;
   margin: 0 auto;
   width: fit-content;
-  background-color: rgba(49, 58, 67, 0.9);
+  background-color: #313a43e6;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
 }
@@ -61,7 +61,7 @@ header {
 .navigation-menu {
   padding: 20px 100px;
   width: 100%;
-  background-color: rgba(49, 58, 67, 0.9); /* Slightly more opaque */
+  background-color: #313a43e6; /* Slightly more opaque */
   display: flex;
   /* flex-direction: column; */
   justify-content: center;
@@ -103,4 +103,21 @@ header {
 .green-button:hover {
   background-color: var(--color-backgroundGreenDarker2); /* Softer hover effect */
   color: #fff;
+}
+@media (max-width: 1140px){
+  .navigation-menu{
+    padding: 12px;
+  }
+  .navbar{
+    gap: 27px;
+  }
+  .navbar a{
+    font-size: 18px;
+  }
+  .author-name{
+    font-size: 21px;
+  }
+  .author-job{
+    font-size: 18px;
+  }
 }

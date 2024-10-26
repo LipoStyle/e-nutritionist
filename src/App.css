@@ -4,7 +4,8 @@
 .about,
 .contact-us,
 .quiz,
-.blog-detail-background{
+.blog-detail-background,
+.login-wrapper{
   padding-top: 100px;
 }
 .thank-message{
