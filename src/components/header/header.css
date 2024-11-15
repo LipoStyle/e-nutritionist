@@ -185,10 +185,10 @@ header {
     transform: rotate(-45deg) translate(5px, -5px); /* Rotate third line */
   }
   .navbar {
-    padding: 0px 30px 0px 20px;
+    padding: 120px 15px 0px 20px;
     display: flex; /* Show the navbar as a flex container */
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-end;
     position: absolute;
     height: 100vh;

@@ -129,5 +129,45 @@
   color: #313a43e6; /* Ensure the arrow icon stays white */
 }
 
+/* responsive 768px */
+@media (max-width: 1220px) {
+  .carusel-item{
+    padding: 20px 10px;
+  }
+  .carusel-item img{
+    width: 90%
+  }
+}
+/* responsive 768px */
+@media (max-width: 900px) {
+  .carusel-item{
+    padding: 20px 10px;
+  }
+}
+/* responsive 680px */
+@media (max-width: 680px) {
+  .carusel-item{
+    justify-self: center;
+    width: 70%;
+    padding: 20px 10px;
+  }
+}
+/* responsive 680px */
+@media (max-width: 500px) {
+  .service-info-title{
+    font-size: 24px;
+  }
+  .carusel-item{
+    justify-self: center;
+    width: 90%;
+    padding: 20px 10px;
+  }
+  /* Override Slick's default margin to pull arrows inside the component */
+.slick-prev {
+  left: -9px; /* Position the left arrow inside the content */
+}
 
-
+.slick-next {
+  right: -9px; /* Position the right arrow inside the content */
+}
+}

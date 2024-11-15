@@ -96,3 +96,17 @@
 .blog-items-preview .blog-link:hover {
   color: white; /* Keep text color white on hover */
 }
+@media (max-width: 768px){
+  .blog-items-preview .slick-track{
+    max-height: 540px;
+  }
+  .blog-items-preview .animated-title{
+    font-size: 28px;
+  }
+}
+@media (max-width: 650px){
+  .blog-items-container-inner{
+    justify-self: center;
+    width: 80%;
+  }
+}

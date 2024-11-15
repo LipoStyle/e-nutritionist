@@ -67,7 +67,7 @@ const BlogItemsPreview = () => {
         },
       },
       {
-        breakpoint: 500,
+        breakpoint: 650,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,

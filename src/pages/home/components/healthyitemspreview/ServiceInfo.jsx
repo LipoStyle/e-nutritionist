@@ -23,7 +23,7 @@ function ServiceInfo() {
         }
       },
       {
-        breakpoint: 500,
+        breakpoint: 680,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1

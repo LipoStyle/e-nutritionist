@@ -135,3 +135,25 @@
     width: 320px;
   }
 }
+@media (max-width: 768px) {
+  .greeting-section{
+    padding-top: 120px;
+  }
+}
+@media (max-width: 500px) {
+  .text-content{
+    padding: 0;
+  }
+  .text-content h1{
+    padding-top: 12px;
+    font-size: 24px;
+  }
+  .text-content p{
+    width: 100%;
+  }
+  .image-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
