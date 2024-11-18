@@ -1,0 +1,123 @@
+/* styling blog component  container*/
+.blog-page{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+
+}
+/* styling blog main title */
+.blog-page-title{
+  color: #313a43;
+  font-size: 35px;
+  letter-spacing: 1px;
+}
+/* styling intro-outro label */
+.blog-page .in-out-label{
+  color: #2ecc71;
+  align-self: center;
+}
+/* styling section component */
+.blog-page section{
+  /* border: 2px solid black; */
+  padding: 12px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+.blog-page-section h2{
+  margin-left: -12px;
+  color: #313a43d5;
+}
+.blog-page p{
+  font-size: 14px;
+  color: #444444;
+}
+
+.blog-page ul{
+  padding-left: 20px;
+  list-style-type: none;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.blog-page ul li {
+  font-size: 14px;
+  color: #444444;
+}
+.blog-page ul li strong{
+  font-size: 16px;
+  font-weight: 900;
+  color: #59c58f;
+}
+
+.blog-page  .descriptive-list li strong{
+  color: #3498db;
+}
+
+
+
+/* you have to read this later  */
+/* External Link Styling */
+.external-link {
+  color: #3498db; /* Blue */
+  text-decoration: none;
+}
+
+.external-link:hover {
+  text-decoration: underline;
+}
+
+.blog-post-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 auto;
+  max-width: 1420px;
+  padding: 0px 20px 20px 20px;
+}
+
+.cookies-policy {
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.other-post {
+  position: sticky;
+  top: 100px;
+  margin-top: 100px;
+  padding: 9px;
+  border: 1px solid #bbb;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 6px 10px rgba(21, 83, 31, 0.39); /* Enhanced shadow on hover */
+}
+
+
+/* image background with title of the blog post */
+.image-background{
+  position: relative;
+  padding-top: 210px;
+  background-image: url("../../../images/home-images/hero-section/background.jpg");
+  height: 30vh;
+
+  position: relative;
+  z-index: 2; /* Above the overlay */
+  color: #fff;
+  text-align: center;
+  
+}
+.image-background::before{
+  content: ''; /* Required for pseudo-elements */
+  position: absolute; /* Positions the overlay relative to the container */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30vh;
+  background-color: rgba(2, 32, 70, 0.329); /* Black overlay with 50% opacity */
+  z-index: -1; /* Ensures the overlay appears above the background */
+}

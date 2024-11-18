@@ -1,0 +1,43 @@
+.share-post {
+  margin-left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+
+  border-bottom: 3px double #2ecc709a;
+  /* border-left: 3px dotted #2ecc709a; */
+  padding: 12px;
+}
+
+.share-text {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 10px;
+  color: #333;
+}
+
+.share-icons {
+  display: flex;
+  gap: 8px;
+}
+
+.share-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 18px;
+  color: #fff;
+  background-color: #2ecc71;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.share-icon:hover {
+  background-color: #3498db;
+  color: #fff;
+  transform: scale(1.1);
+}

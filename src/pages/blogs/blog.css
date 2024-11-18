@@ -1,158 +1,98 @@
-/* Blogs Section with Background Image */
-.blogs {
-  background-image: url("./../../images/blogimages/blogBackground.jpg");
-  background-size: cover; /* Ensures the image covers the section */
-  background-position: center; /* Centers the background image */
-}
-
-/* Title of Blogs Section */
-.blogs .title {
-  margin: 0 auto;
-  padding: 15px;
-  color: #fff;
-  background-color: rgba(89, 196, 143, 0.8); /* Semi-transparent background */
-  text-align: center;
-  font-size: clamp(2rem, 5vw, 3rem); /* Responsive font size */
-  font-family: 'Poppins', sans-serif; /* Modern font */
-}
-
-/* Blog Container */
-.blog-container {
-  margin: 0 auto;
-  padding: 10px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr; /* Responsive grid */
+.blogs{
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  gap: 20px; /* More space between items */
-  width: 90vw; /* Container width */
-  max-width: 1200px; /* Max width for larger screens */
-}
+  align-items: center;
+  gap: 21px;
+  padding-bottom: 20px;
 
-/* Individual Blog Post */
-.blog {
-  list-style: none;
-  background-color: #fff;
+  background: linear-gradient(to bottom, #a7d3b8, #d9eee2); /* Top to bottom gradient */
+}
+/* styling the blog container */
+.blogs-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: center;
+  gap: 12px;
+
+  max-width: 1420px;
+}
+/* Blog Card Styling */
+.blog-item {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
-  border: 2px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  gap: 16px;
+  background-color: #ffffff; /* Clean white background */
+  border: 1px solid #e0e0e0; /* Subtle border for definition */
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a card effect */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+  overflow: hidden;
 }
 
-/* Blog Hover Effect */
-.blog:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Lifted on hover */
+/* Hover Effect */
+.blog-item:hover {
+  transform: translateY(-5px); /* Slight lift on hover */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
 }
-
-/* Blog Title */
-.blog-title {
-  width: 90%;
-  margin: 0 auto;
-  color: #0b2c52;
-  font-size: clamp(1rem, 2.5vw, 1.5rem); /* Responsive font size */
-  font-family: 'Poppins', sans-serif; /* Modern font */
+/* styling the blog image section */
+.blog-image-section{
+  position: relative; /* Establish a positioning context for absolute children */
+  display: inline-block; /* Optional: Adjust as per layout */
+  width: 100%; /* Ensure it fits your container */
+  height: auto; /* Maintain aspect ratio */
+  overflow: hidden; /* Hide anything that might overflow */
 }
-
-/* Blog Description */
-.blog-description {
-  width: 95%;
-  margin: 0 auto;
-  text-align: center;
-  color: #474444;
-  font-style: italic;
-  font-size: clamp(0.85rem, 2vw, 1rem); /* Responsive font size */
-}
-
-/* Blog Button/Link */
-.blog-a {
-  margin: 0 0 10px 0;
-  padding: 10px 20px;
-  font-size: clamp(0.9rem, 2vw, 1rem); /* Responsive font size */
-  text-decoration: none;
-  text-align: center;
-  background-color: rgba(89, 196, 143, 0.8);
-  color: #fff;
-  border-radius: 20px;
-  transition: all 0.3s ease;
-}
-
-/* Blog Button Hover */
-.blog-a:hover {
-  background-color: #59c48f;
-  transform: translateY(-3px); /* Button hover lift */
-}
-
-/* Blog Image Styling */
-.blog-image {
+.blog-item .blog-image{
   width: 100%;
-  height: 210px;
-  object-fit: cover; /* Ensures the image stays centered and cropped properly */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effects */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow to give depth */
+  height: 30vh;
+  object-fit: cover;
+  transition: transform 0.8s ease-in-out; 
 }
-
-/* Responsive Styles for Tablets */
-@media screen and (max-width: 1040px) {
-  .blog-container{
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 10px 0;
-  }
-  .blog-title {
-    font-size: clamp(0.9rem, 2.5vw, 1.25rem);
-  }
-
-  .blog-description {
-    font-size: clamp(0.8rem, 2vw, 0.95rem);
-  }
-
-  .blog-a {
-    font-size: clamp(0.8rem, 2vw, 0.9rem);
-  }
+.blog-item .blog-image:hover{
+  transform: scale(1.2);
 }
-
-/* Responsive Styles for Tablets and Small Devices */
-@media screen and (max-width: 768px) {
-  .blog-image {
-    height: 150px;
-  }
-
-  .blog-title {
-    font-size: clamp(0.85rem, 2vw, 1.1rem);
-  }
-
-  .blog-description {
-    font-size: clamp(0.75rem, 2vw, 0.9rem);
-  }
-
-  .blog-a {
-    padding: 8px 12px;
-    font-size: clamp(0.8rem, 2vw, 0.9rem);
-  }
+/* Styling for the date paragraph */
+.date-of-published {
+  position: absolute;
+  top: 0;
+  padding: 8px 25px;
+  background: #2ecc70e8;
+  margin-right: 10px;
+  font-weight: bold;
+  right: 8px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  color: white;
 }
+.blog-item .blog-title{
+  padding: 0px 10px;
+  color: #2ecc71;
+  font-size: 18px;
+  
+}
+.blog-item .blog-description{
+  padding: 0px 10px;
+  font-size: 13px;
+  color: #444444cb;
+  line-height: 1.5; /* Improve readability */
+  letter-spacing: 1px;
+}
+.blog-item .read-more-button{
+  padding: 0px 10px;
+  text-decoration: none;
+  color: #2ecc71;
 
-/* Responsive Styles for Mobile Devices */
-@media screen and (max-width: 420px) {
+  transition: all .6s ease-in-out;
+}
+.blog-item .read-more-button:hover{
+  color: #000;
+}
+.blog-item .share-post{
+  padding-left: 10px;
+  padding-right: 10px;
 
-  .blog-image {
-    height: 120px;
-  }
-
-  .blog-title {
-    font-size: clamp(0.8rem, 2vw, 1rem);
-  }
-
-  .blog-description {
-    font-size: clamp(0.7rem, 2vw, 0.85rem);
-  }
-
-  .blog-a {
-    padding: 6px 10px;
-    font-size: clamp(0.75rem, 2vw, 0.85rem);
-  }
+  border-bottom: 0;
 }

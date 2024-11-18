@@ -53,11 +53,8 @@ const About = () => {
       <h1 className="name-of-doctor">
         Thymios Arvanitis <b className="proficient">Nutritionist</b>
       </h1>
-      <h2 className="tag-quote">
-        I'm Thymios Arvanitis, and I’m here to guide you on a journey to better
-        health, whether it's through personalized nutrition, sports performance,
-        or transformative lifestyle changes.
-      </h2>
+      <h3 className="tag-quote">Hello, I’m Thymios Arvanitis, a dedicated dietitian specializing in personalized nutrition, sports performance, and transformative lifestyle changes. My mission is to guide you on a journey toward better health, equipping you with the tools to achieve your goals through tailored plans and expert support.
+      </h3>
       {loading ? (
         <p>Loading image...</p>
       ) : error ? (
@@ -75,6 +72,11 @@ const About = () => {
           handlePoint={() => handlePointClick(information.id)}
         />
       ))}
+      <div className="invitation-quote">
+        <h3>Let’s embark on this transformative journey together and unlock your full potential!</h3>
+        <div className=""> edw kapoia social icon isws?</div>
+        <a href="#" className="">Go to contact or book now?</a>
+      </div>
     </div>
   );
 };
