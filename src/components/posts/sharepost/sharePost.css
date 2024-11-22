@@ -1,5 +1,4 @@
 .share-post {
-  margin-left: 12px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -26,18 +25,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 5px;
   font-size: 18px;
-  color: #fff;
-  background-color: #2ecc71;
+  color: #2ecc709a;
+  background-color: #313a43e6;
   transition: all 0.3s ease;
   text-decoration: none;
 }
 
 .share-icon:hover {
-  background-color: #3498db;
-  color: #fff;
+  background-color: #2ecc709a;
+  color: #313a43e6;
   transform: scale(1.1);
 }
