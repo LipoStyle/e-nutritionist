@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   gap: 21px;
-  padding-bottom: 20px;
+  padding: 20px;
 
   background: linear-gradient(to bottom, #a7d3b8, #d9eee2); /* Top to bottom gradient */
 }
@@ -24,9 +24,8 @@
   justify-content: space-between;
   gap: 16px;
   background-color: #ffffff; /* Clean white background */
-  border: 1px solid #e0e0e0; /* Subtle border for definition */
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+  /* border: 1px solid #e0e0e0; Subtle border for definition */
+  border-radius: 6px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for a card effect */
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
   overflow: hidden;
@@ -95,4 +94,79 @@
   padding-right: 10px;
 
   border-bottom: 0;
+}
+
+@media (max-width:1040px) {
+  .blogs{
+    padding: 12px;
+  }
+  .blogs-container{
+    max-width: 768px;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  .blog-item{
+    gap: 12px;
+  }
+  .blog-item .blog-description{
+    font-size: 12px;
+  }
+}
+@media (max-width:768px) {
+  .blogs{
+    padding: 12px;
+  }
+  .blogs-container{
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0px;
+  }
+  .blog-item{
+    width: 90%;
+    justify-self: center;
+    gap: 9px;
+  }
+  .blog-item .blog-image{
+    height: 21vh;
+  }
+  .date-of-published {
+    padding: 6px 18px;
+    font-size: 14px;
+  }
+  .blog-item .blog-title{
+    font-size: 16px;
+  }
+  .blog-item .blog-description{
+    font-size: 12px;
+    letter-spacing: 0px;
+  }
+  .blogs-container .blog-item .share-post .share-icons .share-icon{
+    width: 31px;
+    height: 31px;
+  }
+}
+@media (max-width:560px) {
+  .blogs-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    padding: 0px;
+  }
+  .blog-item{
+    gap: 18px;
+  }
+  .blog-item .blog-image{
+    height: 27vh;
+  }
+  .date-of-published {
+    padding: 6px 18px;
+    font-size: 14px;
+  }
+  .blog-item .blog-title{
+    font-size: 18px;
+  }
+  .blog-item .blog-description{
+    letter-spacing: 1px;
+  }
 }
