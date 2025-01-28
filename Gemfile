@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 7.0.0" # Rails 7, adjust if you specifically want Rails 8
-gem "pg", "~> 1.2"
+gem "pg", "~> 1.4"
 gem "puma", ">= 5.0"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "solid_cache"
