@@ -1,0 +1,125 @@
+/* 🌟 GENERAL STYLING */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* 🔗 Navbar Links */
+.navbar a {
+  position: relative;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+/* ✨ Underline Animation */
+.navbar a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 3px;
+  width: 0;
+  transition: width 0.3s ease-in-out;
+}
+
+.navbar a:hover::after,
+.navbar a.active::after {
+  width: 100%;
+}
+
+/* 🌈 COLOR STYLING */
+/* 🌞 Light Mode */
+.light-mode .navbar a {
+  color: var(--color-light);
+}
+.light-mode .navbar a::after {
+  background-color: var(--color-dark);
+}
+.light-mode .navbar a:hover {
+  color: var(--color-dark);
+}
+
+/* 🌙 Dark Mode */
+.dark-mode .navbar a {
+  color: var(--color-white);
+}
+.dark-mode .navbar a::after {
+  background-color: var(--color-accent);
+}
+.dark-mode .navbar a:hover {
+  color: var(--color-light);
+}
+
+/* 📱 MOBILE DESIGN */
+@media (max-width: 840px) {
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 220px;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 24px 20px;
+    gap: 36px;
+    transform: translateX(-100%);
+    opacity: 0;
+    visibility: hidden;
+    background-color: var(--color-dark-transparent);
+    z-index: 1000;
+  }
+
+  .navbar.active {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .light-mode .navbar {
+    background-color: var(--color-secondary-transparent);
+  }
+
+  .dark-mode .navbar {
+    background-color: var(--color-dark-transparent);
+  }
+
+  /* 👆 Utilities on top of nav (Dark Mode & Language Picker) */
+  .navbar-utilities {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+    width: 100%;
+  }
+
+  /* 📌 Navigation Links */
+  .navbar-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .navbar a {
+    font-size: 1.1rem;
+  }
+}
+
+/* 🖥️ DESKTOP DESIGN */
+@media (min-width: 841px) {
+  .navbar-utilities {
+    display: none;
+  }
+
+  .navbar-links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+  }
+}

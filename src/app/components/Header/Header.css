@@ -1,0 +1,94 @@
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  transition: top 0.3s ease;
+  color: var(--color-white);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Scroll hide effect */
+.header.hidden {
+  top: -100px;
+}
+
+/* 🔹 Top Bar */
+.header-top {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  padding: 0.8rem 2rem;
+  background-color: var(--color-soft-white);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background-color 0.3s ease;
+}
+
+.header-features {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* 🔻 Bottom (Logo Centered) */
+.header-bottom {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  padding: 5px 12px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background-color 0.3s ease;
+}
+
+/* CTA Button in header */
+.header-top .cta-button {
+  margin-left: 1rem;
+}
+
+/* 🌞 Light Mode */
+.light-mode .header-top {
+  background-color: var(--color-secondary-transparent);
+}
+
+.light-mode .header-bottom {
+  background-color: var(--color-secondary-transparent);
+}
+
+/* 🌚 Dark Mode */
+.dark-mode .header-top {
+  background-color: var(--color-dark-transparent);
+}
+
+.dark-mode .header-bottom {
+  background-color: var(--color-dark-transparent);
+}
+
+/* 📱 Responsive */
+@media (max-width: 840px) {
+  .header-top {
+    padding: 0.6rem 1rem;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .header-bottom {
+    padding: 0.3rem 0.8rem;
+  }
+
+  .header-top .cta-button {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}

@@ -1,0 +1,51 @@
+.language-picker {
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 20px;
+  border: 1.5px solid var(--color-accent);
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  outline: none;
+}
+
+/* Light mode support */
+.light-mode .language-picker {
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  border: 1.5px solid var(--color-secondary);
+}
+
+/* Hover & focus */
+.language-picker:hover,
+.language-picker:focus {
+  background-color: var(--color-secondary-transparent);
+  color: var(--color-white);
+  border-color: var(--color-accent);
+}
+
+/* Light mode hover */
+.light-mode .language-picker:hover,
+.light-mode .language-picker:focus {
+  background-color: var(--color-light-gray);
+  color: var(--color-dark);
+  border-color: var(--color-accent);
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+  .language-picker {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .language-picker {
+    font-size: 0.75rem;
+    padding: 4px 6px;
+  }
+}

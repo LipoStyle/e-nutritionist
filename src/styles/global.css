@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap');
+
+/* 🌍 Root Variables */
+:root {
+  /* 🌑 Core Palette */
+  --color-dark: #16232a;
+  --color-accent: #ff5b04;
+  --color-secondary: #075056;
+  --color-light: #e4eef0;
+
+  /* 🧊 Transparency Variants */
+  --color-dark-transparent: rgba(22, 35, 42, 0.95);
+  --color-secondary-transparent: rgba(7, 80, 86, 0.85);
+  --color-light-transparent: rgba(228, 238, 240, 0.95);
+
+  /* ⚠️ Status / Utility */
+  --color-success: #2ecc71;
+  --color-danger: #ff3b3b;
+
+  /* 🎨 Grayscale & Effects */
+  --color-white: #ffffff;
+  --color-light-gray: #dcdcdc;
+  --color-dark-gray: #999999;
+  --color-soft-white: rgba(255, 255, 255, 0.05);
+  --color-soft-white-hover: rgba(255, 255, 255, 0.2);
+  --color-soft-white-blur: rgba(255, 255, 255, 0.5);
+  --color-overlay: rgba(22, 35, 42, 0.8);
+
+  /* 🔤 Fonts */
+  --font-primary: "Josefin Sans", sans-serif;
+  --font-secondary: "Winky Sans", sans-serif;
+}
+
+/* 🌐 Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 📄 Page Base */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: var(--font-primary);
+  font-optical-sizing: auto;
+  font-style: normal;
+  line-height: 1.5;
+  background-color: var(--color-dark);
+  color: var(--color-light);
+}
+
+/* ✍️ Typography */
+body {
+  font-family: var(--font-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-secondary);
+  color: var(--color-light);
+}
