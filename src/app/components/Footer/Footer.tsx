@@ -1,3 +1,4 @@
+import LogoSection from '../Header/LogoSection/LogoSection';
 import './Footer.css';
 import footerTranslations from './translations';
 
@@ -13,6 +14,7 @@ const Footer = ({ lang }: FooterProps) => {
 
   return (
     <footer className="footer" role="contentinfo">
+      <LogoSection />
       <div className="footer__container">
         <p className="footer__copy">
           © {year} E-Nutritionist — {t.rights}

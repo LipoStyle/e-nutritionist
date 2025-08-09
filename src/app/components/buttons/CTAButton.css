@@ -23,15 +23,15 @@
 
 /* 🌞 Light Mode Overrides */
 .light-mode .cta-button {
-  background-color: var(--color-secondary);
-  color: var(--color-light);
+  background-color: var(--color-light);
+  color: var(--color-secondary);
   border-color: transparent;
 }
 
 .light-mode .cta-button:hover {
-  background-color: var(--color-light);
-  color: var(--color-secondary);
-  border-color: transparent;
+  background-color: transparent;
+  color: var(--color-light);
+  border-color:  var(--color-light);
 
 }
 

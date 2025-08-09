@@ -1,29 +1,12 @@
-/* Dynamic theming via CSS vars tied to your root palette */
-:root {
-  --footer-bg: var(--color-dark);
-  --footer-text: var(--color-light);
-  --footer-border: color-mix(in oklab, var(--color-accent) 70%, transparent);
-}
-
-/* If your DarkModeToggle toggles `.light-mode` / `.dark-mode` on <html> */
-.light-mode {
-  --footer-bg: var(--color-light);
-  --footer-text: var(--color-dark);
-  --footer-border: color-mix(in oklab, var(--color-secondary) 30%, transparent);
-}
-
 .footer {
-  height: 300px;                     /* fixed as requested */
-  background: var(--footer-bg);
-  color: var(--footer-text);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 0 16px;
   text-align: center;
-
+  gap: 6px;
   border-top: 2px solid var(--footer-border);
-  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.08);
 }
 
 .footer__container {
@@ -41,9 +24,13 @@
   /* subtle responsive rhythm */
   padding: 0 8px;
 }
-
-/* Small hover flourish for testing deployments (optional) */
-.footer:hover {
-  border-top-color: var(--color-accent);
-  transition: border-top-color 200ms ease;
+/* light mode styling */
+.light-mode .footer{
+  background-color: var(--color-secondary);
 }
+/* dark mode styling */
+.dark-mode .footer{
+  background-color: var(--color-dark);
+}
+/* responsiveness styling */
+/* animation styling */
