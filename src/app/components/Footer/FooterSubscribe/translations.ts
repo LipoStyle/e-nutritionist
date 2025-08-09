@@ -1,7 +1,7 @@
 // src/app/components/Footer/FooterSubscribe/translations.ts
 export type Lang = 'en' | 'es' | 'el';
 
-export interface FooterSubscribeTranslation {
+interface FooterSubscribeTranslation {
   title: string;
   subtitle: string;
   placeholder: string;
@@ -37,4 +37,5 @@ const t: Record<Lang, FooterSubscribeTranslation> = {
   },
 };
 
+export type { FooterSubscribeTranslation };
 export default t;

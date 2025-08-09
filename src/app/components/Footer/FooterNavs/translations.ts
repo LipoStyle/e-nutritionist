@@ -1,35 +1,43 @@
 // src/app/components/Footer/FooterNavs/translations.ts
-export type Lang = 'en' | 'es' | 'el';
+type Lang = 'en' | 'es' | 'el';
 
-export interface FooterNavsTranslation {
-  titles: {
-    policies: string;
-    pages: string;
-    contact: string;
-  };
-  policies: {
-    terms: string;
-    privacy: string;
-    cookies: string;
-  };
-  pages: {
-    services: string;
-    blogs: string;
-    recipes: string;
-    about: string;
-    contact: string;
-  };
-  contact: {
-    emailLabel: string;
-    phoneLabel: string;
-    addressLabel: string;
-    email: string;
-    phone: string;
-    address: string;
-  };
+interface FooterNavTitles {
+  policies: string;
+  pages: string;
+  contact: string;
 }
 
-const t: Record<Lang, FooterNavsTranslation> = {
+interface FooterNavPolicies {
+  terms: string;
+  privacy: string;
+  cookies: string;
+}
+
+interface FooterNavPages {
+  services: string;
+  blogs: string;
+  recipes: string;
+  about: string;
+  contact: string;
+}
+
+interface FooterNavContact {
+  emailLabel: string;
+  phoneLabel: string;
+  addressLabel: string;
+  email: string;
+  phone: string;
+  address: string;
+}
+
+interface FooterNavTranslation {
+  titles: FooterNavTitles;
+  policies: FooterNavPolicies;
+  pages: FooterNavPages;
+  contact: FooterNavContact;
+}
+
+const t: Record<Lang, FooterNavTranslation> = {
   en: {
     titles: { policies: 'Policies', pages: 'Pages', contact: 'Contact Info' },
     policies: {
@@ -101,4 +109,5 @@ const t: Record<Lang, FooterNavsTranslation> = {
   },
 };
 
+export type { Lang, FooterNavTranslation };
 export default t;
