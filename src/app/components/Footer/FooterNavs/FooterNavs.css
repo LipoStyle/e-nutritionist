@@ -1,0 +1,132 @@
+/* ----------------------------------------------
+   styling of component
+---------------------------------------------- */
+.footer-navs {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  padding: 18px 20px;
+  border-radius: 18px;
+
+  /* panel that adapts to theme */
+  background: color-mix(in oklab, var(--color-dark) 85%, transparent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  transition: background-color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.footer-navs__col {
+  text-align: center;
+}
+
+.footer-navs__title {
+  font-family: var(--font-secondary);
+  font-weight: 700;
+  font-size: 1.35rem;
+  margin-bottom: 14px;
+  display: inline-block;
+  position: relative;
+  color: var(--color-light);
+  text-underline-offset: 9px;
+}
+
+
+/* underline animation for titles */
+
+
+.footer-list {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.footer-link {
+  color: var(--color-light);
+  text-decoration: none;
+  font-weight: 600;
+  opacity: 0.95;
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+/* only color change on hover */
+.footer-link:hover,
+.footer-link:focus-visible {
+  color: var(--color-accent);
+  outline: none;
+}
+
+.footer-meta {
+  color: var(--color-light);
+  font-weight: 600;
+}
+.footer-meta small {
+  opacity: 0.8;
+  margin-right: 4px;
+}
+
+/* ----------------------------------------------
+   light mode styling
+---------------------------------------------- */
+.light-mode .footer-navs {
+  background: color-mix(in oklab, var(--color-dark) 10%, var(--color-light));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+.light-mode .footer-navs__title {
+  color: var(--color-dark);
+  text-decoration:2px underline var(--color-dark);
+}
+.light-mode .footer-link,
+.light-mode .footer-meta {
+  color: var(--color-dark);
+}
+.light-mode .footer-link:hover{
+  color: var(--color-accent)
+}
+/* ----------------------------------------------
+   dark mode styling
+---------------------------------------------- */
+.dark-mode .footer-navs {
+  background: color-mix(in oklab, var(--color-light) 8%, var(--color-dark));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+.dark-mode .footer-navs__title {
+  color: var(--color-light);
+  text-decoration: 2px underline var(--color-accent);
+}
+.dark-mode .footer-link,
+.dark-mode .footer-meta {
+  color: var(--color-light);
+}
+.dark-mode .footer-link:hover{
+  color: var(--color-accent)
+}
+
+/* ----------------------------------------------
+   responsiveness styling
+---------------------------------------------- */
+@media (max-width: 900px) {
+  .footer-navs {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    text-align: center;
+    padding: 16px 14px;
+    border-radius: 14px;
+  }
+  .footer-navs__title {
+    font-size: 1.2rem;
+  }
+}
+
+/* ----------------------------------------------
+   animation styling
+---------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .footer-navs {
+    animation: footerNavsFade 0.35s ease both;
+  }
+  @keyframes footerNavsFade {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}

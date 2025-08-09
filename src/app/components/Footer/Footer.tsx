@@ -1,5 +1,6 @@
 import LogoSection from '../Header/LogoSection/LogoSection';
 import './Footer.css';
+import FooterNavs from './FooterNavs/FooterNavs';
 import FooterSocials from './FooterSocials/FooterSocials';
 import footerTranslations from './translations';
 
@@ -15,6 +16,7 @@ const Footer = ({ lang }: FooterProps) => {
 
   return (
     <footer className="footer" role="contentinfo">
+      <FooterNavs lang={lang} />
        <FooterSocials />
       <LogoSection />
       <div className="footer__container">
