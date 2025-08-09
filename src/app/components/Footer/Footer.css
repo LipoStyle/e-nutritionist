@@ -1,84 +1,49 @@
-.footer {
-  background-color: var(--footer-bg);
-  color: var(--footer-text);
-  padding: 4rem 2rem 2rem;
-  font-family: var(--font-main);
-  border-top: 1px solid var(--border-color);
+/* Dynamic theming via CSS vars tied to your root palette */
+:root {
+  --footer-bg: var(--color-dark);
+  --footer-text: var(--color-light);
+  --footer-border: color-mix(in oklab, var(--color-accent) 70%, transparent);
 }
 
-.footer-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
+/* If your DarkModeToggle toggles `.light-mode` / `.dark-mode` on <html> */
+.light-mode {
+  --footer-bg: var(--color-light);
+  --footer-text: var(--color-dark);
+  --footer-border: color-mix(in oklab, var(--color-secondary) 30%, transparent);
+}
+
+.footer {
+  height: 300px;                     /* fixed as requested */
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  text-align: center;
+
+  border-top: 2px solid var(--footer-border);
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.footer__container {
+  width: 100%;
+  max-width: 1200px;                 /* professional, centered layout */
   margin: 0 auto;
 }
 
-.footer-newsletter h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+.footer__copy {
+  font-size: 0.95rem;
+  letter-spacing: 0.25px;
+  opacity: 0.9;
+  line-height: 1.4;
+  user-select: none;
+  /* subtle responsive rhythm */
+  padding: 0 8px;
 }
 
-.footer-newsletter p {
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  color: var(--footer-text-secondary);
-}
-
-.newsletter-form {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.newsletter-form input {
-  flex: 1;
-  padding: 0.7rem 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  font-size: 1rem;
-  background-color: var(--input-bg);
-  color: var(--input-text);
-}
-
-.newsletter-form button {
-  background-color: var(--main-color);
-  color: #fff;
-  border: none;
-  padding: 0.7rem 1.2rem;
-  font-weight: 600;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.newsletter-form button:hover {
-  background-color: var(--main-color-dark);
-}
-
-.footer-bottom {
-  text-align: center;
-  margin-top: 3rem;
-  font-size: 0.9rem;
-  color: var(--footer-text-secondary);
-}
-
-.footer-bottom span {
-  display: block;
-  margin: 0.3rem 0;
-}
-
-.social-icons {
-  margin-top: 1rem;
-}
-
-.social-icons a {
-  color: var(--footer-text);
-  font-size: 1.4rem;
-  margin: 0 0.5rem;
-  transition: color 0.3s ease;
-}
-
-.social-icons a:hover {
-  color: var(--main-color);
+/* Small hover flourish for testing deployments (optional) */
+.footer:hover {
+  border-top-color: var(--color-accent);
+  transition: border-top-color 200ms ease;
 }
