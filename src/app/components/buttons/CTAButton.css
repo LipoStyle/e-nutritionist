@@ -1,51 +1,61 @@
+/* 🌟 GENERAL STYLING (Functionality & Layout First) */
 .cta-button {
-  display: inline-block;
-  font-family: var(--font-primary);
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 10px 20px;
-  border-radius: 30px;
-  background-color: var(--color-accent);
-  color: var(--color-white);
-  border: 2px solid transparent;
-  text-align: center;
+  position: relative;
+  padding: 12px 20px;
   text-decoration: none;
-  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  font-family: var(--font-secondary, 'Poppins', sans-serif);
+  font-weight: bold;
+  border-radius: 5px;
+  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  z-index: 1;
   cursor: pointer;
 }
 
-/* 🔁 Hover */
-.cta-button:hover {
-  background-color: transparent;
-  color: var(--color-accent);
-  border: 2px solid var(--color-accent);
+/* 🔹 Pseudo-element for sliding background effect */
+.cta-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  transition: left 0.3s ease-in-out;
 }
 
-/* 🌞 Light Mode Overrides */
+.cta-button:hover::before {
+  left: 0;
+}
+
+/* =========================================================
+   🌟 COLOR STYLING — Light & Dark Modes
+   ========================================================= */
+
+/* 🔹 Light Mode */
 .light-mode .cta-button {
-  background-color: var(--color-light);
-  color: var(--color-secondary);
-  border-color: transparent;
+  background-color: var(--color-success);   /* orange */
+  color: var(--color-white);
+}
+
+.light-mode .cta-button::before {
+  background-color: var(--color-dark);   /* deep blue/green */
 }
 
 .light-mode .cta-button:hover {
-  background-color: transparent;
-  color: var(--color-light);
-  border-color:  var(--color-light);
-
+  color: var(--color-white);
 }
 
-/* 📱 Responsive Design */
-@media (max-width: 768px) {
-  .cta-button {
-    font-size: 0.9rem;
-    padding: 8px 16px;
-  }
+/* 🔹 Dark Mode */
+.dark-mode .cta-button {
+  background-color: var(--color-accent); /* teal */
+  color: var(--color-light);             /* soft background */
 }
 
-@media (max-width: 480px) {
-  .cta-button {
-    font-size: 0.85rem;
-    padding: 6px 14px;
-  }
+.dark-mode .cta-button::before {
+  background-color: var(--color-white);
+}
+
+.dark-mode .cta-button:hover {
+  color: var(--color-dark);
 }

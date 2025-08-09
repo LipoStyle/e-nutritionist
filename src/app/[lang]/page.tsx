@@ -7,6 +7,7 @@ export default async function HomePage({
 
   return (
     <main>
+      
       <h1>Home Page - Language: {lang}</h1>
       <p>Welcome to E-Nutritionist</p>
       <p>Welcome to E-Nutritionist</p>
