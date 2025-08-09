@@ -37,10 +37,10 @@
   color: var(--color-light);
 }
 .light-mode .navbar a::after {
-  background-color: var(--color-dark);
+  background-color: var(--color-success);
 }
 .light-mode .navbar a:hover {
-  color: var(--color-dark);
+  color: var(--color-success);
 }
 
 /* 🌙 Dark Mode */
@@ -51,7 +51,7 @@
   background-color: var(--color-accent);
 }
 .dark-mode .navbar a:hover {
-  color: var(--color-light);
+  color: var(--color-accent);
 }
 
 /* 📱 MOBILE DESIGN */
