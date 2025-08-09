@@ -1,7 +1,35 @@
 // src/app/components/Footer/FooterNavs/translations.ts
 type Lang = 'en' | 'es' | 'el';
 
-const t = {
+interface FooterNavsTranslation {
+  titles: {
+    policies: string;
+    pages: string;
+    contact: string;
+  };
+  policies: {
+    terms: string;
+    privacy: string;
+    cookies: string;
+  };
+  pages: {
+    services: string;
+    blogs: string;
+    recipes: string;
+    about: string;
+    contact: string;
+  };
+  contact: {
+    emailLabel: string;
+    phoneLabel: string;
+    addressLabel: string;
+    email: string;
+    phone: string;
+    address: string;
+  };
+}
+
+const t: Record<Lang, FooterNavsTranslation> = {
   en: {
     titles: { policies: 'Policies', pages: 'Pages', contact: 'Contact Info' },
     policies: {
@@ -20,7 +48,6 @@ const t = {
       emailLabel: 'Email',
       phoneLabel: 'Phone',
       addressLabel: 'Address',
-      // Values can be static or env-driven later
       email: 'thimiosarvanitis@gmail.com',
       phone: '+34613497305',
       address: 'Calle Cañete 18, Madrid, Spain',
@@ -72,7 +99,7 @@ const t = {
       address: 'Calle Cañete 18, Μαδρίτη, Ισπανία',
     },
   },
-} satisfies Record<Lang, any>;
+};
 
-export type { Lang };
+export type { Lang, FooterNavsTranslation };
 export default t;
