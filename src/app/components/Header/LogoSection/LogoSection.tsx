@@ -14,8 +14,6 @@ const LogoSection = () => {
             src={logo}
             alt="Logo"
             className="logo-img"
-            width={50}
-            height={50}
           />
           <div className="logo-text">
             <p className="author-name">Thymios Arvanitis</p>
