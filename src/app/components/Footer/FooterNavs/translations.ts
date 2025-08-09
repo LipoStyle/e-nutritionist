@@ -1,7 +1,7 @@
 // src/app/components/Footer/FooterNavs/translations.ts
-type Lang = 'en' | 'es' | 'el';
+export type Lang = 'en' | 'es' | 'el';
 
-interface FooterNavsTranslation {
+export interface FooterNavsTranslation {
   titles: {
     policies: string;
     pages: string;
@@ -101,5 +101,4 @@ const t: Record<Lang, FooterNavsTranslation> = {
   },
 };
 
-export type { Lang, FooterNavsTranslation };
 export default t;
