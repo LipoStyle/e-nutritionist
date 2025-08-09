@@ -1,0 +1,78 @@
+.footer-socials {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 18px;
+  border-radius: 18px;
+  /* Subtle panel look that adapts to theme */
+  background: color-mix(in oklab, var(--color-dark) 85%, transparent);
+}
+
+/* Icon button: rounded square, green tile, white icon (from your palette) */
+.social-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+
+  background: var(--color-secondary);
+  color: var(--color-light);
+
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  outline: none;
+}
+
+.social-btn i {
+  font-size: 1.05rem; /* FA icon size */
+  line-height: 1;
+}
+
+/* Hover/Focus states */
+.social-btn:hover,
+.social-btn:focus-visible {
+  transform: translateY(-3px);
+  background: var(--color-accent);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+
+/* Light mode panel tuning */
+.light-mode .footer-socials {
+  background: color-mix(in oklab, var(--color-dark) 10%, var(--color-light));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark mode panel tuning */
+.dark-mode .footer-socials {
+  background: color-mix(in oklab, var(--color-light) 8%, var(--color-dark));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .social-btn {
+    transition: background 0.2s ease;
+  }
+  .social-btn:hover,
+  .social-btn:focus-visible {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* Responsive tweak for tight screens */
+@media (max-width: 480px) {
+  .footer-socials {
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 14px;
+  }
+  .social-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 9px;
+  }
+}

@@ -2,16 +2,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end; /* Start filling from bottom to top */
   padding: 0 16px;
   text-align: center;
-  gap: 6px;
-  border-top: 2px solid var(--footer-border);
+  gap: 12px;
+  transition: background-color 0.3s ease; /* smooth mode switch */
 }
 
 .footer__container {
   width: 100%;
-  max-width: 1200px;                 /* professional, centered layout */
+  max-width: 1200px; /* professional, centered layout */
   margin: 0 auto;
 }
 
@@ -21,16 +21,23 @@
   opacity: 0.9;
   line-height: 1.4;
   user-select: none;
-  /* subtle responsive rhythm */
   padding: 0 8px;
 }
-/* light mode styling */
-.light-mode .footer{
+
+/* Light mode */
+.light-mode .footer {
   background-color: var(--color-secondary);
 }
-/* dark mode styling */
-.dark-mode .footer{
+
+/* Dark mode */
+.dark-mode .footer {
   background-color: var(--color-dark);
 }
-/* responsiveness styling */
-/* animation styling */
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .footer {
+    height: auto; /* allow content to dictate height for smaller devices */
+    padding: 20px 12px;
+  }
+}
