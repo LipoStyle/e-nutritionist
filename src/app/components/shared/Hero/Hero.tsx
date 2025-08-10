@@ -24,7 +24,7 @@ export default function Hero({
   description,
   message = 'Ready to start?',
   bookText = 'Book Now',
-  bookHref = '/booking',
+  bookHref,
   bgImage,
   overlayOpacity = 0.45,
   offsetHeader = true,
@@ -53,7 +53,7 @@ export default function Hero({
         </div>
       )}
 
-      {/* Overlay (fades via inline opacity) */}
+      {/* Overlay */}
       <div
         className="hero__overlay"
         style={{ opacity: overlayOpacity }}
@@ -67,19 +67,22 @@ export default function Hero({
           <p className="hero__description anim-fade-up-delayed">{description}</p>
         )}
 
-        {/* Column CTA: message above button */}
-        <div
-          className="hero__ctaColumn anim-fade-up-late"
-          role="group"
-          aria-label="Hero quick action"
-        >
-          {message && <span className="hero__message">{message}</span>}
-          <CTAButton
-            text={bookText}
-            link={bookHref}
-            ariaLabel={bookText}
-          />
-        </div>
+        {/* Column CTA: show only if message or button exists */}
+        {(message || bookHref) && (
+          <div
+            className="hero__ctaColumn anim-fade-up-late"
+            {...(bookHref ? { role: 'group', 'aria-label': 'Hero quick action' } : {})}
+          >
+            {message && <span className="hero__message">{message}</span>}
+            {bookHref && (
+              <CTAButton
+                text={bookText}
+                link={bookHref}
+                ariaLabel={bookText}
+              />
+            )}
+          </div>
+        )}
 
         {/* Scroll cue */}
         <div className="hero__scrollCue anim-fade-up-later" aria-hidden="true">

@@ -1,11 +1,11 @@
 import Hero from '@/app/components/shared/Hero/Hero';
-import { serviceHeroTranslations } from './translations';
+import { bookingHeroTranslations } from './translations';
 import { resolveLocale } from '../i18n/utils';
 
-export default async function ServicesPage({ params }: { params: Promise<{ lang: string }> }) {
+export default async function BookPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   const locale = resolveLocale(lang);
-  const t = serviceHeroTranslations[locale];
+  const t = bookingHeroTranslations[locale];
 
   return (
     <Hero
@@ -13,9 +13,8 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
       message={t.message}
       ariaLabel={t.ariaLabel}
       bookText={t.bookText}
-      bookHref={`/${locale}/book-consultation`}
-      bgImage="/assets/images/hero/services.jpg"
-      overlayOpacity={0.6}
+      bgImage="/assets/images/hero/book-consultation.jpg"
+      overlayOpacity={0.55}
       offsetHeader
       height="default"
     />
