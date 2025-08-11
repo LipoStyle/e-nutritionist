@@ -1,13 +1,13 @@
 // src/app/components/Footer/FooterSubscribe/translations.ts
-export type Lang = 'en' | 'es' | 'el';
+export type Lang = 'en' | 'es' | 'el'
 
 interface FooterSubscribeTranslation {
-  title: string;
-  subtitle: string;
-  placeholder: string;
-  button: string;
-  success: string;
-  error: string;
+  title: string
+  subtitle: string
+  placeholder: string
+  button: string
+  success: string
+  error: string
 }
 
 const t: Record<Lang, FooterSubscribeTranslation> = {
@@ -35,7 +35,7 @@ const t: Record<Lang, FooterSubscribeTranslation> = {
     success: 'Ευχαριστούμε για την εγγραφή! Ελέγξτε το email σας.',
     error: 'Παρακαλώ εισάγετε ένα έγκυρο email.',
   },
-};
+}
 
-export type { FooterSubscribeTranslation };
-export default t;
+export type { FooterSubscribeTranslation }
+export default t

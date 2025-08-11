@@ -1,15 +1,15 @@
-'use client';
+'use client'
 
-import t, { Lang } from '../translations';
+import t, { Lang } from '../translations'
 
-type Props = { lang: Lang };
+type Props = { lang: Lang }
 
 export default function ContactInfo({ lang }: Props) {
-  const tr = t[lang] ?? t.en;
+  const tr = t[lang] ?? t.en
 
-  const emailHref = `mailto:${tr.contact.email}`;
-  const phoneSanitized = tr.contact.phone.replace(/\s+/g, '');
-  const phoneHref = `tel:${phoneSanitized}`;
+  const emailHref = `mailto:${tr.contact.email}`
+  const phoneSanitized = tr.contact.phone.replace(/\s+/g, '')
+  const phoneHref = `tel:${phoneSanitized}`
 
   return (
     <ul className="footer-list" role="list">
@@ -37,10 +37,8 @@ export default function ContactInfo({ lang }: Props) {
 
       <li className="footer-meta" aria-label={`${tr.contact.addressLabel}: ${tr.contact.address}`}>
         <small>{tr.contact.addressLabel}:</small>{' '}
-        <address style={{ display: 'inline', fontStyle: 'normal' }}>
-          {tr.contact.address}
-        </address>
+        <address style={{ display: 'inline', fontStyle: 'normal' }}>{tr.contact.address}</address>
       </li>
     </ul>
-  );
+  )
 }

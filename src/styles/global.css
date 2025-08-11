@@ -27,8 +27,8 @@
   --color-overlay: rgba(22, 35, 42, 0.8);
 
   /* 🔤 Fonts */
-  --font-primary: "Josefin Sans", sans-serif;
-  --font-secondary: "Winky Sans", sans-serif;
+  --font-primary: 'Josefin Sans', sans-serif;
+  --font-secondary: 'Winky Sans', sans-serif;
 }
 
 /* 🌐 Base Reset */
@@ -57,7 +57,12 @@ body {
   font-family: var(--font-primary);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-secondary);
   color: var(--color-light);
 }

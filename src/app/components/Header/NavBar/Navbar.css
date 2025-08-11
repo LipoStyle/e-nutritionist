@@ -3,7 +3,9 @@
   display: flex;
   align-items: center;
   gap: 30px;
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
 }
 
 /* 🔗 Navbar Links */
@@ -17,7 +19,7 @@
 
 /* ✨ Underline Animation */
 .navbar a::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   bottom: -5px;

@@ -13,7 +13,10 @@
   /* panel that adapts to theme */
   background: color-mix(in oklab, var(--color-dark) 85%, transparent);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
-  transition: background-color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
 .footer-navs__col {
@@ -31,9 +34,7 @@
   text-underline-offset: 9px;
 }
 
-
 /* underline animation for titles */
-
 
 .footer-list {
   list-style: none;
@@ -46,7 +47,9 @@
   text-decoration: none;
   font-weight: 600;
   opacity: 0.95;
-  transition: color 0.25s ease, opacity 0.25s ease;
+  transition:
+    color 0.25s ease,
+    opacity 0.25s ease;
 }
 
 /* only color change on hover */
@@ -74,14 +77,14 @@
 }
 .light-mode .footer-navs__title {
   color: var(--color-dark);
-  text-decoration:2px underline var(--color-dark);
+  text-decoration: 2px underline var(--color-dark);
 }
 .light-mode .footer-link,
 .light-mode .footer-meta {
   color: var(--color-dark);
 }
-.light-mode .footer-link:hover{
-  color: var(--color-accent)
+.light-mode .footer-link:hover {
+  color: var(--color-accent);
 }
 /* ----------------------------------------------
    dark mode styling
@@ -98,8 +101,8 @@
 .dark-mode .footer-meta {
   color: var(--color-light);
 }
-.dark-mode .footer-link:hover{
-  color: var(--color-accent)
+.dark-mode .footer-link:hover {
+  color: var(--color-accent);
 }
 
 /* ----------------------------------------------
@@ -126,7 +129,13 @@
     animation: footerNavsFade 0.35s ease both;
   }
   @keyframes footerNavsFade {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }

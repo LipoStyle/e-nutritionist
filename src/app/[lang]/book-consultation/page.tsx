@@ -1,11 +1,12 @@
-import Hero from '@/app/components/shared/Hero/Hero';
-import { bookingHeroTranslations } from './translations';
-import { resolveLocale } from '../i18n/utils';
+import Hero from '@/app/components/shared/Hero/Hero'
+
+import { bookingHeroTranslations } from './translations'
+import { resolveLocale } from '../i18n/utils'
 
 export default async function BookPage({ params }: { params: Promise<{ lang: string }> }) {
-  const { lang } = await params;
-  const locale = resolveLocale(lang);
-  const t = bookingHeroTranslations[locale];
+  const { lang } = await params
+  const locale = resolveLocale(lang)
+  const t = bookingHeroTranslations[locale]
 
   return (
     <Hero
@@ -18,5 +19,5 @@ export default async function BookPage({ params }: { params: Promise<{ lang: str
       offsetHeader
       height="default"
     />
-  );
+  )
 }

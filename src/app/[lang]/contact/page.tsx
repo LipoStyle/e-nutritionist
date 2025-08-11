@@ -1,11 +1,12 @@
-import Hero from '@/app/components/shared/Hero/Hero';
-import { contactHeroTranslations } from './translations';
-import { resolveLocale } from '../i18n/utils';
+import Hero from '@/app/components/shared/Hero/Hero'
+
+import { contactHeroTranslations } from './translations'
+import { resolveLocale } from '../i18n/utils'
 
 export default async function ContactPage({ params }: { params: Promise<{ lang: string }> }) {
-  const { lang } = await params;
-  const locale = resolveLocale(lang);
-  const t = contactHeroTranslations[locale];
+  const { lang } = await params
+  const locale = resolveLocale(lang)
+  const t = contactHeroTranslations[locale]
 
   return (
     <Hero
@@ -19,5 +20,5 @@ export default async function ContactPage({ params }: { params: Promise<{ lang: 
       offsetHeader
       height="default"
     />
-  );
+  )
 }

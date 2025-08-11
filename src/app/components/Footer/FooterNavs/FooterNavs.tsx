@@ -1,15 +1,15 @@
-'use client';
+'use client'
 
-import './FooterNavs.css';
-import t, { Lang } from './translations';
-import PoliciesLinks from './PoliciesLinks/PoliciesLinks';
-import SiteLinks from './SiteLinks/SiteLinks';
-import ContactInfo from './ContactInfo/ContactInfo';
+import './FooterNavs.css'
+import ContactInfo from './ContactInfo/ContactInfo'
+import PoliciesLinks from './PoliciesLinks/PoliciesLinks'
+import SiteLinks from './SiteLinks/SiteLinks'
+import t, { Lang } from './translations'
 
-type Props = { lang: Lang };
+type Props = { lang: Lang }
 
 export default function FooterNavs({ lang }: Props) {
-  const tr = t[lang] ?? t.en;
+  const tr = t[lang] ?? t.en
 
   return (
     <section className="footer-navs" aria-label="Footer navigation">
@@ -28,5 +28,5 @@ export default function FooterNavs({ lang }: Props) {
         <ContactInfo lang={lang} />
       </div>
     </section>
-  );
+  )
 }

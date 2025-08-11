@@ -13,14 +13,7 @@ const compat = new FlatCompat({
 export default [
   // Ignore build artifacts
   {
-    ignores: [
-      '.next/**',
-      'out/**',
-      'dist/**',
-      'coverage/**',
-      'node_modules/**',
-      '**/*.min.*',
-    ],
+    ignores: ['.next/**', 'out/**', 'dist/**', 'coverage/**', 'node_modules/**', '**/*.min.*'],
   },
 
   // Next.js presets + Prettier bridge (via compat)

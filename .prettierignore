@@ -1,0 +1,7 @@
+﻿.next
+out
+dist
+coverage
+node_modules
+*.min.*
+public/**/*.min.*

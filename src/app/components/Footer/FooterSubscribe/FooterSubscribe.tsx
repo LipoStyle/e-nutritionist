@@ -1,33 +1,33 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import './FooterSubscribe.css';
-import t, { Lang } from './translations';
+import { useState } from 'react'
+
+import './FooterSubscribe.css'
+import t, { Lang } from './translations'
 
 type Props = {
-  lang: Lang;
+  lang: Lang
   // optional: onSubmit endpoint hook later
-  onSubmitUrl?: string; // e.g. "/api/newsletter"
-};
+  onSubmitUrl?: string // e.g. "/api/newsletter"
+}
 
 export default function FooterSubscribe({ lang, onSubmitUrl }: Props) {
-  const tr = t[lang] ?? t.en;
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle'|'loading'|'success'|'error'>('idle');
-  const [message, setMessage] = useState<string>('');
+  const tr = t[lang] ?? t.en
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [message, setMessage] = useState<string>('')
 
-  const isValidEmail = (val: string) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim());
+  const isValidEmail = (val: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim())
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!isValidEmail(email)) {
-      setStatus('error');
-      setMessage(tr.error);
-      return;
+      setStatus('error')
+      setMessage(tr.error)
+      return
     }
-    setStatus('loading');
-    setMessage('');
+    setStatus('loading')
+    setMessage('')
 
     try {
       if (onSubmitUrl) {
@@ -36,16 +36,16 @@ export default function FooterSubscribe({ lang, onSubmitUrl }: Props) {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email }),
-        });
+        })
       }
-      setStatus('success');
-      setMessage(tr.success);
-      setEmail('');
+      setStatus('success')
+      setMessage(tr.success)
+      setEmail('')
     } catch {
-      setStatus('error');
-      setMessage(tr.error);
+      setStatus('error')
+      setMessage(tr.error)
     }
-  };
+  }
 
   return (
     <section className="footer-subscribe" aria-labelledby="footer-subscribe-title">
@@ -86,5 +86,5 @@ export default function FooterSubscribe({ lang, onSubmitUrl }: Props) {
         </div>
       </div>
     </section>
-  );
+  )
 }

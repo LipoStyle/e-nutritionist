@@ -1,14 +1,14 @@
 /* =========================================================
    STYLING CONTENT (base)
    ========================================================= */
-:root{
+:root {
   --color-bg: #e4eef0;
   --color-text: #16232a;
   --color-brand: #ff5b04;
   --color-white: #ffffff;
 
   --radius-sm: 10px;
-  --shadow-lg: 0 15px 35px rgba(0,0,0,.18);
+  --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.18);
 
   --container-max: 1200px;
 
@@ -16,7 +16,7 @@
   --header-height: 96px;
 }
 
-.hero{
+.hero {
   position: relative;
   min-height: 56vh;
   background: var(--color-bg);
@@ -25,32 +25,42 @@
 }
 
 /* sizes */
-.hero--compact{ min-height: 36vh; }
-.hero--default{ min-height: 56vh; }
-.hero--tall{    min-height: 78vh; }
+.hero--compact {
+  min-height: 36vh;
+}
+.hero--default {
+  min-height: 56vh;
+}
+.hero--tall {
+  min-height: 78vh;
+}
 
 /* keep content below your fixed header */
-.hero--offset-header{
+.hero--offset-header {
   padding-top: calc(var(--header-height) + clamp(12px, 2vw, 24px));
 }
 
 /* background image + overlay (overlay is fully opaque; we fade via inline opacity prop) */
-.hero__bg{ position: absolute; inset: 0; z-index: -2; }
-.hero__overlay{
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+.hero__overlay {
   position: absolute;
   inset: 0;
   z-index: -1; /* above image */
   background: linear-gradient(
     180deg,
-    rgba(0,0,0,1) 0%,
-    rgba(0,0,0,1) 50%,
-    rgba(0,0,0,1) 100%
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 1) 100%
   );
   pointer-events: none;
 }
 
 /* center stack */
-.hero__center{
+.hero__center {
   width: min(var(--container-max), 92vw);
   margin: 0 auto;
   min-height: inherit;
@@ -65,19 +75,19 @@
   text-align: center;
 }
 
-.hero__title{
+.hero__title {
   color: var(--color-white);
   font-size: clamp(2.2rem, 4.4vw, 4rem);
   line-height: 1.1;
   letter-spacing: -0.02em;
-  text-shadow: 0 4px 24px rgba(0,0,0,.35);
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
   text-wrap: balance;
 }
 
 /* optional description */
-.hero__description{
-  color: rgba(255,255,255,.94);
-  font-size: clamp(1rem, 1.1vw + .6rem, 1.25rem);
+.hero__description {
+  color: rgba(255, 255, 255, 0.94);
+  font-size: clamp(1rem, 1.1vw + 0.6rem, 1.25rem);
   line-height: 1.6;
   max-width: 70ch;
   margin-top: 2px;
@@ -86,20 +96,20 @@
 /* =========================================================
    CTA AREA (column: message above button)
    ========================================================= */
-.hero__ctaColumn{
+.hero__ctaColumn {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   margin-top: 12px;
 }
-.hero__message{
-  color: rgba(255,255,255,.92);
+.hero__message {
+  color: rgba(255, 255, 255, 0.92);
   font-weight: 500;
 }
 
 /* Back-compat: if somewhere you still use hero__ctaRow, make it column */
-.hero__ctaRow{
+.hero__ctaRow {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -108,7 +118,7 @@
 }
 
 /* If you still use a local .hero__button (otherwise use CTAButton component styles) */
-.hero__button{
+.hero__button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -119,35 +129,47 @@
   font-weight: 700;
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-lg);
-  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
 }
-.hero__button:hover{ transform: translateY(-2px); }
+.hero__button:hover {
+  transform: translateY(-2px);
+}
 
 /* scroll cue: mouse + arrow */
-.hero__scrollCue{
+.hero__scrollCue {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   margin-top: clamp(12px, 2vw, 20px);
-  opacity: .95;
+  opacity: 0.95;
 }
-.mouse{
-  width: 26px; height: 42px;
+.mouse {
+  width: 26px;
+  height: 42px;
   border-radius: 18px;
-  border: 2px solid rgba(255,255,255,.8);
+  border: 2px solid rgba(255, 255, 255, 0.8);
   position: relative;
 }
-.mouse .wheel{
-  width: 4px; height: 8px; border-radius: 2px;
-  background: rgba(255,255,255,.9);
-  position: absolute; left: 50%; top: 8px; transform: translateX(-50%);
+.mouse .wheel {
+  width: 4px;
+  height: 8px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  transform: translateX(-50%);
   animation: wheel 1.8s ease-in-out infinite;
 }
-.arrow{
-  width: 8px; height: 8px;
-  border-right: 2px solid rgba(255,255,255,.85);
-  border-bottom: 2px solid rgba(255,255,255,.85);
+.arrow {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid rgba(255, 255, 255, 0.85);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.85);
   transform: rotate(45deg);
   animation: arrowDown 1.8s ease-in-out infinite;
 }
@@ -155,53 +177,90 @@
 /* =========================================================
    LIGHT / DARK THEMES
    ========================================================= */
-.dark-mode{
+.dark-mode {
   --color-bg: #16232a;
   --color-text: #e4eef0;
 }
 
 /* In dark mode, overlay slightly lighter so it doesn’t over-crush */
-.dark-mode .hero__overlay{
+.dark-mode .hero__overlay {
   background: linear-gradient(
     180deg,
-    rgba(0,0,0,.7) 0%,
-    rgba(0,0,0,.7) 50%,
-    rgba(0,0,0,.7) 100%
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.7) 50%,
+    rgba(0, 0, 0, 0.7) 100%
   );
 }
 
 /* =========================================================
    RESPONSIVENESS
    ========================================================= */
-@media (max-width: 640px){
-  .hero__ctaColumn{ gap: 8px; }
-  .hero__button{ padding: 11px 16px; }
+@media (max-width: 640px) {
+  .hero__ctaColumn {
+    gap: 8px;
+  }
+  .hero__button {
+    padding: 11px 16px;
+  }
 }
 
 /* =========================================================
    ANIMATIONS (helpers you can add as classes in JSX)
    ========================================================= */
-@media (prefers-reduced-motion: no-preference){
+@media (prefers-reduced-motion: no-preference) {
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  @keyframes wheel{
-    0%{ transform: translate(-50%, 0); opacity: .9; }
-    60%{ transform: translate(-50%, 10px); opacity: .2; }
-    100%{ transform: translate(-50%, 0); opacity: .9; }
+  @keyframes wheel {
+    0% {
+      transform: translate(-50%, 0);
+      opacity: 0.9;
+    }
+    60% {
+      transform: translate(-50%, 10px);
+      opacity: 0.2;
+    }
+    100% {
+      transform: translate(-50%, 0);
+      opacity: 0.9;
+    }
   }
-  @keyframes arrowDown{
-    0%{ transform: rotate(45deg) translateY(0); opacity: .9; }
-    60%{ transform: rotate(45deg) translateY(6px); opacity: .4; }
-    100%{ transform: rotate(45deg) translateY(0); opacity: .9; }
+  @keyframes arrowDown {
+    0% {
+      transform: rotate(45deg) translateY(0);
+      opacity: 0.9;
+    }
+    60% {
+      transform: rotate(45deg) translateY(6px);
+      opacity: 0.4;
+    }
+    100% {
+      transform: rotate(45deg) translateY(0);
+      opacity: 0.9;
+    }
   }
 
-  .anim-fade-up{ animation: fadeUp .7s ease-out both; }
-  .anim-fade-up-delayed{ animation: fadeUp .85s ease-out both .08s; }
-  .anim-fade-up-late{ animation: fadeUp 1s ease-out both .16s; }
+  .anim-fade-up {
+    animation: fadeUp 0.7s ease-out both;
+  }
+  .anim-fade-up-delayed {
+    animation: fadeUp 0.85s ease-out both 0.08s;
+  }
+  .anim-fade-up-late {
+    animation: fadeUp 1s ease-out both 0.16s;
+  }
 }
 
-@media (prefers-reduced-motion: reduce){
-  .mouse .wheel, .arrow{ animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .mouse .wheel,
+  .arrow {
+    animation: none;
+  }
 }

@@ -7,14 +7,16 @@
   font-family: var(--font-secondary, 'Poppins', sans-serif);
   font-weight: bold;
   border-radius: 5px;
-  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  transition:
+    color 0.3s ease-in-out,
+    background-color 0.3s ease-in-out;
   z-index: 1;
   cursor: pointer;
 }
 
 /* 🔹 Pseudo-element for sliding background effect */
 .cta-button::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: -100%;
@@ -34,12 +36,12 @@
 
 /* 🔹 Light Mode */
 .light-mode .cta-button {
-  background-color: var(--color-success);   /* orange */
+  background-color: var(--color-success); /* orange */
   color: var(--color-white);
 }
 
 .light-mode .cta-button::before {
-  background-color: var(--color-dark);   /* deep blue/green */
+  background-color: var(--color-dark); /* deep blue/green */
 }
 
 .light-mode .cta-button:hover {
@@ -49,7 +51,7 @@
 /* 🔹 Dark Mode */
 .dark-mode .cta-button {
   background-color: var(--color-accent); /* teal */
-  color: var(--color-light);             /* soft background */
+  color: var(--color-light); /* soft background */
 }
 
 .dark-mode .cta-button::before {

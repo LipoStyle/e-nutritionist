@@ -1,21 +1,22 @@
-import Header from '@/app/components/Header/Header';
-import Footer from '../components/Footer/Footer';
-import '../../styles/global.css';
+import Header from '@/app/components/Header/Header'
 
-const supportedLangs = ['en', 'es', 'el'] as const;
-type Lang = (typeof supportedLangs)[number];
+import Footer from '../components/Footer/Footer'
+import '../../styles/global.css'
+
+const supportedLangs = ['en', 'es', 'el'] as const
+type Lang = (typeof supportedLangs)[number]
 
 export default async function LangLayout({
   children,
   params,
 }: {
-  children: React.ReactNode;
-  params: { lang: string };
+  children: React.ReactNode
+  params: { lang: string }
 }) {
-  const { lang } = await params;
+  const { lang } = await params
 
   // ✅ Narrow 'lang' to 'Lang' or fallback to 'en'
-  const safeLang: Lang = supportedLangs.includes(lang as Lang) ? (lang as Lang) : 'en';
+  const safeLang: Lang = supportedLangs.includes(lang as Lang) ? (lang as Lang) : 'en'
 
   return (
     <html lang={safeLang}>
@@ -34,5 +35,5 @@ export default async function LangLayout({
         <Footer lang={safeLang} />
       </body>
     </html>
-  );
+  )
 }

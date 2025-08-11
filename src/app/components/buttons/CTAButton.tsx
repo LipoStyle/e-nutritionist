@@ -1,12 +1,12 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import './CTAButton.css';
+import Link from 'next/link'
+import './CTAButton.css'
 
 interface CTAButtonProps {
-  text: string;
-  link: string;
-  ariaLabel?: string; // optional
+  text: string
+  link: string
+  ariaLabel?: string // optional
 }
 
 const CTAButton: React.FC<CTAButtonProps> = ({ text, link, ariaLabel }) => {
@@ -18,7 +18,7 @@ const CTAButton: React.FC<CTAButtonProps> = ({ text, link, ariaLabel }) => {
     >
       {text}
     </Link>
-  );
-};
+  )
+}
 
-export default CTAButton;
+export default CTAButton

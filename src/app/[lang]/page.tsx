@@ -1,13 +1,12 @@
-import Hero from '@/app/components/shared/Hero/Hero';
-import { homeHeroTranslations } from './translations';
-import { resolveLocale } from './i18n/utils';
+import Hero from '@/app/components/shared/Hero/Hero'
 
-export default async function HomePage({
-  params,
-}: { params: Promise<{ lang: string }> }) {
-  const { lang } = await params;
-  const locale = resolveLocale(lang);
-  const t = homeHeroTranslations[locale];
+import { resolveLocale } from './i18n/utils'
+import { homeHeroTranslations } from './translations'
+
+export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  const locale = resolveLocale(lang)
+  const t = homeHeroTranslations[locale]
 
   return (
     <Hero
@@ -22,5 +21,5 @@ export default async function HomePage({
       offsetHeader
       height="tall"
     />
-  );
+  )
 }

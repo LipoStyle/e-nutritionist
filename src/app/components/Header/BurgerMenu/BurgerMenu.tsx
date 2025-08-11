@@ -1,18 +1,15 @@
-'use client';
+'use client'
 
-import './BurgerMenu.css';
+import './BurgerMenu.css'
 
 const BurgerMenu = ({ isOpen, toggleBurger }: { isOpen: boolean; toggleBurger: () => void }) => {
   return (
-    <div
-      className={`burger-button ${isOpen ? 'burger-active' : ''}`}
-      onClick={toggleBurger}
-    >
+    <div className={`burger-button ${isOpen ? 'burger-active' : ''}`} onClick={toggleBurger}>
       <div className="line" />
       <div className="line" />
       <div className="line" />
     </div>
-  );
-};
+  )
+}
 
-export default BurgerMenu;
+export default BurgerMenu

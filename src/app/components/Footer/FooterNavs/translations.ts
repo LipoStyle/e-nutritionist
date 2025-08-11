@@ -1,40 +1,40 @@
 // src/app/components/Footer/FooterNavs/translations.ts
-type Lang = 'en' | 'es' | 'el';
+type Lang = 'en' | 'es' | 'el'
 
 interface FooterNavTitles {
-  policies: string;
-  pages: string;
-  contact: string;
+  policies: string
+  pages: string
+  contact: string
 }
 
 interface FooterNavPolicies {
-  terms: string;
-  privacy: string;
-  cookies: string;
+  terms: string
+  privacy: string
+  cookies: string
 }
 
 interface FooterNavPages {
-  services: string;
-  blogs: string;
-  recipes: string;
-  about: string;
-  contact: string;
+  services: string
+  blogs: string
+  recipes: string
+  about: string
+  contact: string
 }
 
 interface FooterNavContact {
-  emailLabel: string;
-  phoneLabel: string;
-  addressLabel: string;
-  email: string;
-  phone: string;
-  address: string;
+  emailLabel: string
+  phoneLabel: string
+  addressLabel: string
+  email: string
+  phone: string
+  address: string
 }
 
 interface FooterNavTranslation {
-  titles: FooterNavTitles;
-  policies: FooterNavPolicies;
-  pages: FooterNavPages;
-  contact: FooterNavContact;
+  titles: FooterNavTitles
+  policies: FooterNavPolicies
+  pages: FooterNavPages
+  contact: FooterNavContact
 }
 
 const t: Record<Lang, FooterNavTranslation> = {
@@ -107,7 +107,7 @@ const t: Record<Lang, FooterNavTranslation> = {
       address: 'Calle Cañete 18, Μαδρίτη, Ισπανία',
     },
   },
-};
+}
 
-export type { Lang, FooterNavTranslation };
-export default t;
+export type { Lang, FooterNavTranslation }
+export default t

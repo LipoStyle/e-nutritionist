@@ -1,4 +1,4 @@
-import { Locale } from '../i18n/utils';
+import { Locale } from '../i18n/utils'
 
 export const contactHeroTranslations: Record<
   Locale,
@@ -25,4 +25,4 @@ export const contactHeroTranslations: Record<
     bookText: 'Κλείσε ραντεβού',
     ariaLabel: 'Ήρωας σελίδας επικοινωνίας: μήνυμα και κράτηση ραντεβού',
   },
-};
+}

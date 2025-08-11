@@ -1,59 +1,59 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
-import './Header.css';
+import { useEffect, useState } from 'react'
+import './Header.css'
 
-import BurgerMenu from './BurgerMenu/BurgerMenu';
-import Navbar from './NavBar/NavBar';
-import LogoSection from './LogoSection/LogoSection';
-import DarkModeToggle from '../buttons/DarkModeToggle';
-import LanguagePicker from '../buttons/LanguagePicker';
-import CTAButton from '../buttons/CTAButton';
+import BurgerMenu from './BurgerMenu/BurgerMenu'
+import LogoSection from './LogoSection/LogoSection'
+import Navbar from './NavBar/NavBar'
+import CTAButton from '../buttons/CTAButton'
+import DarkModeToggle from '../buttons/DarkModeToggle'
+import LanguagePicker from '../buttons/LanguagePicker'
 
-type Lang = 'en' | 'es' | 'el';
+type Lang = 'en' | 'es' | 'el'
 
 type HeaderProps = {
-  lang: Lang; // align with Navbar/Footer
-};
+  lang: Lang // align with Navbar/Footer
+}
 
 const Header = ({ lang }: HeaderProps) => {
-  const [scrolling, setScrolling] = useState(false);
-  const [burgerOpen, setBurgerOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [scrolling, setScrolling] = useState(false)
+  const [burgerOpen, setBurgerOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth <= 840;
-      setIsMobile(mobile);
-      if (!mobile) setBurgerOpen(false);
-    };
+      const mobile = window.innerWidth <= 840
+      setIsMobile(mobile)
+      if (!mobile) setBurgerOpen(false)
+    }
 
-    let lastScrollY = window.scrollY;
+    let lastScrollY = window.scrollY
     const handleScroll = () => {
-      setScrolling(window.scrollY > lastScrollY);
-      lastScrollY = window.scrollY;
-    };
+      setScrolling(window.scrollY > lastScrollY)
+      lastScrollY = window.scrollY
+    }
 
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('scroll', handleScroll);
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    window.addEventListener('scroll', handleScroll)
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
-  const toggleBurger = () => setBurgerOpen(prev => !prev);
-  const closeNavbar = () => setBurgerOpen(false);
+  const toggleBurger = () => setBurgerOpen((prev) => !prev)
+  const closeNavbar = () => setBurgerOpen(false)
 
   // Optional CTA translation (keep or remove if you prefer static text)
   const ctaText =
     lang === 'es'
       ? 'Reserva una consulta'
       : lang === 'el'
-      ? 'Κλείσε ραντεβού'
-      : 'Book a Consultation';
+        ? 'Κλείσε ραντεβού'
+        : 'Book a Consultation'
 
   return (
     <header className={`header ${scrolling ? 'hidden' : ''}`}>
@@ -85,7 +85,7 @@ const Header = ({ lang }: HeaderProps) => {
         <Navbar isOpen={burgerOpen} closeNavbar={closeNavbar} lang={lang} isMobile={true} />
       )}
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
