@@ -1,0 +1,164 @@
+/* leave space for your fixed header */
+.admin-wrap {
+  margin-top: 100px;
+  padding: 24px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--color-light);
+}
+
+/* Top bar */
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.admin-titles h1 {
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 6px;
+  color: var(--color-light);
+}
+
+.admin-sub {
+  color: var(--color-light-gray);
+  font-size: 0.95rem;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Buttons (match your palette) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.05s ease, background-color 0.2s ease, border-color 0.2s ease;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  background: var(--color-soft-white);
+  border-color: var(--color-soft-white-hover);
+  color: var(--color-light);
+}
+
+.btn-ghost:hover {
+  background: var(--color-soft-white-hover);
+}
+
+.btn-danger {
+  background: var(--color-danger);
+  color: var(--color-white);
+}
+
+.btn-danger:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Grid sections */
+.admin-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.metrics {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 24px;
+}
+
+.actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Card base */
+.card {
+  background: var(--color-dark-transparent);
+  border: 1px solid var(--color-soft-white-hover);
+  border-radius: 16px;
+  padding: 18px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Metric card */
+.metric {
+  text-align: left;
+}
+
+.metric-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-bottom: 6px;
+}
+
+.metric-label {
+  color: var(--color-light-gray);
+}
+
+/* Action cards */
+.action {
+  display: block;
+  text-decoration: none;
+  color: var(--color-light);
+  transition: transform 0.08s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.action:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-accent);
+  background: rgba(255, 91, 4, 0.08);
+}
+
+.action h3 {
+  font-family: var(--font-secondary);
+  margin: 0 0 8px;
+}
+
+.action p {
+  margin: 0;
+  color: var(--color-light-gray);
+  font-size: 0.95rem;
+}
+
+/* Disabled card placeholder */
+.action.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  .admin-topbar { flex-direction: column; align-items: flex-start; }
+  .metrics { grid-template-columns: 1fr; }
+  .actions { grid-template-columns: 1fr; }
+}

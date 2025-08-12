@@ -1,4 +1,3 @@
-// src/middleware.ts
 import { NextResponse, type NextRequest } from 'next/server'
 import { jwtVerify } from 'jose'
 
@@ -6,8 +5,9 @@ const SUPPORTED_LOCALES = ['en', 'es', 'el'] as const
 type Locale = (typeof SUPPORTED_LOCALES)[number]
 const DEFAULT_LOCALE: Locale = 'en'
 
-// HS256 secret for verifying admin JWT (set in .env.local / Vercel)
-const ADMIN_SECRET = new TextEncoder().encode(process.env.ADMIN_JWT_SECRET ?? 'dev-secret-change-me')
+const ADMIN_SECRET = new TextEncoder().encode(
+  process.env.ADMIN_JWT_SECRET ?? 'dev-secret-change-me'
+)
 
 function getLocaleFromPath(pathname: string): Locale | null {
   const seg = pathname.split('/').filter(Boolean)[0]
@@ -28,9 +28,7 @@ export async function middleware(req: NextRequest) {
   const { nextUrl, headers, cookies } = req
   const { pathname, searchParams } = nextUrl
 
-  // ---------------------------
-  // 0) Locale prefix (ensure /{lang}/...)
-  // ---------------------------
+  // 0) Ensure locale prefix
   const pathLocale = getLocaleFromPath(pathname)
   const qLang = (searchParams.get('lang') || '').toLowerCase()
   const cookieLang = (cookies.get('lang')?.value || '').toLowerCase()
@@ -49,20 +47,34 @@ export async function middleware(req: NextRequest) {
     return res
   }
 
-  // ---------------------------
-  // 0.1) Legacy route normalization + query cleanup
-  // ---------------------------
-  // /{lang}/admin-dashboard  ->  /{lang}/admin  (prevents legacy loops)
+  // 0.1) Legacy normalization + query cleanup
+  // /{lang}/admin-dashboard -> /{lang}/admin
   if (pathname.startsWith(`/${pathLocale}/admin-dashboard`)) {
     const url = nextUrl.clone()
     url.pathname = `/${pathLocale}/admin`
     return NextResponse.redirect(url, 308)
   }
 
-  // Strip old ?next=... param anywhere (it caused loops)
+  // If ?next=... exists anywhere, remove it.
+  // On the login page specifically, convert it to a safe ?from=...
   if (searchParams.has('next')) {
     const url = nextUrl.clone()
+    const nextVal = url.searchParams.get('next') || ''
     url.searchParams.delete('next')
+
+    if (pathname.startsWith(`/${pathLocale}/admin/login`)) {
+      const normalizedNext = nextVal.startsWith(`/${pathLocale}/admin-dashboard`)
+        ? `/${pathLocale}/admin`
+        : nextVal
+
+      const safeFrom = normalizedNext.startsWith(`/${pathLocale}/admin`)
+        ? normalizedNext
+        : `/${pathLocale}/admin`
+
+      if (url.searchParams.get('from') !== safeFrom) {
+        url.searchParams.set('from', safeFrom)
+      }
+    }
     return NextResponse.redirect(url, 307)
   }
 
@@ -75,21 +87,15 @@ export async function middleware(req: NextRequest) {
     return res
   }
 
-  // ---------------------------
-  // 1) Admin area protection
-  //    Protect /{lang}/admin/** except /{lang}/admin/login
-  // ---------------------------
+  // 1) Admin area protection (everything under /{lang}/admin except /login)
   const isAdminArea = pathname.startsWith(`/${pathLocale}/admin`)
   const isLoginPage = pathname.startsWith(`/${pathLocale}/admin/login`)
-
-  // Helper: build a safe 'from' value to avoid open-redirects / loops
   const safeFrom = pathname.startsWith(`/${pathLocale}/admin`) ? pathname : `/${pathLocale}/admin`
 
   if (isAdminArea) {
     const token = cookies.get('admin_token')?.value
 
     if (isLoginPage) {
-      // Already authenticated? go to dashboard
       if (token) {
         try {
           const { payload } = await jwtVerify(token, ADMIN_SECRET)
@@ -103,7 +109,6 @@ export async function middleware(req: NextRequest) {
         }
       }
     } else {
-      // Any admin page (not login) requires a valid token
       if (!token) {
         const url = nextUrl.clone()
         url.pathname = `/${pathLocale}/admin/login`
@@ -122,9 +127,7 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  // ---------------------------
-  // 2) Theme persistence (?theme=light|dark)
-  // ---------------------------
+  // 2) Theme persistence
   const qTheme = searchParams.get('theme')
   const theme = qTheme === 'dark' || qTheme === 'light' ? qTheme : cookies.get('theme')?.value
 
