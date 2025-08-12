@@ -2,7 +2,7 @@
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useState } from 'react'
 
-type LoginResponse = { ok?: boolean; error?: string }
+type LoginResponse = { ok?: boolean; error?: string; redirectTo?: string }
 
 export default function AdminLoginPage() {
   const router = useRouter()
@@ -14,7 +14,6 @@ export default function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  // derive current lang from the URL; fallback to 'en'
   const lang = pathname?.split('/')[1] || 'en'
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
@@ -31,9 +30,11 @@ export default function AdminLoginPage() {
         })
 
         if (res.ok) {
+          const data = (await res.json().catch(() => ({}))) as LoginResponse
           const from = sp.get('from') || ''
-          const safeFrom = from.startsWith(`/${lang}/admin`) ? from : `/${lang}/admin`
-          router.replace(safeFrom)
+          const next = data.redirectTo || from
+          const safe = next && next.startsWith(`/${lang}/admin`) ? next : `/${lang}/admin`
+          router.replace(safe)
           return
         }
 
@@ -48,54 +49,18 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="card" style={{ maxWidth: 420, marginInline: 'auto' }}>
+    <div className="card" style={{ maxWidth: 420, marginInline: 'auto', marginTop:"200px" }}>
       <h1 style={{ marginBottom: '1rem' }}>Admin Login</h1>
-
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '0.75rem' }} noValidate>
         <label>
           <div style={{ marginBottom: 6 }}>Email</div>
-          <input
-            type="email"
-            required
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            aria-label="Email"
-            style={{
-              width: '100%',
-              padding: '0.6rem 0.8rem',
-              borderRadius: 10,
-              border: '1px solid var(--color-light-gray)',
-              background: 'var(--color-soft-white)',
-            }}
-          />
+          <input type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </label>
-
         <label>
           <div style={{ marginBottom: 6 }}>Password</div>
-          <input
-            type="password"
-            required
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            aria-label="Password"
-            style={{
-              width: '100%',
-              padding: '0.6rem 0.8rem',
-              borderRadius: 10,
-              border: '1px solid var(--color-light-gray)',
-              background: 'var(--color-soft-white)',
-            }}
-          />
+          <input type="password" required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </label>
-
-        {error && (
-          <div role="alert" style={{ color: 'var(--color-danger)', marginTop: 4 }}>
-            {error}
-          </div>
-        )}
-
+        {error && <div role="alert" style={{ color: 'var(--color-danger)', marginTop: 4 }}>{error}</div>}
         <button className="btn btn-primary" type="submit" disabled={loading}>
           {loading ? 'Signing in…' : 'Sign in'}
         </button>

@@ -20,7 +20,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="card">
-      {/* ...content... */}
       <button className="btn btn-ghost" onClick={() => void logout()} disabled={loading}>
         {loading ? 'Logging out…' : 'Log out'}
       </button>

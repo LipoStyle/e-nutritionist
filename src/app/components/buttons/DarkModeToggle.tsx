@@ -7,13 +7,12 @@ import './DarkModeToggle.css'
 import moonIcon from '@/../public/assets/images/buttons/moon.svg'
 import sunIcon from '@/../public/assets/images/buttons/sun.svg'
 
-const DarkModeToggle: React.FC = () => {
+export default function DarkModeToggle() {
   // null until we read localStorage on client to avoid SSR mismatch
   const [isDarkMode, setIsDarkMode] = useState<boolean | null>(null)
 
   useEffect(() => {
-    // prefer saved theme; fallback to dark (your current behavior)
-    const saved = localStorage.getItem('theme')
+    const saved = localStorage.getItem('theme') // string | null
     const initialIsDark = saved ? saved === 'dark' : true
 
     setIsDarkMode(initialIsDark)
@@ -31,7 +30,11 @@ const DarkModeToggle: React.FC = () => {
     const root = document.documentElement
     root.classList.toggle('dark-mode', next)
     root.classList.toggle('light-mode', !next)
-    localStorage.setItem('theme', next ? 'dark' : 'light')
+
+    const val = next ? 'dark' : 'light'
+    localStorage.setItem('theme', val)
+    // keep middleware/server in sync
+    document.cookie = `theme=${val}; Path=/; Max-Age=31536000; SameSite=Lax`
   }
 
   // Avoid hydration mismatch by not rendering until mounted
@@ -61,5 +64,3 @@ const DarkModeToggle: React.FC = () => {
     </button>
   )
 }
-
-export default DarkModeToggle

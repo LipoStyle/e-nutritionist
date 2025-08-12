@@ -1,13 +1,9 @@
 'use client'
-
 import { useState } from 'react'
 import t, { Lang } from './translations'
 import './FooterSubscribe.css'
 
-type Props = {
-  lang: Lang
-  onSubmitUrl?: string // e.g. "/api/newsletter"
-}
+type Props = { lang: Lang; onSubmitUrl?: string }
 
 export default function FooterSubscribe({ lang, onSubmitUrl }: Props) {
   const tr = t[lang] ?? t.en
@@ -19,17 +15,11 @@ export default function FooterSubscribe({ lang, onSubmitUrl }: Props) {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
-
     if (!isValidEmail(email)) {
-      setStatus('error')
-      setMessage(tr.error)
-      return
+      setStatus('error'); setMessage(tr.error); return
     }
+    setStatus('loading'); setMessage('')
 
-    setStatus('loading')
-    setMessage('')
-
-    // wrap async to satisfy @typescript-eslint/no-misused-promises
     void (async () => {
       try {
         if (onSubmitUrl) {
@@ -39,15 +29,11 @@ export default function FooterSubscribe({ lang, onSubmitUrl }: Props) {
             body: JSON.stringify({ email }),
           })
         }
-        setStatus('success')
-        setMessage(tr.success)
-        setEmail('')
+        setStatus('success'); setMessage(tr.success); setEmail('')
       } catch {
-        setStatus('error')
-        setMessage(tr.error)
+        setStatus('error'); setMessage(tr.error)
       } finally {
-        // ensure button re-enables
-        if (status === 'loading') setStatus((prev) => (prev === 'loading' ? 'idle' : prev))
+        setStatus((s) => (s === 'loading' ? 'idle' : s))
       }
     })()
   }
@@ -57,15 +43,10 @@ export default function FooterSubscribe({ lang, onSubmitUrl }: Props) {
   return (
     <section className="footer-subscribe" aria-labelledby="footer-subscribe-title">
       <div className="footer-subscribe__inner">
-        <h3 id="footer-subscribe-title" className="footer-subscribe__title">
-          {tr.title}
-        </h3>
+        <h3 id="footer-subscribe-title" className="footer-subscribe__title">{tr.title}</h3>
         <p className="footer-subscribe__subtitle">{tr.subtitle}</p>
-
         <form className="footer-subscribe__form" onSubmit={handleSubmit} noValidate>
-          <label htmlFor="newsletter-email" className="sr-only">
-            {tr.placeholder}
-          </label>
+          <label htmlFor="newsletter-email" className="sr-only">{tr.placeholder}</label>
           <input
             id="newsletter-email"
             type="email"
@@ -78,22 +59,11 @@ export default function FooterSubscribe({ lang, onSubmitUrl }: Props) {
             onChange={(e) => setEmail(e.target.value)}
             className="footer-subscribe__input"
           />
-          <button
-            type="submit"
-            className="footer-subscribe__btn"
-            disabled={isLoading}
-            aria-busy={isLoading}
-          >
+          <button type="submit" className="footer-subscribe__btn" disabled={isLoading} aria-busy={isLoading}>
             {isLoading ? '...' : tr.button}
           </button>
         </form>
-
-        <div
-          id="newsletter-help"
-          className={`footer-subscribe__msg ${status}`}
-          role="status"
-          aria-live="polite"
-        >
+        <div id="newsletter-help" className={`footer-subscribe__msg ${status}`} role="status" aria-live="polite">
           {message}
         </div>
       </div>
