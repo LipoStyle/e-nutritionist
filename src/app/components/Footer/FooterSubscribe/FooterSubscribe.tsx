@@ -1,13 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-
-import './FooterSubscribe.css'
 import t, { Lang } from './translations'
+import './FooterSubscribe.css'
 
 type Props = {
   lang: Lang
-  // optional: onSubmit endpoint hook later
   onSubmitUrl?: string // e.g. "/api/newsletter"
 }
 
@@ -19,33 +17,42 @@ export default function FooterSubscribe({ lang, onSubmitUrl }: Props) {
 
   const isValidEmail = (val: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim())
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
+
     if (!isValidEmail(email)) {
       setStatus('error')
       setMessage(tr.error)
       return
     }
+
     setStatus('loading')
     setMessage('')
 
-    try {
-      if (onSubmitUrl) {
-        // Ready for backend integration later
-        await fetch(onSubmitUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
-        })
+    // wrap async to satisfy @typescript-eslint/no-misused-promises
+    void (async () => {
+      try {
+        if (onSubmitUrl) {
+          await fetch(onSubmitUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email }),
+          })
+        }
+        setStatus('success')
+        setMessage(tr.success)
+        setEmail('')
+      } catch {
+        setStatus('error')
+        setMessage(tr.error)
+      } finally {
+        // ensure button re-enables
+        if (status === 'loading') setStatus((prev) => (prev === 'loading' ? 'idle' : prev))
       }
-      setStatus('success')
-      setMessage(tr.success)
-      setEmail('')
-    } catch {
-      setStatus('error')
-      setMessage(tr.error)
-    }
+    })()
   }
+
+  const isLoading = status === 'loading'
 
   return (
     <section className="footer-subscribe" aria-labelledby="footer-subscribe-title">
@@ -74,14 +81,19 @@ export default function FooterSubscribe({ lang, onSubmitUrl }: Props) {
           <button
             type="submit"
             className="footer-subscribe__btn"
-            disabled={status === 'loading'}
-            aria-busy={status === 'loading'}
+            disabled={isLoading}
+            aria-busy={isLoading}
           >
-            {status === 'loading' ? '...' : tr.button}
+            {isLoading ? '...' : tr.button}
           </button>
         </form>
 
-        <div id="newsletter-help" className={`footer-subscribe__msg ${status}`}>
+        <div
+          id="newsletter-help"
+          className={`footer-subscribe__msg ${status}`}
+          role="status"
+          aria-live="polite"
+        >
           {message}
         </div>
       </div>
