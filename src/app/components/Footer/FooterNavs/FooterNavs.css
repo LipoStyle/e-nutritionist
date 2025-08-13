@@ -77,14 +77,14 @@
 }
 .light-mode .footer-navs__title {
   color: var(--color-dark);
-  text-decoration: 2px underline var(--color-dark);
+  text-decoration: 2px underline var(--color-success);
 }
 .light-mode .footer-link,
 .light-mode .footer-meta {
   color: var(--color-dark);
 }
 .light-mode .footer-link:hover {
-  color: var(--color-accent);
+  color: var(--color-success);
 }
 /* ----------------------------------------------
    dark mode styling

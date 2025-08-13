@@ -1,14 +1,17 @@
-/* leave space for your fixed header */
+/* src/app/[lang]/admin/page.tsx */
+
+/* ===========================
+   Base layout (no colors here)
+   =========================== */
+
 .admin-wrap {
-  margin-top: 100px;
+  margin-top: 100px;                /* leave space for fixed header */
   padding: 24px;
   max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
-  color: var(--color-light);
 }
 
-/* Top bar */
 .admin-topbar {
   display: flex;
   align-items: center;
@@ -22,11 +25,9 @@
   font-weight: 600;
   line-height: 1.2;
   margin: 0 0 6px;
-  color: var(--color-light);
 }
 
 .admin-sub {
-  color: var(--color-light-gray);
   font-size: 0.95rem;
 }
 
@@ -35,48 +36,32 @@
   gap: 10px;
 }
 
-/* Buttons (match your palette) */
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 10px 14px;
   border-radius: 10px;
-  border: 1px solid transparent;
+  border: 1px solid transparent;   /* themed below */
   cursor: pointer;
   text-decoration: none;
-  transition: transform 0.05s ease, background-color 0.2s ease, border-color 0.2s ease;
   font-weight: 600;
   line-height: 1;
+  transition: transform 0.05s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
 }
 
-.btn:hover {
-  transform: translateY(-1px);
-}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
 
-.btn:active {
-  transform: translateY(0);
-}
-
-.btn-ghost {
-  background: var(--color-soft-white);
-  border-color: var(--color-soft-white-hover);
-  color: var(--color-light);
-}
-
-.btn-ghost:hover {
-  background: var(--color-soft-white-hover);
-}
-
-.btn-danger {
-  background: var(--color-danger);
-  color: var(--color-white);
-}
-
-.btn-danger:disabled {
+.btn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
 }
+
+/* Ghost & Danger variants (colors themed below) */
+.btn-ghost {}
+.btn-danger {}
 
 /* Grid sections */
 .admin-grid {
@@ -84,19 +69,19 @@
   gap: 16px;
 }
 
+/* More fluid responsive grids */
 .metrics {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   margin-bottom: 24px;
 }
 
 .actions {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 /* Card base */
 .card {
-  background: var(--color-dark-transparent);
-  border: 1px solid var(--color-soft-white-hover);
+  border: 1px solid transparent;    /* themed below */
   border-radius: 16px;
   padding: 18px;
   backdrop-filter: blur(4px);
@@ -105,33 +90,22 @@
 }
 
 /* Metric card */
-.metric {
-  text-align: left;
-}
+.metric { text-align: left; }
 
 .metric-value {
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--color-accent);
   margin-bottom: 6px;
 }
 
-.metric-label {
-  color: var(--color-light-gray);
-}
+.metric-label {}
 
 /* Action cards */
 .action {
   display: block;
   text-decoration: none;
-  color: var(--color-light);
-  transition: transform 0.08s ease, border-color 0.2s ease, background-color 0.2s ease;
-}
-
-.action:hover {
-  transform: translateY(-2px);
-  border-color: var(--color-accent);
-  background: rgba(255, 91, 4, 0.08);
+  transition: transform 0.08s ease, border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  border-radius: 16px; /* ensure same shape when used as link */
 }
 
 .action h3 {
@@ -141,7 +115,6 @@
 
 .action p {
   margin: 0;
-  color: var(--color-light-gray);
   font-size: 0.95rem;
 }
 
@@ -151,14 +124,120 @@
   pointer-events: none;
 }
 
-/* Responsive */
-@media (max-width: 992px) {
-  .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* Focus visibility for keyboard users */
+.btn:focus-visible,
+.action:focus-visible,
+.card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px transparent; /* themed below */
+  border-radius: 14px;
 }
 
-@media (max-width: 600px) {
-  .admin-topbar { flex-direction: column; align-items: flex-start; }
-  .metrics { grid-template-columns: 1fr; }
-  .actions { grid-template-columns: 1fr; }
+/* Motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .btn, .action { transition: none; }
+  .btn:hover, .action:hover { transform: none; }
+}
+
+/* Topbar stacking on narrow screens */
+@media (max-width: 720px) {
+  .admin-topbar { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
+
+/* ====================================
+   Theme: DARK (all colors live in here)
+   ==================================== */
+
+.dark-mode .admin-wrap { color: var(--color-light); }
+
+.dark-mode .admin-titles h1 { color: var(--color-light); }
+.dark-mode .admin-sub { color: var(--color-light-gray); }
+
+.dark-mode .btn-ghost {
+  background: var(--color-soft-white);
+  border-color: var(--color-soft-white-hover);
+  color: var(--color-light);
+}
+.dark-mode .btn-ghost:hover { background: var(--color-soft-white-hover); }
+
+.dark-mode .btn-danger {
+  background: var(--color-danger);
+  color: var(--color-white);
+  border-color: var(--color-danger);
+}
+
+.dark-mode .card {
+  background: var(--color-dark-transparent);
+  border-color: var(--color-soft-white-hover);
+}
+
+.dark-mode .metric-value { color: var(--color-accent); }
+.dark-mode .metric-label { color: var(--color-light-gray); }
+
+.dark-mode .action {
+  color: var(--color-light);
+  border: 1px solid var(--color-soft-white-hover);
+  background: transparent;
+}
+.dark-mode .action:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-accent);
+  background: rgba(255, 91, 4, 0.08);
+}
+.dark-mode .action p { color: var(--color-light-gray); }
+
+/* Themed focus ring */
+.dark-mode .btn:focus-visible,
+.dark-mode .action:focus-visible,
+.dark-mode .card:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 91, 4, 0.25); /* accent ring */
+}
+
+/* =====================================
+   Theme: LIGHT (all colors live in here)
+   ===================================== */
+
+.light-mode .admin-wrap { color: var(--color-light); }
+
+.light-mode .admin-titles h1 { color: var(--color-light); }
+.light-mode .admin-sub { color: var(--color-light-gray); }
+
+.light-mode .btn-ghost {
+  background: var(--color-soft-white);
+  border-color: var(--color-soft-white-hover);
+  color: var(--color-light);
+}
+.light-mode .btn-ghost:hover { background: var(--color-soft-white-hover); }
+
+.light-mode .btn-danger {
+  background: var(--color-danger);
+  color: var(--color-white);
+  border-color: var(--color-danger);
+}
+
+.light-mode .card {
+  background: var(--color-secondary-transparent);
+  border-color: var(--color-soft-white-hover);
+}
+
+.light-mode .metric-value { color: var(--color-success); } /* subtle positive vibe in light */
+.light-mode .metric-label { color: var(--color-light-gray); }
+
+.light-mode .action {
+  color: var(--color-light);
+  border: 1px solid var(--color-soft-white-hover);
+  background: transparent;
+}
+.light-mode .action:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-success);
+  background: rgba(46, 204, 113, 0.12); /* success tint */
+}
+.light-mode .action p { color: var(--color-light-gray); }
+
+/* Themed focus ring */
+.light-mode .btn:focus-visible,
+.light-mode .action:focus-visible,
+.light-mode .card:focus-visible {
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.28); /* success ring */
 }

@@ -1,0 +1,22 @@
+/* Minimal, uses your global tokens */
+.cm-empty {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 48px 20px;
+}
+
+.cm-empty h3 {
+  font-family: var(--font-secondary);
+  margin: 8px 0 4px;
+}
+
+.cm-empty-sub {
+  color: var(--color-light-gray);
+  font-size: 0.95rem;
+}
+
+.cm-empty-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}

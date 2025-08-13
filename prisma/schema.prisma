@@ -15,3 +15,21 @@ model Admin {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+model HeroSetting {
+  id             String   @id @default(uuid())
+  pageKey        String
+  language       String   // 'en' | 'es' | 'el'
+  title          String?  @db.VarChar(200)
+  description    String?  @db.Text
+  message        String?  @db.VarChar(200)
+  bookText       String?  @db.VarChar(100)
+  bookHref       String?  @db.VarChar(300)
+  bgImage        String?  @db.VarChar(600)
+  overlayOpacity Float    @default(0.45)
+  offsetHeader   Boolean  @default(true)
+  height         String   @default("default") // 'compact' | 'default' | 'tall'
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([pageKey, language], name: "hero_page_lang_unique")
+}

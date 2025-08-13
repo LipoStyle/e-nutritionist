@@ -1,3 +1,4 @@
+// src/app/[lang]/admin/page.tsx
 'use client'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
@@ -57,32 +58,12 @@ export default function AdminDashboard() {
         </article>
       </section>
 
-      {/* Quick links to existing public routes (safe, non-admin) */}
+      {/* Admin-only links */}
       <section className="admin-grid actions">
-        <Link href={`/${lang}/about`} className="card action">
-          <h3>About Page</h3>
-          <p>Review the About page content.</p>
-        </Link>
-        <Link href={`/${lang}/services`} className="card action">
-          <h3>Services</h3>
-          <p>Check your services list and layout.</p>
-        </Link>
-        <Link href={`/${lang}/recipes`} className="card action">
-          <h3>Recipes</h3>
-          <p>Browse the public recipes page.</p>
-        </Link>
-        <Link href={`/${lang}/blogs`} className="card action">
-          <h3>Blog</h3>
-          <p>See the blog index page.</p>
-        </Link>
-        <Link href={`/${lang}/contact`} className="card action">
-          <h3>Contact</h3>
-          <p>Test the contact page & links.</p>
-        </Link>
-        <a className="card action disabled" aria-disabled="true">
+        <Link href={`/${lang}/admin/contentmanager`} className="card action">
           <h3>Content Manager</h3>
-          <p>Coming soon: edit site content here.</p>
-        </a>
+          <p>Edit site content (pages, blog, recipes, media).</p>
+        </Link>
       </section>
     </main>
   )

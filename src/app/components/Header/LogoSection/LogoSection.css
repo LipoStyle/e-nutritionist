@@ -55,7 +55,7 @@
 }
 
 .light-mode .author-job {
-  color: var(--color-accent); /* Primary dark */
+  color: var(--color-success); /* Primary dark */
 }
 
 /* 🌚 DARK MODE OVERRIDES */

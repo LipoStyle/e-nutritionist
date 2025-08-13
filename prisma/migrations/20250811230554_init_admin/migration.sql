@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "en_admin5"."Admin" (
+CREATE TABLE "public"."Admin" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
@@ -10,4 +10,4 @@ CREATE TABLE "en_admin5"."Admin" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Admin_email_key" ON "en_admin5"."Admin"("email");
+CREATE UNIQUE INDEX "Admin_email_key" ON "public"."Admin"("email");
