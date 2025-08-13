@@ -9,7 +9,7 @@ export default async function BookPage({ params }: { params: Promise<{ lang: str
   const locale = resolveLocale(lang) as 'en' | 'es' | 'el'
   const t = bookingHeroTranslations[locale]
 
-  // DB settings for the booking page
+  // Use the same key you seeded: 'booking'
   const hs = await getHeroSettings('booking', locale)
 
   return (
@@ -18,7 +18,8 @@ export default async function BookPage({ params }: { params: Promise<{ lang: str
       description={hs?.description ?? t.description}
       message={hs?.message ?? t.message}
       bookText={hs?.bookText ?? t.bookText}
-      bookHref={hs?.bookHref ?? undefined}        {/* usually no CTA link on booking page */}
+      /* Usually no CTA link on this page; allow DB to override if provided */
+      bookHref={hs?.bookHref ?? undefined}
       bgImage={hs?.bgImage ?? '/assets/images/hero/book-consultation.jpg'}
       overlayOpacity={hs?.overlayOpacity ?? 0.55}
       offsetHeader={hs?.offsetHeader ?? true}
