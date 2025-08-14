@@ -17,7 +17,9 @@ type HeroProps = {
   offsetHeader?: boolean // push hero below fixed header
   height?: 'compact' | 'default' | 'tall'
   className?: string
-  ariaLabel?: string // accessibility label for the section
+  ariaLabel?: string // accessibility label when no title
+  headingLevel?: 1 | 2 | 3 | 4 | 5 | 6 // NEW
+  imagePriority?: boolean // NEW (true on homepage for LCP)
 }
 
 export default function Hero({
@@ -32,27 +34,41 @@ export default function Hero({
   height = 'default',
   className = '',
   ariaLabel = 'Page hero',
+  headingLevel = 1,
+  imagePriority = false,
 }: HeroProps) {
   const classes =
     `hero hero--${height}` +
     (offsetHeader ? ' hero--offset-header' : '') +
     (className ? ` ${className}` : '')
 
+  // Accessible heading handling
+  const Heading = (`h${headingLevel}` as unknown) as keyof JSX.IntrinsicElements
+  const titleId = title ? 'hero-title' : undefined
+  const sectionA11y = title ? { 'aria-labelledby': titleId } : { 'aria-label': ariaLabel }
+
   return (
-    <section className={classes} aria-label={ariaLabel}>
+    <section className={classes} {...sectionA11y}>
       {/* Background image */}
       {bgImage && (
         <div className="hero__bg" aria-hidden="true">
-          <Image src={bgImage} alt="" fill priority sizes="100vw" style={{ objectFit: 'cover' }} />
+          <Image
+            src={bgImage}
+            alt=""
+            fill
+            priority={imagePriority}
+            sizes="100vw"
+            style={{ objectFit: 'cover' }}
+          />
         </div>
       )}
 
-      {/* Overlay */}
+      {/* Overlay — opacity is forced inline so it wins over theme presets */}
       <div className="hero__overlay" style={{ opacity: overlayOpacity }} aria-hidden="true" />
 
       {/* Centered stack */}
       <div className="hero__center">
-        {title && <h1 className="hero__title anim-fade-up">{title}</h1>}
+        {title && <Heading id={titleId} className="hero__title anim-fade-up">{title}</Heading>}
         {description && <p className="hero__description anim-fade-up-delayed">{description}</p>}
 
         {/* Column CTA: show only if message or button exists */}
@@ -68,9 +84,7 @@ export default function Hero({
 
         {/* Scroll cue */}
         <div className="hero__scrollCue anim-fade-up-later" aria-hidden="true">
-          <div className="mouse">
-            <div className="wheel" />
-          </div>
+          <div className="mouse"><div className="wheel" /></div>
           <div className="arrow" />
         </div>
       </div>
