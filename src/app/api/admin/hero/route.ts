@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { requireAdmin } from '../_utils/auth'
 
-// GET /api/admin/hero?pageKey=&language=
 export async function GET(req: Request) {
   await requireAdmin()
   const { searchParams } = new URL(req.url)
@@ -16,7 +15,6 @@ export async function GET(req: Request) {
   return NextResponse.json(rows)
 }
 
-// POST /api/admin/hero
 export async function POST(req: Request) {
   await requireAdmin()
   const body = await req.json()
@@ -44,7 +42,7 @@ export async function POST(req: Request) {
     })
     return NextResponse.json(created, { status: 201 })
   } catch (e: any) {
-    if (e.code === 'P2002') {
+    if (e?.code === 'P2002') {
       return NextResponse.json(
         { error: 'Entry already exists for pageKey+language' },
         { status: 409 }

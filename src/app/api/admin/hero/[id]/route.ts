@@ -3,26 +3,22 @@ import { prisma } from '@/lib/prisma'
 import { requireAdmin } from '../../_utils/auth'
 
 // GET /api/admin/hero/:id
-export async function GET(
-  _req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(_req: Request, ctx: any) {
   await requireAdmin()
-  const row = await prisma.heroSetting.findUnique({ where: { id: params.id } })
+  const { id } = ctx.params as { id: string }
+  const row = await prisma.heroSetting.findUnique({ where: { id } })
   if (!row) return NextResponse.json({ error: 'Not found' }, { status: 404 })
   return NextResponse.json(row)
 }
 
 // PUT /api/admin/hero/:id
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: Request, ctx: any) {
   await requireAdmin()
+  const { id } = ctx.params as { id: string }
   const body = await req.json()
   try {
     const updated = await prisma.heroSetting.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         pageKey: body.pageKey ?? undefined,
         language: body.language ?? undefined,
@@ -39,7 +35,7 @@ export async function PUT(
     })
     return NextResponse.json(updated)
   } catch (e: any) {
-    if (e.code === 'P2002') {
+    if (e?.code === 'P2002') {
       return NextResponse.json(
         { error: 'Entry already exists for pageKey+language' },
         { status: 409 }
@@ -50,11 +46,9 @@ export async function PUT(
 }
 
 // DELETE /api/admin/hero/:id
-export async function DELETE(
-  _req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(_req: Request, ctx: any) {
   await requireAdmin()
-  await prisma.heroSetting.delete({ where: { id: params.id } })
+  const { id } = ctx.params as { id: string }
+  await prisma.heroSetting.delete({ where: { id } })
   return NextResponse.json({ ok: true })
 }
