@@ -9,18 +9,20 @@ import CTAButton from '../../buttons/CTAButton'
 type HeroProps = {
   title?: string
   description?: string
-  message?: string // text above the Book button
-  bookText?: string // localized button label (default: "Book Now")
-  bookHref?: string // link for the Book button
-  bgImage?: string // e.g. "/assets/images/hero/about.jpg"
-  overlayOpacity?: number // 0..1 overlay strength (default 0.45)
-  offsetHeader?: boolean // push hero below fixed header
+  message?: string
+  bookText?: string
+  bookHref?: string
+  bgImage?: string
+  overlayOpacity?: number
+  offsetHeader?: boolean
   height?: 'compact' | 'default' | 'tall'
   className?: string
-  ariaLabel?: string // accessibility label when no title
-  headingLevel?: 1 | 2 | 3 | 4 | 5 | 6 // NEW
-  imagePriority?: boolean // NEW (true on homepage for LCP)
+  ariaLabel?: string
+  headingLevel?: 1 | 2 | 3 | 4 | 5 | 6
+  imagePriority?: boolean
 }
+
+type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' // ✅ avoids JSX namespace
 
 export default function Hero({
   title,
@@ -42,8 +44,9 @@ export default function Hero({
     (offsetHeader ? ' hero--offset-header' : '') +
     (className ? ` ${className}` : '')
 
-  // Accessible heading handling
-  const Heading = (`h${headingLevel}` as unknown) as keyof JSX.IntrinsicElements
+  // Accessible heading handling without JSX namespace types
+  const headingTag = (`h${headingLevel}` as HeadingTag)
+  const Heading: React.ElementType = headingTag
   const titleId = title ? 'hero-title' : undefined
   const sectionA11y = title ? { 'aria-labelledby': titleId } : { 'aria-label': ariaLabel }
 
@@ -63,7 +66,7 @@ export default function Hero({
         </div>
       )}
 
-      {/* Overlay — opacity is forced inline so it wins over theme presets */}
+      {/* Overlay — force opacity inline so it wins over theme presets */}
       <div className="hero__overlay" style={{ opacity: overlayOpacity }} aria-hidden="true" />
 
       {/* Centered stack */}
@@ -71,7 +74,6 @@ export default function Hero({
         {title && <Heading id={titleId} className="hero__title anim-fade-up">{title}</Heading>}
         {description && <p className="hero__description anim-fade-up-delayed">{description}</p>}
 
-        {/* Column CTA: show only if message or button exists */}
         {(message || bookHref) && (
           <div
             className="hero__ctaColumn anim-fade-up-late"
@@ -82,7 +84,6 @@ export default function Hero({
           </div>
         )}
 
-        {/* Scroll cue */}
         <div className="hero__scrollCue anim-fade-up-later" aria-hidden="true">
           <div className="mouse"><div className="wheel" /></div>
           <div className="arrow" />
