@@ -1,12 +1,12 @@
-// src/app/api/admin/hero/[id]/route.ts
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { requireAdmin } from '../../_utils/auth'
 
-type RouteContext = { params: { id: string } }
-
 // GET /api/admin/hero/:id
-export async function GET(_req: NextRequest, { params }: RouteContext) {
+export async function GET(
+  _req: Request,
+  { params }: { params: { id: string } }
+) {
   await requireAdmin()
   const row = await prisma.heroSetting.findUnique({ where: { id: params.id } })
   if (!row) return NextResponse.json({ error: 'Not found' }, { status: 404 })
@@ -14,7 +14,10 @@ export async function GET(_req: NextRequest, { params }: RouteContext) {
 }
 
 // PUT /api/admin/hero/:id
-export async function PUT(req: NextRequest, { params }: RouteContext) {
+export async function PUT(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   await requireAdmin()
   const body = await req.json()
   try {
@@ -37,14 +40,20 @@ export async function PUT(req: NextRequest, { params }: RouteContext) {
     return NextResponse.json(updated)
   } catch (e: any) {
     if (e.code === 'P2002') {
-      return NextResponse.json({ error: 'Entry already exists for pageKey+language' }, { status: 409 })
+      return NextResponse.json(
+        { error: 'Entry already exists for pageKey+language' },
+        { status: 409 }
+      )
     }
     return NextResponse.json({ error: 'Unknown error' }, { status: 500 })
   }
 }
 
 // DELETE /api/admin/hero/:id
-export async function DELETE(_req: NextRequest, { params }: RouteContext) {
+export async function DELETE(
+  _req: Request,
+  { params }: { params: { id: string } }
+) {
   await requireAdmin()
   await prisma.heroSetting.delete({ where: { id: params.id } })
   return NextResponse.json({ ok: true })
