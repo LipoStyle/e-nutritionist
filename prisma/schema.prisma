@@ -4,9 +4,10 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")         // runtime
-  directUrl = env("DIRECT_DATABASE_URL")  // migrate/studio
+  url       = env("PRISMA_DATABASE_URL")
+  directUrl = env("POSTGRES_URL")
 }
+
 
 model Admin {
   id           String   @id @default(cuid())
@@ -15,10 +16,11 @@ model Admin {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
 model HeroSetting {
   id             String   @id @default(uuid())
   pageKey        String
-  language       String   // 'en' | 'es' | 'el'
+  language       String // 'en' | 'es' | 'el'
   title          String?  @db.VarChar(200)
   description    String?  @db.Text
   message        String?  @db.VarChar(200)
