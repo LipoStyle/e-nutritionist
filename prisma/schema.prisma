@@ -35,3 +35,53 @@ model HeroSetting {
 
   @@unique([pageKey, language], name: "hero_page_lang_unique")
 }
+// --- enums ---
+enum Lang {
+  en
+  es
+  el
+}
+
+// --- models ---
+model ServicePlan {
+  id              String                @id @default(cuid())
+  language        Lang
+  slug            String                                   // SEO slug per language
+  title           String                @db.VarChar(140)
+  summary         String?               @db.VarChar(200)    // short card blurb
+  description     String                @db.Text            // full page content
+  priceCents      Int                                       // store money in cents
+  coverImage      String?               @db.VarChar(600)
+  order           Int                   @default(1)
+  isActive        Boolean               @default(true)
+
+  // SEO
+  metaTitle       String?               @db.VarChar(70)
+  metaDescription String?               @db.VarChar(160)
+
+  // timestamps
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  // relations
+  features        ServicePlanFeature[]
+
+  @@unique([language, slug], name: "service_plans_language_slug_key")
+  @@index([language, order])
+  @@map("service_plans")                                   // snake_case in DB to avoid case issues
+}
+
+model ServicePlanFeature {
+  id        String      @id @default(cuid())
+  planId    String
+  name      String      @db.VarChar(300)
+  order     Int         @default(1)
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  plan      ServicePlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@index([planId, order])
+  @@map("service_plan_features")
+}
