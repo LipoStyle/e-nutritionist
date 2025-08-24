@@ -14,7 +14,7 @@ export default function AdminDashboard() {
   async function logout() {
     setLoading(true)
     try {
-      await fetch('/api/admin/logout', { method: 'POST' })
+      await fetch('/api/admin/logout', { method: 'POST', credentials: 'include' })
       router.replace(`/${lang}/admin/login`)
     } finally {
       setLoading(false)
@@ -63,6 +63,12 @@ export default function AdminDashboard() {
         <Link href={`/${lang}/admin/contentmanager`} className="card action">
           <h3>Content Manager</h3>
           <p>Edit site content (pages, blog, recipes, media).</p>
+        </Link>
+
+        {/* NEW: Service Plans dashboard card */}
+        <Link href={`/${lang}/admin/service-plans`} className="card action">
+          <h3>Service Plans</h3>
+          <p>Create, edit, publish, and organize plans & features.</p>
         </Link>
       </section>
     </main>
