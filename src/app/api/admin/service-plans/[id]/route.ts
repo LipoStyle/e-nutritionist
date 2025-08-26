@@ -2,13 +2,12 @@
 export const runtime = 'nodejs';
 
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { cookies, headers } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { ServicePlanUpdate } from '@/lib/zod/servicePlan';
 import { verifyAdminToken } from '@/lib/auth';
 import type { Lang as PrismaLang } from '@prisma/client';
-
-type Params = { params: { id: string } };
 
 function jsonError(message: string, status = 500, extra?: Record<string, unknown>) {
   return NextResponse.json({ ok: false, error: message, ...(extra ?? {}) }, { status });
@@ -34,7 +33,10 @@ async function requireAdminOr401() {
   }
 }
 
-export async function GET(_req: Request, { params }: Params) {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     await requireAdminOr401();
 
@@ -51,13 +53,15 @@ export async function GET(_req: Request, { params }: Params) {
   }
 }
 
-export async function PATCH(req: Request, { params }: Params) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     await requireAdminOr401();
     const body = await req.json().catch(() => ({}));
     const input = ServicePlanUpdate.parse({ ...body, id: params.id });
 
-    // Build partial data for only provided fields
     const data: Record<string, unknown> = {
       ...(input.language !== undefined && { language: input.language as unknown as PrismaLang }),
       ...(input.slug !== undefined && { slug: input.slug }),
@@ -75,7 +79,7 @@ export async function PATCH(req: Request, { params }: Params) {
     let full;
 
     if (Array.isArray(input.features)) {
-      // Sequential, atomic replace of features within one transaction
+      // Atomic replace of features
       full = await prisma.$transaction(async (tx) => {
         await tx.servicePlan.update({ where: { id: params.id }, data });
         await tx.servicePlanFeature.deleteMany({ where: { planId: params.id } });
@@ -94,7 +98,6 @@ export async function PATCH(req: Request, { params }: Params) {
         });
       });
     } else {
-      // No features change: simple update is fine
       full = await prisma.servicePlan.update({
         where: { id: params.id },
         data,
@@ -112,20 +115,20 @@ export async function PATCH(req: Request, { params }: Params) {
   }
 }
 
-export async function DELETE(_req: Request, { params }: Params) {
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     await requireAdminOr401();
 
     try {
       await prisma.servicePlan.delete({ where: { id: params.id } });
     } catch (e: any) {
-      if (e?.code === 'P2025') {
-        return jsonError('Not found', 404);
-      }
+      if (e?.code === 'P2025') return jsonError('Not found', 404);
       throw e;
     }
 
-    // 204 No Content (no body)
     return new Response(null, { status: 204 });
   } catch (e: any) {
     const status = e?.status ?? 500;
