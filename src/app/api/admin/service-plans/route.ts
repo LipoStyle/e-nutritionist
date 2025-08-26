@@ -1,55 +1,53 @@
-export const runtime = 'nodejs';
-
+// src/app/api/admin/service-plans/route.ts
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { ServicePlanCreate } from '@/lib/zod/servicePlan';
 import { verifyAdminToken } from '@/lib/auth';
-
-function jsonError(message: string, status = 500, extra?: Record<string, unknown>) {
-  return NextResponse.json({ ok: false, error: message, ...(extra ?? {}) }, { status });
-}
+import type { Lang } from '@prisma/client';
 
 async function requireAdminOr401() {
-  const token = cookies().get('admin_token')?.value;
-  if (!token) throw Object.assign(new Error('Unauthorized'), { status: 401 });
-  await verifyAdminToken(token); // throws {status:401} if invalid/expired
-}
-
-export async function GET() {
   try {
-    await requireAdminOr401();
+    const cookieStore = await cookies();
+    const tokenFromCookie = cookieStore.get('admin_token')?.value;
 
-    const items = await prisma.servicePlan.findMany({
-      orderBy: [{ order: 'asc' }, { updatedAt: 'desc' }],
-      include: { features: { orderBy: { order: 'asc' } } },
-    });
+    const auth = (await headers()).get('authorization') || '';
+    const tokenFromHeader = auth.toLowerCase().startsWith('bearer ')
+      ? auth.slice(7).trim()
+      : null;
 
-    return NextResponse.json({ ok: true, items });
-  } catch (e: any) {
-    return jsonError(e.message || 'Server error', e.status ?? 500);
+    const token = tokenFromCookie || tokenFromHeader;
+    if (!token) {
+      const err = new Error('Unauthorized'); (err as any).status = 401; throw err;
+    }
+    await verifyAdminToken(token);
+  } catch {
+    const err = new Error('Unauthorized'); (err as any).status = 401; throw err;
   }
 }
 
 export async function POST(req: Request) {
   try {
     await requireAdminOr401();
-    const body = await req.json();
 
-    // Accept features as either array or newline string
-    if (typeof body.featuresText === 'string' && (!Array.isArray(body.features) || body.features.length === 0)) {
-      body.features = body.featuresText
-        .split('\n')
-        .map((s: string) => s.trim())
-        .filter(Boolean)
-        .map((name: string, idx: number) => ({ name, order: idx + 1 }));
-    }
+    const raw = await req.json();
+    if (typeof raw.language === 'string') raw.language = raw.language.toLowerCase();
 
-    const input = ServicePlanCreate.parse(body);
+    const input = ServicePlanCreate.parse(raw);
 
     const created = await prisma.servicePlan.create({
       data: {
-        ...input,
+        language: (input.language as unknown) as Lang,
+        slug: input.slug,
+        title: input.title,
+        summary: input.summary,
+        description: input.description,
+        priceCents: input.priceCents,
+        coverImage: input.coverImage,
+        order: input.order,
+        isActive: input.isActive,
+        metaTitle: input.metaTitle,
+        metaDescription: input.metaDescription,
         features: input.features.length
           ? { create: input.features.map((f) => ({ name: f.name, order: f.order })) }
           : undefined,
@@ -59,7 +57,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true, item: created }, { status: 201 });
   } catch (e: any) {
-    const status = e.status ?? (e.name === 'ZodError' ? 422 : 500);
-    return jsonError(e.message || 'Invalid request', status, { issues: e.issues });
+    const status = e?.status === 401 ? 401 : (e?.name === 'ZodError' ? 422 : 500);
+    return NextResponse.json({ ok: false, error: e?.message, issues: e?.issues }, { status });
   }
 }

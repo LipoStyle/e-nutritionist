@@ -1,0 +1,95 @@
+/* Container & header */
+.esp {
+  width: min(900px, 100%);
+  margin: 200px auto 0 auto;
+  padding: 24px;
+}
+.esp__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.esp__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+.esp__actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Alerts */
+.esp-alert {
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+.esp-alert--error {}
+
+/* List for field errors */
+.esp-list { margin: 0; padding-left: 1.2rem; }
+
+/* Form layout */
+.esp-form {
+  display: grid;
+  gap: 14px;
+}
+.esp-row {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 16px;
+}
+@media (max-width: 560px) {
+  .esp-row { grid-template-columns: 1fr; }
+}
+.esp-field {
+  display: grid;
+  gap: 6px;
+}
+.esp-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Inputs */
+.esp-input,
+.esp-textarea {
+  width: 100%;
+  border: 1px solid color-mix(in oklab, var(--color-dark, #16232a) 18%, transparent);
+  background: color-mix(in oklab, #ffffff 80%, transparent);
+  color: var(--color-dark, #16232a);
+  border-radius: 10px;
+  padding: 8px 10px;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.2s ease;
+}
+.dark-mode .esp-input,
+.dark-mode .esp-textarea {
+  background: color-mix(in oklab, var(--color-light, #e4eef0) 10%, transparent);
+  color: var(--color-light, #e4eef0);
+  border-color: color-mix(in oklab, var(--color-light, #e4eef0) 24%, transparent);
+}
+.esp-input:focus,
+.esp-textarea:focus {
+  outline: none;
+  border-color: var(--color-accent, #ff5b04);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent, #ff5b04) 25%, transparent);
+}
+.esp-input--ro {
+  background: color-mix(in oklab, #000 4%, transparent);
+}
+.esp-textarea--lg { min-height: 140px; }
+.esp-hint { opacity: 0.75; font-size: 0.85rem; }
+
+/* Checkbox row alignment */
+.esp-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 24px;
+}

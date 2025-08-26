@@ -1,0 +1,183 @@
+/* Public Plans — header-inspired frosted cards, theme-aware */
+
+/* Container */
+.service-plans-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-inline: 12px;
+  transition: background-color .3s ease;
+}
+
+/* Grid */
+.service-plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 2.5rem auto .5rem;
+  padding: 0 4px;
+  transition: grid-template-columns .25s ease;
+}
+
+/* Card */
+.service-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background-color: var(--color-soft-white);            /* like .header-top base */
+  color: var(--color-white);
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,.12);
+  transition: transform .2s ease, box-shadow .25s ease, background-color .25s ease, border-color .25s ease;
+  overflow: hidden;
+  outline: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.18);
+  background-color: var(--color-soft-white-hover);      /* subtle like header hover */
+}
+
+.service-card:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-accent), 0 6px 18px rgba(0,0,0,.18);
+}
+
+/* Optional image */
+.service-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+/* Title */
+.service-title {
+  font-size: clamp(1.1rem, 1vw + 1rem, 1.8rem);
+  font-weight: 600;
+  color: var(--color-white);
+  margin: 2px 0 4px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+/* Price */
+.service-price {
+  font-size: clamp(1.1rem, .6vw + 1rem, 1.6rem);
+  color: var(--color-success);
+  font-weight: 700;
+}
+.service-price span {
+  font-size: .9em;
+  font-weight: 600;
+  opacity: .9;
+}
+
+/* Separator (kept original classname) */
+.seperator-line {
+  width: 90%;
+  height: 4px;
+  border-radius: 24px;
+  margin: 1rem auto 1.1rem;
+  background: var(--color-soft-white-blur);
+}
+
+/* Features */
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.1rem;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+.feature-item {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 1rem;
+  color: var(--color-white);
+}
+.feature-tick {
+  line-height: 1;
+  font-size: 1.05rem;
+  color: var(--color-success);
+}
+.feature-name {
+  font-size: 1rem;
+}
+
+/* Summary */
+.service-description {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--color-light);
+  opacity: .95;
+  margin-top: .2rem;
+  min-height: 2.2em;
+}
+
+/* CTA (scoped so it doesn’t clash with header button spacing) */
+.service-plans-container .cta-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 0;
+  outline: 0;
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0,0,0,.24);
+  transition: transform .1s ease, filter .15s ease, box-shadow .2s ease;
+}
+.service-plans-container .cta-button:hover {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.28);
+}
+.service-plans-container .cta-button:active { transform: translateY(0); }
+.service-plans-container .cta-button:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-accent), 0 6px 18px rgba(0,0,0,.24);
+}
+
+/* Theme parity with header */
+.light-mode .service-card {
+  background-color: var(--color-secondary-transparent);  /* like .header-top in light mode */
+  color: var(--color-white);
+  border-color: rgba(255,255,255,.12);
+}
+.light-mode .service-title,
+.light-mode .feature-item,
+.light-mode .service-description { color: var(--color-white); }
+.light-mode .seperator-line { background-color: var(--color-soft-white-blur); }
+
+.dark-mode .service-card {
+  background-color: var(--color-dark-transparent);       /* like .header-top in dark mode */
+  color: var(--color-light);
+  border-color: rgba(255,255,255,.08);
+}
+.dark-mode .service-title,
+.dark-mode .feature-item,
+.dark-mode .service-description { color: var(--color-light); }
+
+/* Responsiveness */
+@media (max-width: 520px) {
+  .service-plans-container { padding-inline: 14px; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .service-card,
+  .service-plans-grid,
+  .service-plans-container .cta-button {
+    transition: none;
+  }
+}
