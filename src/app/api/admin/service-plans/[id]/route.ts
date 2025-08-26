@@ -1,8 +1,7 @@
 // src/app/api/admin/service-plans/[id]/route.ts
 export const runtime = 'nodejs';
 
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { cookies, headers } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { ServicePlanUpdate } from '@/lib/zod/servicePlan';
@@ -35,13 +34,14 @@ async function requireAdminOr401() {
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  ctx: RouteContext<'/api/admin/service-plans/[id]'>
 ) {
   try {
     await requireAdminOr401();
+    const { id } = await ctx.params;
 
     const item = await prisma.servicePlan.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { features: { orderBy: { order: 'asc' } } },
     });
 
@@ -55,12 +55,14 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  ctx: RouteContext<'/api/admin/service-plans/[id]'>
 ) {
   try {
     await requireAdminOr401();
+    const { id } = await ctx.params;
+
     const body = await req.json().catch(() => ({}));
-    const input = ServicePlanUpdate.parse({ ...body, id: params.id });
+    const input = ServicePlanUpdate.parse({ ...body, id });
 
     const data: Record<string, unknown> = {
       ...(input.language !== undefined && { language: input.language as unknown as PrismaLang }),
@@ -77,29 +79,27 @@ export async function PATCH(
     };
 
     let full;
-
     if (Array.isArray(input.features)) {
-      // Atomic replace of features
       full = await prisma.$transaction(async (tx) => {
-        await tx.servicePlan.update({ where: { id: params.id }, data });
-        await tx.servicePlanFeature.deleteMany({ where: { planId: params.id } });
+        await tx.servicePlan.update({ where: { id }, data });
+        await tx.servicePlanFeature.deleteMany({ where: { planId: id } });
         if (input.features.length) {
           await tx.servicePlanFeature.createMany({
             data: input.features.map((f) => ({
-              planId: params.id,
+              planId: id,
               name: f.name,
               order: f.order ?? 1,
             })),
           });
         }
         return tx.servicePlan.findUnique({
-          where: { id: params.id },
+          where: { id },
           include: { features: { orderBy: { order: 'asc' } } },
         });
       });
     } else {
       full = await prisma.servicePlan.update({
-        where: { id: params.id },
+        where: { id },
         data,
         include: { features: { orderBy: { order: 'asc' } } },
       });
@@ -117,13 +117,14 @@ export async function PATCH(
 
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  ctx: RouteContext<'/api/admin/service-plans/[id]'>
 ) {
   try {
     await requireAdminOr401();
+    const { id } = await ctx.params;
 
     try {
-      await prisma.servicePlan.delete({ where: { id: params.id } });
+      await prisma.servicePlan.delete({ where: { id } });
     } catch (e: any) {
       if (e?.code === 'P2025') return jsonError('Not found', 404);
       throw e;
