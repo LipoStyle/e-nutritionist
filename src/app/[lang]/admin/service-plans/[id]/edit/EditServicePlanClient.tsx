@@ -3,7 +3,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import '../../ServicePlansAdmin.css';  // shared button styles: sp-btn, sp-btn--*
+import '../../ServicePlansAdmin.css';
 import './EditServicePlan.css';
 
 type Lang = 'en' | 'es' | 'el';
@@ -89,19 +89,35 @@ export default function EditServicePlanClient({ lang, id }: { lang: Lang; id: st
     [form?.price]
   );
 
-  if (loading) return <div className="esp"><div className="esp__title">Edit Service Plan</div><div>Loading…</div></div>;
-  if (!form)   return <div className="esp"><div className="esp__title">Edit Service Plan</div><div>{err || 'Not found'}</div></div>;
+  if (loading) {
+    return (
+      <div className="esp">
+        <div className="esp__title">Edit Service Plan</div>
+        <div>Loading…</div>
+      </div>
+    );
+  }
+  if (!form) {
+    return (
+      <div className="esp">
+        <div className="esp__title">Edit Service Plan</div>
+        <div>{err || 'Not found'}</div>
+      </div>
+    );
+  }
 
   async function handleSave() {
+    if (!form) return; // TS guard (shouldn’t hit due to early returns above)
     setSaving(true);
     setErr(null);
     setFieldIssues(null);
     try {
-      const features = (form.featuresText || '')
-        .split('\n')
-        .map(s => s.trim())
-        .filter(Boolean)
-        .map((name, i) => ({ name, order: i + 1 }));
+      const features =
+        (form.featuresText || '')
+          .split('\n')
+          .map((s) => s.trim())
+          .filter(Boolean)
+          .map((name, i) => ({ name, order: i + 1 }));
 
       const res = await fetch(`/api/admin/service-plans/${id}`, {
         method: 'PATCH',
@@ -143,7 +159,6 @@ export default function EditServicePlanClient({ lang, id }: { lang: Lang; id: st
         throw new Error(j?.error || 'Update failed');
       }
 
-      // Success → back to list (use plan language to keep locale consistent)
       const nextLang = form.language || lang;
       router.replace(`/${nextLang}/admin/service-plans?updated=1`);
     } catch (e: any) {
@@ -154,6 +169,7 @@ export default function EditServicePlanClient({ lang, id }: { lang: Lang; id: st
   }
 
   async function handleDelete() {
+    const nextLang = form?.language || lang; // guard
     if (!confirm('Delete this service plan?')) return;
     const res = await fetch(`/api/admin/service-plans/${id}`, {
       method: 'DELETE',
@@ -165,7 +181,6 @@ export default function EditServicePlanClient({ lang, id }: { lang: Lang; id: st
       return;
     }
     if (res.ok) {
-      const nextLang = form.language || lang;
       router.replace(`/${nextLang}/admin/service-plans?deleted=1`);
     } else {
       setErr('Delete failed');
