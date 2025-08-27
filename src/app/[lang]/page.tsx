@@ -2,6 +2,7 @@ import Hero from '@/app/components/shared/Hero/Hero'
 import { resolveLocale } from './i18n/utils'
 import { homeHeroTranslations } from './translations'
 import { getHeroSettings } from '@/lib/hero' // <- helper we added earlier
+import ServicesCarouselSection from '@/app/components/shared/ServiceCaruselSection/ServicesCarouselSection';
 
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
@@ -12,7 +13,8 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
   const hs = await getHeroSettings('home', locale)
 
   return (
-    <Hero
+    <>
+     <Hero
       // prefer DB values, otherwise fall back to your existing translations/defaults
       title={hs?.title || undefined}
       description={hs?.description ?? t.description}
@@ -27,5 +29,8 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       imagePriority={true} // homepage: improve LCP
       ariaLabel={t.ariaLabel}
     />
+     <ServicesCarouselSection params={params} />
+    </>
+   
   )
 }
