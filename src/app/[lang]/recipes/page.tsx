@@ -1,30 +1,53 @@
-// src/app/[lang]/recipes/page.tsx
-import Hero from '@/app/components/shared/Hero/Hero'
-import { recipesHeroTranslations } from './translations'
-import { resolveLocale } from '../i18n/utils'
-import { getHeroSettings } from '@/lib/hero'
+// app/(demo)/recipes-radial/page.tsx
+"use client";
 
-export default async function RecipesPage({ params }: { params: Promise<{ lang: string }> }) {
-  const { lang } = await params
-  const locale = resolveLocale(lang) as 'en' | 'es' | 'el'
-  const t = recipesHeroTranslations[locale]
+import { useMemo, useState } from "react";
+import CircleNav from "@/app/[lang]/recipes/CircleNav/CircleNav";
+import RecipeGrid from "@/app/[lang]/recipes/RecipeGrid/RecipeGrid";
+import { recipesData } from "@/app/[lang]/recipes/CircleNav/recipesData";
 
-  const hs = await getHeroSettings('recipes', locale)
+export default function Page() {
+  const language = "en" as const;
+
+  // First category from data (falls back to "Breakfast")
+  const firstCategory = useMemo(() => {
+    const first = recipesData.find((r) => r.language === language);
+    return first?.category ?? "Breakfast";
+  }, [language]);
+
+  const [category, setCategory] = useState<string>(firstCategory);
+
+  // 🔑 Use EXACT keys that appear in recipesData.category
+  const bgByCategory: Record<string, string> = {
+    Breakfast: "/assets/recipes/categories/breakfast.jpg",
+    Lunch: "/assets/recipes/categories/launch.jpg",
+    Snack: "/assets/recipes/categories/snak.jpg",
+    Dessert: "/assets/recipes/categories/dessert.jpg",
+    // Dinner: "/assets/recipes/categories/dinner.jpg", // add if your data has "Dinner"
+  };
 
   return (
-    <Hero
-      title={hs?.title || undefined}
-      description={hs?.description ?? t.description}
-      message={hs?.message ?? t.message}
-      bookText={hs?.bookText ?? t.bookText}
-      bookHref={hs?.bookHref ?? `/${locale}/book-consultation`}
-      bgImage={hs?.bgImage ?? '/assets/images/hero/recipes.jpg'}
-      overlayOpacity={hs?.overlayOpacity ?? 0.6}
-      offsetHeader={hs?.offsetHeader ?? true}
-      height={(hs?.height as 'compact' | 'default' | 'tall') ?? 'default'}
-      headingLevel={1}
-      imagePriority={false}
-      ariaLabel={t.ariaLabel}
-    />
-  )
+    <div
+      style={{
+        minHeight: "80vh",
+        display: "grid",
+        gridTemplateRows: "auto 1fr",
+      }}
+    >
+      <CircleNav
+        language={language}
+        radius={160}
+        startDeg={-90}
+        sweepDeg={360}
+        onCategorySelect={(cat) => setCategory(cat)}
+        /* ⬇ hero background changes with category */
+        backgroundForCategory={bgByCategory}
+        /* ⬇ center plate image matches the background exactly */
+        centerImageForCategory={bgByCategory}
+        selectedCategory={category}
+      />
+
+      <RecipeGrid language={language} category={category} />
+    </div>
+  );
 }

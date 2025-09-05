@@ -1,0 +1,216 @@
+/* ============================
+   Themed Hero Circle (final++)
+   - Plate center, no outer ring
+   - Nav labels larger + themed fonts
+   - Light → secondary, Dark → accent
+   - Responsive + a11y
+   ============================ */
+
+/* ---- Base / layout ---- */
+.heroWrapper {
+  position: relative;
+  width: 100%;
+  min-height: 420px;
+  padding-top: 200px;
+
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  isolation: isolate;
+  transition: background-image .45s ease, background-color .25s ease;
+
+  /* defaults; overridden below by theme blocks */
+  --center-bg: #f7f7f7;
+  --center-fg: var(--color-dark);
+  --item-fg: var(--color-light);       /* idle color */
+  --item-hover: var(--color-accent);   /* hover/active color */
+  --tick: color-mix(in oklab, var(--color-light) 95%, transparent);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, var(--color-dark) 58%, transparent);
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+
+/* ---- Circle stage ---- */
+.wrapper {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 2.8vw, 2rem) 1rem;
+}
+
+.ring { position: relative; }
+.circle { display: none; } /* no outer ring */
+
+/* ---- Center hub: plate ---- */
+.center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+
+  width: clamp(230px, 50%, 460px);
+  aspect-ratio: 1 / 1;
+  border-radius: 999px;
+
+  background: var(--center-bg);
+  color: var(--center-fg);
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.35),
+    inset 0 0 0 10px #f1f1f1,
+    inset 0 8px 22px rgba(0,0,0,.08);
+  overflow: hidden;
+}
+.center::after {
+  content: "";
+  position: absolute;
+  inset: 6%;
+  border-radius: 999px;
+  box-shadow: inset 0 0 20px rgba(255,255,255,.6);
+  pointer-events: none;
+}
+.center img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 999px;
+}
+.centerText {
+  font-size: .9rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  opacity: .92;
+}
+
+/* ---- Items on the ring ---- */
+.item {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(calc(-50% + var(--x, 0px)), calc(-50% + var(--y, 0px)));
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  border: 0;
+  padding: 6px 10px;
+  background: transparent;
+  color: var(--item-fg);     /* idle color */
+  border-radius: 999px;
+
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: .01em;
+
+  z-index: 2;
+  cursor: pointer;
+  transition: color .18s ease, opacity .18s ease, transform .14s ease;
+}
+
+/* Label font & size — themed + inherits color */
+.label {
+  white-space: nowrap;
+  font-family: var(--font-secondary, var(--font-primary)), sans-serif;
+  font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+  line-height: 1.05;
+  letter-spacing: .02em;
+  color: currentColor;     /* ensures label follows .item color */
+  transition: color .18s ease;
+}
+
+/* Hover / Focus → theme hover color */
+.item:hover,
+.item:focus-visible {
+  color: var(--item-hover);
+}
+.item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--item-hover) 50%, white);
+  border-radius: 999px;
+}
+
+/* Active (clicked) → theme hover color + squeeze */
+.item:active {
+  transform: translate(calc(-50% + var(--x, 0px)), calc(-50% + var(--y, 0px))) scale(.96);
+}
+
+/* Active state persistent color */
+.item.active,
+.item.active .label {
+  color: var(--item-hover);
+}
+
+/* Optional tiny tick that follows state */
+.tick {
+  width: 12px;
+  height: 2px;
+  background: var(--tick);
+  transform: rotate(90deg);
+  opacity: .9;
+  transition: background-color .18s ease, opacity .18s ease;
+}
+.item:hover .tick,
+.item:focus-visible .tick,
+.item.active .tick {
+  background: var(--item-hover);
+  opacity: 1;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 720px) {
+  .heroWrapper { padding-top: 160px; }
+  .center { width: clamp(200px, 56%, 360px); }
+  .label { font-size: clamp(1rem, 3.6vw, 1.2rem); }
+}
+@media (max-width: 480px) {
+  .heroWrapper { padding-top: 140px; }
+  .center { width: clamp(170px, 62%, 300px); }
+  .label { font-size: clamp(.98rem, 4vw, 1.1rem); }
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .heroWrapper, .overlay, .center, .ring, .item {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---- Theme variables (authoritative) ---- */
+/* Light mode → idle dark, hover/active secondary */
+.light-mode .heroWrapper {
+  --center-bg: #f8f8f8;
+  --center-fg: var(--color-dark);
+  --item-fg: var(--color-secondary);       /* idle */
+  --item-hover: var(--color-accent);/* hover/active */
+  --tick: color-mix(in oklab, var(--color-dark) 90%, transparent);
+}
+.light-mode .overlay {
+  background: color-mix(in oklab, var(--color-secondary) 50%, transparent);
+}
+
+/* Dark mode → idle light, hover/active accent */
+.dark-mode .heroWrapper {
+  --center-bg: #f2f2f2;
+  --center-fg: var(--color-dark);
+  --item-fg: var(--color-light);      /* idle */
+  --item-hover: var(--color-accent);  /* hover/active */
+  --tick: color-mix(in oklab, var(--color-light) 95%, transparent);
+}
+.dark-mode .overlay {
+  background: color-mix(in oklab, var(--color-dark) 60%, transparent);
+}

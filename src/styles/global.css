@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Yeseva+One&display=swap');
 /* 🌍 Root Variables */
 :root {
   /* 🌑 Core Palette */
@@ -48,10 +48,16 @@ body {
   font-optical-sizing: auto;
   font-style: normal;
   line-height: 1.5;
+ 
+}
+.light-mode body{
+  background-color: var(--color-secondary);
+  color: var(--color-dark);
+}
+.dark-mode body{
   background-color: var(--color-dark);
   color: var(--color-light);
 }
-
 /* ✍️ Typography */
 body {
   font-family: var(--font-primary);

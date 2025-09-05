@@ -1,21 +1,20 @@
 .header {
-  position: fixed;
+  position: fixed; top: 0; left: 0; right: 0;
+
   top: 0;
   width: 100%;
   transition: top 0.3s ease;
   color: var(--color-white);
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+   display: flex; flex-direction: column; align-items: center;
+  transform: translateY(0); transition: transform .28s ease;
+
   align-items: center;
   z-index: 999;
 }
 
 /* Scroll hide effect */
-.header.hidden {
-  top: -100px;
-}
+.header.hidden { transform: translateY(-100%); }
 
 /* 🔹 Top Bar */
 .header-top {
@@ -23,8 +22,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 60px;
-  padding: 0.8rem 2rem;
+  gap: clamp(16px, 6vw, 60px);
+
+  padding: 0.75rem 2rem;
   background-color: var(--color-soft-white);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -45,12 +45,11 @@
   width: fit-content;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
-  padding: 5px 12px;
+  padding: 6px 12px;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   transition: background-color 0.3s ease;
 }
-
 /* CTA Button in header */
 .header-top .cta-button {
   margin-left: 1rem;
@@ -93,3 +92,7 @@
     margin-top: 0.5rem;
   }
 }
+@supports not (backdrop-filter: blur(2px)) {
+  .header-top, .header-bottom { background-color: color-mix(in oklab, var(--header-text) 10%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .header { transition: none; } }

@@ -1,0 +1,125 @@
+.gridSection {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  padding: 0 0.25rem;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.subtitle {
+  opacity: 0.7;
+  font-size: 0.95rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card */
+.card {
+  display: grid;
+  grid-template-rows: 180px auto auto;
+  background: var(--card-bg, #fff);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+}
+
+.media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #f5f7f8;
+}
+
+.body {
+  padding: 0.9rem 1rem 0.6rem;
+}
+
+.cardTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 0.35rem;
+}
+
+.excerpt {
+  font-size: 0.92rem;
+  opacity: 0.85;
+}
+
+.metaRow {
+  margin-top: 0.4rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+}
+
+.footer {
+  padding: 0.8rem 1rem 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button {
+  text-decoration: none;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.12);
+  font-weight: 600;
+  transition: background 160ms ease, transform 120ms ease, border-color 160ms ease;
+}
+
+.button:hover {
+  background: rgba(0,0,0,0.06);
+  transform: translateY(-1px);
+}
+
+/* Empty state */
+.empty {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  opacity: 0.7;
+}
