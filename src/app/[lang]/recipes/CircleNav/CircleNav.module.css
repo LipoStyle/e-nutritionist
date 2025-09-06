@@ -2,7 +2,7 @@
    Themed Hero Circle (final++)
    - Plate center, no outer ring
    - Nav labels larger + themed fonts
-   - Light → secondary, Dark → accent
+   - Light → secondary (hover/active), Dark → accent
    - Responsive + a11y
    ============================ */
 
@@ -24,7 +24,7 @@
   isolation: isolate;
   transition: background-image .45s ease, background-color .25s ease;
 
-  /* defaults; overridden below by theme blocks */
+  /* defaults; overridden by theme blocks */
   --center-bg: #f7f7f7;
   --center-fg: var(--color-dark);
   --item-fg: var(--color-light);       /* idle color */
@@ -82,13 +82,24 @@
   box-shadow: inset 0 0 20px rgba(255,255,255,.6);
   pointer-events: none;
 }
+
+/* Center image + optional rotate animation */
 .center img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
   border-radius: 999px;
+  transition: transform 0.4s ease;
 }
+.center img.rotate-in {
+  animation: rotateIn 0.45s ease both;
+}
+@keyframes rotateIn {
+  from { transform: rotate(-15deg) scale(0.96); opacity: .85; }
+  to   { transform: rotate(0deg)  scale(1);    opacity: 1; }
+}
+
 .centerText {
   font-size: .9rem;
   letter-spacing: .06em;
@@ -123,35 +134,32 @@
 
 /* Label font & size — themed + inherits color */
 .label {
-  white-space: nowrap;
-  font-family: var(--font-secondary, var(--font-primary)), sans-serif;
+  white-space: nowrap;;
   font-size: clamp(1.05rem, 2.6vw, 1.35rem);
   line-height: 1.05;
-  letter-spacing: .02em;
-  color: currentColor;     /* ensures label follows .item color */
-  transition: color .18s ease;
+  letter-spacing: .04em;
+  color: currentColor; /* label follows .item color */
+  transition: color .18s ease, font-family .18s ease, font-weight .18s ease;
 }
 
-/* Hover / Focus → theme hover color */
+/* Generic hover/active behaviors driven by --item-hover */
 .item:hover,
-.item:focus-visible {
+.item:focus-visible { color: var(--item-hover); }
+
+.item:hover .label,
+.item:focus-visible .label,
+.item.active .label {
   color: var(--item-hover);
 }
+
 .item:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--item-hover) 50%, white);
   border-radius: 999px;
 }
 
-/* Active (clicked) → theme hover color + squeeze */
 .item:active {
   transform: translate(calc(-50% + var(--x, 0px)), calc(-50% + var(--y, 0px))) scale(.96);
-}
-
-/* Active state persistent color */
-.item.active,
-.item.active .label {
-  color: var(--item-hover);
 }
 
 /* Optional tiny tick that follows state */
@@ -184,33 +192,33 @@
 
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
-  .heroWrapper, .overlay, .center, .ring, .item {
+  .heroWrapper, .overlay, .center, .ring, .item, .center img {
     animation: none !important;
     transition: none !important;
   }
 }
 
-/* ---- Theme variables (authoritative) ---- */
-/* Light mode → idle dark, hover/active secondary */
-.light-mode .heroWrapper {
+/* ---- THEME OVERRIDES (must be global in a CSS module) ---- */
+/* Light mode → idle DARK, hover/active SECONDARY */
+:global(.light-mode) .heroWrapper {
   --center-bg: #f8f8f8;
   --center-fg: var(--color-dark);
-  --item-fg: var(--color-secondary);       /* idle */
-  --item-hover: var(--color-accent);/* hover/active */
+  --item-fg: var(--color-white);         /* idle */
+  --item-hover: var(--color-success); /* hover/active */
   --tick: color-mix(in oklab, var(--color-dark) 90%, transparent);
 }
-.light-mode .overlay {
+:global(.light-mode) .overlay {
   background: color-mix(in oklab, var(--color-secondary) 50%, transparent);
 }
 
-/* Dark mode → idle light, hover/active accent */
-.dark-mode .heroWrapper {
+/* Dark mode → idle LIGHT, hover/active ACCENT */
+:global(.dark-mode) .heroWrapper {
   --center-bg: #f2f2f2;
   --center-fg: var(--color-dark);
-  --item-fg: var(--color-light);      /* idle */
-  --item-hover: var(--color-accent);  /* hover/active */
+  --item-fg: var(--color-light);        /* idle */
+  --item-hover: var(--color-accent);    /* hover/active */
   --tick: color-mix(in oklab, var(--color-light) 95%, transparent);
 }
-.dark-mode .overlay {
+:global(.dark-mode) .overlay {
   background: color-mix(in oklab, var(--color-dark) 60%, transparent);
 }

@@ -32,6 +32,11 @@ type CircleNavProps = {
   selectedCategory?: string;
 };
 
+type OrbitVars = React.CSSProperties & {
+  ["--x"]?: string;
+  ["--y"]?: string;
+};
+
 function toSlug(input: string) {
   return input
     .toLowerCase()
@@ -120,13 +125,16 @@ export default function CircleNav({
           {/* Center hub: selected category image (fallback to text) */}
           <div className={`${styles.center} ${styles.plate}`}>
             {centerImgSrc ? (
-              <Image
+             <Image
+                key={centerImgSrc} // forces re-render on change
                 src={centerImgSrc}
                 alt={`${selectedCategory ?? "Category"} preview`}
                 fill
                 sizes="(max-width: 768px) 40vw, 260px"
                 priority
+                className="rotate-in"
               />
+
             ) : (
               center ?? <span className={styles.centerText}>Categories</span>
             )}
@@ -138,13 +146,10 @@ export default function CircleNav({
             const x = Math.cos(angle) * r;
             const y = Math.sin(angle) * r;
 
-            const style = {
-              // pass coordinates as CSS vars; CSS applies the translate
-              // @ts-expect-error custom CSS variables
-              "--x": `${x}px`,
-              // @ts-expect-error custom CSS variables
-              "--y": `${y}px`,
-            } as React.CSSProperties;
+            const style: OrbitVars = {
+              ["--x"]: `${x}px`,
+              ["--y"]: `${y}px`,
+            };
 
             const selected = cat === selectedCategory;
 
