@@ -22,6 +22,12 @@ function toSlug(input: string) {
     .replace(/-+/g, "-");
 }
 
+function excerpt(text?: string, max = 140) {
+  if (!text) return "";
+  const clean = text.replace(/\r?\n+/g, " ").trim();
+  return clean.length > max ? clean.slice(0, max - 1) + "…" : clean;
+}
+
 export default function RecipeGrid({ language, category }: Props) {
   const recipes = useMemo(
     () =>
@@ -31,59 +37,72 @@ export default function RecipeGrid({ language, category }: Props) {
     [language, category]
   );
 
-  if (recipes.length === 0) {
-    return (
-      <div className={styles.empty}>
-        <p>
-          No recipes found for <strong>{category}</strong>.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <section className={styles.gridSection} aria-label={`${category} recipes`}>
       <header className={styles.header}>
         <h2 className={styles.title}>{category}</h2>
         <p className={styles.subtitle}>
-          {recipes.length} recipe{recipes.length > 1 ? "s" : ""} found
+          {recipes.length} recipe{recipes.length === 1 ? "" : "s"} found
         </p>
       </header>
 
-      <div className={styles.grid}>
-        {recipes.map((r) => {
-          const href = `/${language}/recipes/${toSlug(r.slug)}`;
+      {recipes.length === 0 ? (
+        <div className={styles.empty}>
+          <p>No recipes yet for <strong>{category}</strong>.</p>
+        </div>
+      ) : (
+        <div className={styles.grid}>
+          {recipes.map((r) => {
+            const href = `/${language}/recipes/${toSlug(r.slug ?? r.title)}`;
+            const img = (r as any).image_url ?? (r as any).image;
 
-          return (
-            <article key={r.id} className={styles.card}>
-              <div className={styles.media}>
-                <Image
-                  src={(r as any).image_url ?? (r as any).image}
-                  alt={r.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-              </div>
+            const duration =
+              (r as any).valuable_info?.duration ??
+              (r as any).valuable_info?.time ??
+              null;
+            const difficulty = (r as any).valuable_info?.difficulty ?? null;
+            const portions = (r as any).valuable_info?.portions ?? null;
 
-              <div className={styles.body}>
-                <h3 className={styles.cardTitle}>{r.title}</h3>
-                {/* If you have an excerpt/short description in your data, show it here */}
-                {/* <p className={styles.excerpt}>{r.excerpt}</p> */}
-                <div className={styles.metaRow}>
-                  <span className={styles.badge}>{r.category}</span>
-                  <span className={styles.badge}>{language.toUpperCase()}</span>
+            return (
+              <Link key={r.id} href={href} className={styles.card}>
+                <div className={styles.media}>
+                  {img && (
+                    <Image
+                      src={img}
+                      alt={r.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority={false}
+                    />
+                  )}
                 </div>
-              </div>
 
-              <div className={styles.footer}>
-                <Link className={styles.button} href={href}>
-                  View recipe
-                </Link>
-              </div>
-            </article>
-          );
-        })}
-      </div>
+                <div className={styles.body}>
+                  <h3 className={styles.cardTitle}>{r.title}</h3>
+                  <p className={styles.excerpt}>
+                    {excerpt((r as any).description)}
+                  </p>
+
+                  <div className={styles.metaRow} aria-label="Recipe facts">
+                    <span className={styles.meta}>
+                      <span className={styles.metaIcon} aria-hidden>⏱</span>
+                      {duration ? `${duration} min` : "—"}
+                    </span>
+                    <span className={styles.meta}>
+                      <span className={styles.metaIcon} aria-hidden>🍳</span>
+                      {difficulty ?? "—"}
+                    </span>
+                    <span className={styles.meta}>
+                      <span className={styles.metaIcon} aria-hidden>🍽</span>
+                      {portions ?? "—"}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 }

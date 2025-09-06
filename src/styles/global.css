@@ -29,6 +29,8 @@
   /* 🔤 Fonts */
   --font-primary: 'Josefin Sans', sans-serif;
   --font-secondary: 'Winky Sans', sans-serif;
+  /* header offset */
+  --header-height: 200px; 
 }
 
 /* 🌐 Base Reset */
@@ -51,11 +53,11 @@ body {
  
 }
 .light-mode body{
-  background-color: var(--color-secondary);
+      background:color-mix(in oklab, var(--color-dark) 10%, var(--color-light));
   color: var(--color-dark);
 }
 .dark-mode body{
-  background-color: var(--color-dark);
+      background: color-mix(in oklab, var(--color-light) 8%, var(--color-dark));
   color: var(--color-light);
 }
 /* ✍️ Typography */

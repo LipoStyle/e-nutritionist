@@ -1,0 +1,276 @@
+/* ============================
+   RecipeDetail.module.css
+   — matches page.tsx markup —
+   ============================ */
+
+/* Page container */
+.page {
+  --radius: 16px;
+  --pad: 20px;
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding-bottom: 56px;
+}
+
+/* HERO (full-bleed inside centered page) */
+.hero {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-top: var(--header-height, 88px);
+  min-height: 42vh;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0,0,0,.25);
+  display: grid;
+  margin-bottom: 28px;
+}
+.heroImageWrap { position: absolute; inset: 0; }
+.heroImage { object-fit: cover; }
+.heroOverlay {
+  position: absolute; inset: 0;
+  background: color-mix(in oklab, var(--color-dark) 45%, transparent);
+}
+.heroContent {
+  position: relative;
+  z-index: 1;
+  padding: clamp(18px, 3.6vw, 32px);
+  display: grid;
+  gap: clamp(8px, 1.4vw, 12px);
+  align-content: center;
+  text-align: center;
+}
+.heroTitle {
+  font-family: var(--font-secondary, var(--font-primary));
+  font-weight: 800;
+  font-size: clamp(1.8rem, 4.6vw, 3rem);
+  color: var(--color-light);
+}
+
+/* heroMeta pills (duration/difficulty/servings) */
+.heroMeta {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 4px;
+  list-style: none;
+  padding: 0;
+}
+.metaPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.14);
+  color: var(--color-light);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  font-weight: 700;
+}
+.metaDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-accent);
+}
+
+/* Generic section scaffolding */
+.section {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 0 12px;
+}
+.sectionTitle {
+  font-family: var(--font-secondary, var(--font-primary));
+  font-weight: 800;
+  font-size: clamp(1.15rem, 3vw, 1.6rem);
+  margin-bottom: 10px;
+}
+
+/* DESCRIPTION section */
+.descSection { margin-bottom: 22px; }
+.lead {
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  line-height: 1.6;
+  opacity: .95;
+  color: var(--desc-fg, var(--color-light));
+}
+
+/* PHOTO section */
+.photoSection { margin: 18px 0 24px; }
+.photoFrame {
+  position: relative;
+  width: min(900px, 100%);
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 14px 36px rgba(0,0,0,.24);
+  background: #0f1a1f;
+}
+.photoImg { object-fit: cover; }
+
+/* =========================
+   COOK SECTION (SEAMLESS)
+   ========================= */
+.cookSection { margin-top: 6px; }
+
+/* seamless two-column slab: NO gaps, NO rounded corners */
+.twoColSeamless {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;            /* no spacing between columns */
+  margin: 0;
+}
+
+/* left & right slabs share rhythm, flat edges */
+.slabLeft,
+.slabRight {
+  padding: clamp(16px, 2.2vw, 22px);
+  border-radius: 0;   /* flat */
+}
+
+/* subtle separator between columns */
+.slabRight { border-left: 1px solid var(--slab-sep); }
+
+/* Titles */
+.slabTitle {
+  font-family: var(--font-secondary, var(--font-primary));
+  font-weight: 800;
+  margin: 2px 0 12px;
+  font-size: clamp(1.1rem, 2.6vw, 1.4rem);
+}
+
+/* TIP bar */
+.tipBar {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 10px;
+  padding: 10px 12px;
+  margin: 0 0 12px;
+  border-radius: 0;               /* flat */
+  background: var(--tip-bg);
+  color: var(--tip-fg);
+}
+.tipBadge {
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--badge-bg);
+  color: var(--badge-fg);
+  line-height: 1;
+}
+.tipText { margin: 0; font-size: .95rem; opacity: .95; }
+
+/* Rows (both ingredients & steps) */
+.listRows { list-style: none; margin: 0; padding: 0; }
+.row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 12px;
+  padding: 12px 2px;
+  border-bottom: 1px solid var(--row-divider);
+}
+.row:last-child { border-bottom: none; }
+
+.rowCheck {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: var(--color-accent);
+}
+.rowText { line-height: 1.35; }
+.rowStrong { font-weight: 800; }
+.rowStepNo { font-weight: 800; color: var(--color-accent); }
+.rowName { opacity: .95; }
+
+.emptyNote { opacity: .85; margin: 8px 0 0; }
+
+/* =========================
+   NUTRITION
+   ========================= */
+.nutriSection { margin-top: 28px; }
+.nutriGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+.nutriCard {
+  background: var(--card-bg);
+  color: var(--card-fg);
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.05),
+    0 6px 16px rgba(0,0,0,.12);
+}
+.nutriName { font-weight: 800; margin-bottom: 4px; }
+.nutriValue { font-weight: 700; }
+
+/* =========================
+   THEMING
+   ========================= */
+.dark-mode .page {
+  --card-bg: rgba(255,255,255,.06);
+  --card-fg: var(--color-light);
+  --desc-fg: var(--color-light);
+}
+
+/* Dark: opposite slabs using theme colors */
+.dark-mode .twoColSeamless {
+  --slab-sep: color-mix(in oklab, var(--color-light) 14%, transparent);
+  --row-divider: color-mix(in oklab, var(--color-light) 14%, transparent);
+}
+.dark-mode .slabLeft {
+  background: color-mix(in oklab, var(--color-secondary) 18%, black); /* brighter */
+  color: var(--color-light);
+}
+.dark-mode .slabRight {
+  background: color-mix(in oklab, var(--color-dark) 86%, black);      /* deep dark */
+  color: var(--color-light);
+}
+.dark-mode .tipBar {
+  --tip-bg: color-mix(in oklab, var(--color-light) 8%, black);
+  --tip-fg: var(--color-light);
+  --badge-bg: var(--color-accent);
+  --badge-fg: white;
+}
+
+/* Light: opposite slabs using theme colors */
+.light-mode .page {
+  --card-bg: color-mix(in oklab, var(--color-secondary) 12%, white);
+  --card-fg: var(--color-dark);
+  --desc-fg: var(--color-dark);
+}
+.light-mode .twoColSeamless {
+  --slab-sep: color-mix(in oklab, var(--color-dark) 12%, transparent);
+  --row-divider: color-mix(in oklab, var(--color-dark) 12%, transparent);
+}
+.light-mode .slabLeft {
+  background: color-mix(in oklab, var(--color-light) 98%, white);     /* clean light */
+  color: var(--color-dark);
+}
+.light-mode .slabRight {
+  background: color-mix(in oklab, var(--color-secondary) 22%, white); /* tinted */
+  color: var(--color-dark);
+}
+.light-mode .tipBar {
+  --tip-bg: color-mix(in oklab, var(--color-secondary) 16%, white);
+  --tip-fg: var(--color-dark);
+  --badge-bg: var(--color-secondary);
+  --badge-fg: white;
+}
+
+/* Responsive: stack slabs, keep a subtle divider */
+@media (max-width: 900px) {
+  .twoColSeamless { grid-template-columns: 1fr; }
+  .slabRight {
+    border-left: none;
+    border-top: 1px solid var(--slab-sep);
+  }
+}
