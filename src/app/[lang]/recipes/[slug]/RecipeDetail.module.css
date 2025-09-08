@@ -93,10 +93,12 @@
 /* DESCRIPTION section */
 .descSection { margin-bottom: 22px; }
 .lead {
+  text-align: center;
   font-size: clamp(1rem, 2vw, 1.1rem);
   line-height: 1.6;
   opacity: .95;
-  color: var(--desc-fg, var(--color-light));
+  width: 70%;
+  margin: 0 auto;
 }
 
 /* PHOTO section */
@@ -220,7 +222,9 @@
   --card-fg: var(--color-light);
   --desc-fg: var(--color-light);
 }
-
+.dark-mode .lead{
+  color: var(--color-light);
+}
 /* Dark: opposite slabs using theme colors */
 .dark-mode .twoColSeamless {
   --slab-sep: color-mix(in oklab, var(--color-light) 14%, transparent);
@@ -246,6 +250,9 @@
   --card-bg: color-mix(in oklab, var(--color-secondary) 12%, white);
   --card-fg: var(--color-dark);
   --desc-fg: var(--color-dark);
+}
+.light-mode .lead{
+  color: var(--color-dark);
 }
 .light-mode .twoColSeamless {
   --slab-sep: color-mix(in oklab, var(--color-dark) 12%, transparent);

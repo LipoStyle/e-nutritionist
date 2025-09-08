@@ -1,0 +1,65 @@
+/* RecipeHero.module.css */
+/* HERO (full-bleed inside centered page) */
+.hero {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-top: var(--header-height, 88px);
+  min-height: 42vh;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0,0,0,.25);
+  display: grid;
+  margin-bottom: 28px;
+}
+.heroImageWrap { position: absolute; inset: 0; }
+.heroImage { object-fit: cover; }
+.heroOverlay {
+  position: absolute; inset: 0;
+  background: color-mix(in oklab, var(--color-dark) 45%, transparent);
+}
+.heroContent {
+  position: relative;
+  z-index: 1;
+  padding: clamp(18px, 3.6vw, 32px);
+  display: grid;
+  gap: clamp(8px, 1.4vw, 12px);
+  align-content: center;
+  text-align: center;
+}
+.heroTitle {
+  font-family: var(--font-secondary, var(--font-primary));
+  font-weight: 800;
+  font-size: clamp(1.8rem, 4.6vw, 3rem);
+  color: var(--color-light);
+}
+
+/* heroMeta pills (duration/difficulty/servings) */
+.heroMeta {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 4px;
+  list-style: none;
+  padding: 0;
+}
+.metaPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.14);
+  color: var(--color-light);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  font-weight: 700;
+}
+.metaDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-accent);
+}

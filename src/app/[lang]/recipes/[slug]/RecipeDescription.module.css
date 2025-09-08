@@ -1,0 +1,22 @@
+/* RecipeDescription.module.css */
+/* Generic section scaffolding (used here) */
+.section {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+/* DESCRIPTION section */
+.descSection { /* kept for parity if needed elsewhere */ }
+.lead {
+  text-align: center;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  line-height: 1.6;
+  opacity: .95;
+  width: 70%;
+  margin: 0 auto;
+}
+
+/* Theming of description text color (optional override) */
+:global(.dark-mode) .lead { color: var(--color-light); }
+:global(.light-mode) .lead { color: var(--color-dark); }

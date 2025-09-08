@@ -1,0 +1,21 @@
+/* PageShell.module.css */
+/* Page container */
+.page {
+  --radius: 16px;
+  --pad: 20px;
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding-bottom: 56px;
+}
+
+/* THEMING (scoped for CSS Modules) */
+:global(.dark-mode) .page {
+  --card-bg: rgba(255,255,255,.06);
+  --card-fg: var(--color-light);
+  --desc-fg: var(--color-light);
+}
+:global(.light-mode) .page {
+  --card-bg: color-mix(in oklab, var(--color-secondary) 12%, white);
+  --card-fg: var(--color-dark);
+  --desc-fg: var(--color-dark);
+}

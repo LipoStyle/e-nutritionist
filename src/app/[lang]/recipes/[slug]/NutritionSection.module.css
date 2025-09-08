@@ -1,0 +1,75 @@
+/* NutritionSection.module.css */
+
+/* Section wrapper */
+.section {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+/* Title */
+.sectionTitle {
+  font-family: var(--font-secondary, var(--font-primary));
+  font-weight: 800;
+  font-size: clamp(1.15rem, 3vw, 1.6rem);
+  margin: 0 0 18px;
+  text-align: center;
+}
+
+/* Nutrition Grid */
+.nutriSection { margin-top: 28px; }
+.nutriGrid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+/* Nutrition Card */
+.nutriCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--nutri-bg);
+  color: var(--nutri-fg);
+  border-radius: 12px;
+  padding: 16px 18px;
+  text-align: center;
+  box-shadow:
+    inset 0 0 0 1px var(--nutri-border),
+    0 3px 8px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Card content */
+.nutriName {
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+.nutriValue {
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+}
+.nutriSub {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+/* =========================
+   THEMING
+   ========================= */
+
+/* Light mode: white cards */
+:global(.light-mode) .nutriCard {
+  --nutri-bg: #fff;
+  --nutri-fg: var(--color-dark);
+  --nutri-border: color-mix(in oklab, var(--color-dark) 10%, transparent);
+}
+
+/* Dark mode: dark panels */
+:global(.dark-mode) .nutriCard {
+  --nutri-bg: color-mix(in oklab, var(--color-dark) 92%, black);
+  --nutri-fg: var(--color-light);
+  --nutri-border: color-mix(in oklab, var(--color-light) 10%, transparent);
+}

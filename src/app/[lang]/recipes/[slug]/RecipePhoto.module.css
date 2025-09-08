@@ -1,0 +1,21 @@
+/* RecipePhoto.module.css */
+/* Generic section scaffolding (used here) */
+.section {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+/* PHOTO section */
+.photoSection { margin: 18px 0 24px; } /* kept for parity if needed */
+.photoFrame {
+  position: relative;
+  width: min(900px, 100%);
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 14px 36px rgba(0,0,0,.24);
+  background: #0f1a1f;
+}
+.photoImg { object-fit: cover; }
