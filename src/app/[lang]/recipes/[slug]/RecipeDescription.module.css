@@ -1,22 +1,41 @@
 /* RecipeDescription.module.css */
-/* Generic section scaffolding (used here) */
+
+/* Section wrapper */
 .section {
-  width: min(1200px, 100%);
-  margin: 0 auto;
+  width: 100%;
+  margin: 32px auto;          /* space above & below */
   padding: 0 12px;
 }
 
-/* DESCRIPTION section */
-.descSection { /* kept for parity if needed elsewhere */ }
+/* DESCRIPTION text */
 .lead {
   text-align: center;
   font-size: clamp(1rem, 2vw, 1.1rem);
-  line-height: 1.6;
+  line-height: 1.65;
   opacity: .95;
-  width: 70%;
+
+  /* Default: desktop ~65% width */
+  width: 65%;
   margin: 0 auto;
 }
 
-/* Theming of description text color (optional override) */
+/* Make it expand as screen gets smaller */
+@media (max-width: 1024px) {
+  .lead {
+    width: 75%;
+  }
+}
+@media (max-width: 768px) {
+  .lead {
+    width: 85%;
+  }
+}
+@media (max-width: 600px) {
+  .lead {
+    width: 93%;   /* max allowed */
+  }
+}
+
+/* Theming of description text color */
 :global(.dark-mode) .lead { color: var(--color-light); }
 :global(.light-mode) .lead { color: var(--color-dark); }

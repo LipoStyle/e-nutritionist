@@ -57,9 +57,19 @@
   -webkit-backdrop-filter: blur(4px);
   font-weight: 700;
 }
+
+/* Dot base */
 .metaDot {
   width: 8px;
   height: 8px;
   border-radius: 999px;
-  background: var(--color-accent);
+  background: var(--color-accent); /* fallback */
+}
+
+/* Theme-aware dot color */
+:global(.light-mode) .metaDot {
+  background: var(--color-success); /* e.g., green on light */
+}
+:global(.dark-mode) .metaDot {
+  background: var(--color-accent);  /* e.g., accent on dark */
 }
