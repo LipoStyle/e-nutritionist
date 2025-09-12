@@ -65,10 +65,16 @@ export default function AdminDashboard() {
           <p>Edit site content (pages, blog, recipes, media).</p>
         </Link>
 
-        {/* NEW: Service Plans dashboard card */}
+        {/* Service Plans dashboard card */}
         <Link href={`/${lang}/admin/service-plans`} className="card action">
           <h3>Service Plans</h3>
           <p>Create, edit, publish, and organize plans & features.</p>
+        </Link>
+
+        {/* NEW: Recipes dashboard card */}
+        <Link href={`/${lang}/admin/recipes`} className="card action">
+          <h3>Recipes</h3>
+          <p>Create, edit, organize, and publish recipes.</p>
         </Link>
       </section>
     </main>

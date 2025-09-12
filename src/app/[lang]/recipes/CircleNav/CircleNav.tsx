@@ -1,11 +1,10 @@
-"use client";
+'use client';
 
-import React, { useMemo } from "react";
-import Image from "next/image";
-import styles from "./CircleNav.module.css";
-import { recipesData } from "./recipesData";
+import React, { useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
+import styles from './CircleNav.module.css';
 
-type LangCode = "en" | "es" | "el";
+type LangCode = 'en' | 'es' | 'el';
 
 type CircleNavProps = {
   language?: LangCode;
@@ -33,21 +32,23 @@ type CircleNavProps = {
 };
 
 type OrbitVars = React.CSSProperties & {
-  ["--x"]?: string;
-  ["--y"]?: string;
+  ['--x']?: string;
+  ['--y']?: string;
 };
+
+type ApiCategory = { name: string; imageUrl: string | null };
 
 function toSlug(input: string) {
   return input
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
 }
 
 export default function CircleNav({
-  language,
+  language = 'en',
   categoriesOverride,
   ringSize = 360,
   radius,
@@ -60,51 +61,91 @@ export default function CircleNav({
   centerImageForCategory,
   selectedCategory,
 }: CircleNavProps) {
+  // Local state from DB
+  const [dbCats, setDbCats] = useState<string[]>([]);
+  const [dbCenterImageMap, setDbCenterImageMap] = useState<Record<string, string | undefined>>({});
+  const [loading, setLoading] = useState(true);
+
+  // Fetch categories from API whenever language changes
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/public/recipes/categories?language=${language}`, {
+          cache: 'no-store',
+        });
+        if (!res.ok) throw new Error(`Failed to load categories (${res.status})`);
+        const json = (await res.json()) as { categories: ApiCategory[] };
+        if (cancelled) return;
+
+        const names = json.categories.map((c) => c.name);
+        const map: Record<string, string | undefined> = {};
+        for (const c of json.categories) {
+          if (c.imageUrl) map[c.name] = c.imageUrl;
+        }
+
+        setDbCats(names);
+        setDbCenterImageMap(map);
+      } catch {
+        // If API fails, keep empty → component will render nothing (same as before when no categories)
+        setDbCats([]);
+        setDbCenterImageMap({});
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [language]);
+
   // Default radius to the ring perimeter
-  const r = typeof radius === "number" ? radius : ringSize / 2;
+  const r = typeof radius === 'number' ? radius : ringSize / 2;
 
   // Categories (unique, optionally filtered by override)
   const categories = useMemo(() => {
-    const base = language
-      ? recipesData.filter((re) => re.language === language)
-      : recipesData;
-
-    const uniq: string[] = [];
-    for (const rec of base) {
-      if (rec.category && !uniq.includes(rec.category)) uniq.push(rec.category);
-    }
+    const base = dbCats;
+    if (!base.length) return [];
 
     if (categoriesOverride?.length) {
-      const set = new Set(uniq);
+      const set = new Set(base);
       return categoriesOverride.filter((c) => set.has(c));
     }
-    return uniq;
-  }, [language, categoriesOverride]);
+    return base;
+  }, [dbCats, categoriesOverride]);
 
   const count = categories.length;
-  if (count === 0) return null;
+  if (!loading && count === 0) return null;
 
   const isFullCircle = Math.abs(sweepDeg) >= 360;
-  const step = isFullCircle ? sweepDeg / count : count > 1 ? sweepDeg / (count - 1) : 0;
+  const step = count
+    ? isFullCircle
+      ? sweepDeg / count
+      : count > 1
+        ? sweepDeg / (count - 1)
+        : 0
+    : 0;
 
-  // Background image for the hero area
+  // Background image for the hero area:
+  // 1) prop map, 2) DB center image for selected category, 3) default
+  const selectedImg =
+    (selectedCategory && dbCenterImageMap[selectedCategory]) || undefined;
+
   const bg =
-    (selectedCategory && backgroundForCategory?.[selectedCategory]) ??
-    "/assets/recipes/cards/default.jpg";
+    (selectedCategory && backgroundForCategory?.[selectedCategory]) ||
+    selectedImg ||
+    '/assets/recipes/cards/default.jpg';
 
-  // Center image for the selected category
+  // Center image for the selected category:
+  // 1) preferred prop map, 2) DB image, 3) undefined → use fallback center node/text
   const centerImgSrc = useMemo(() => {
     if (!selectedCategory) return undefined;
-    // 1) preferred: provided map
     const byMap = centerImageForCategory?.[selectedCategory];
     if (byMap) return byMap;
-
-    // 2) fallback: first recipe image from this category
-    const candidate = recipesData.find(
-      (r) => r.category === selectedCategory && !!r.image
-    );
-    return candidate?.image;
-  }, [selectedCategory, centerImageForCategory]);
+    return dbCenterImageMap[selectedCategory];
+  }, [selectedCategory, centerImageForCategory, dbCenterImageMap]);
 
   // Choose semantic element: button when intercepting, anchor otherwise
   const useButton = Boolean(onCategorySelect);
@@ -125,16 +166,15 @@ export default function CircleNav({
           {/* Center hub: selected category image (fallback to text) */}
           <div className={`${styles.center} ${styles.plate}`}>
             {centerImgSrc ? (
-             <Image
+              <Image
                 key={centerImgSrc} // forces re-render on change
                 src={centerImgSrc}
-                alt={`${selectedCategory ?? "Category"} preview`}
+                alt={`${selectedCategory ?? 'Category'} preview`}
                 fill
                 sizes="(max-width: 768px) 40vw, 260px"
                 priority
                 className="rotate-in"
               />
-
             ) : (
               center ?? <span className={styles.centerText}>Categories</span>
             )}
@@ -147,8 +187,8 @@ export default function CircleNav({
             const y = Math.sin(angle) * r;
 
             const style: OrbitVars = {
-              ["--x"]: `${x}px`,
-              ["--y"]: `${y}px`,
+              ['--x']: `${x}px`,
+              ['--y']: `${y}px`,
             };
 
             const selected = cat === selectedCategory;
@@ -160,8 +200,8 @@ export default function CircleNav({
                   type="button"
                   onClick={() => onCategorySelect?.(cat)}
                   aria-label={`Category: ${cat}`}
-                  aria-current={selected ? "true" : undefined}
-                  className={`${styles.item} ${selected ? styles.active : ""}`}
+                  aria-current={selected ? 'true' : undefined}
+                  className={`${styles.item} ${selected ? styles.active : ''}`}
                   style={style}
                   role="listitem"
                 >
@@ -178,8 +218,8 @@ export default function CircleNav({
                 key={cat}
                 href={href}
                 aria-label={`Category: ${cat}`}
-                aria-current={selected ? "page" : undefined}
-                className={`${styles.item} ${selected ? styles.active : ""}`}
+                aria-current={selected ? 'page' : undefined}
+                className={`${styles.item} ${selected ? styles.active : ''}`}
                 style={style}
                 role="listitem"
               >

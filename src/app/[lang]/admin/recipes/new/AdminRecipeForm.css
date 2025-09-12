@@ -1,0 +1,68 @@
+/* Form wrapper */
+.recipe-form {
+  padding: 16px;
+  border-radius: 14px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.light-mode .recipe-form { background: color-mix(in oklab, var(--color-secondary-transparent) 92%, transparent); }
+.dark-mode  .recipe-form { background: color-mix(in oklab, var(--color-dark-transparent) 92%, transparent); }
+
+/* Grid helpers */
+.rf-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 12px;
+}
+@media (max-width: 820px) { .rf-grid { grid-template-columns: 1fr; } }
+.rf-col-span-2 { grid-column: span 2; }
+
+.rf-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+.rf-help { opacity: .8; font-size: .85rem; margin-top: 4px; }
+.rf-image-preview {
+  margin-top: 8px; width: 100%; max-height: 240px; object-fit: cover; border-radius: 10px;
+}
+
+/* Repeating rows (ingredients/steps/nutri) */
+.rf-block { margin-top: 18px; }
+.rf-block-title { font-weight: 800; margin-bottom: 10px; }
+
+.rf-rep-grid { display: grid; gap: 8px; }
+.rf-rep-row { display: grid; gap: 8px; align-items: start; }
+.rf-ingredients .rf-rep-row { grid-template-columns: 2fr 1fr 1fr auto; }
+.rf-steps .rf-rep-row { grid-template-columns: 1fr auto; }
+.rf-nutri .rf-rep-row { grid-template-columns: 2fr 1fr 1fr auto; }
+@media (max-width: 820px) {
+  .rf-ingredients .rf-rep-row,
+  .rf-steps .rf-rep-row,
+  .rf-nutri .rf-rep-row { grid-template-columns: 1fr auto; }
+}
+
+.rf-mini { padding: 8px 10px; border-radius: 10px; }
+.rf-add { margin-top: 8px; border-radius: 12px; }
+
+/* Inputs */
+.recipe-form .input {
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 10px 12px;
+  width: 100%;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+.light-mode .recipe-form .input { background-color: color-mix(in oklab, var(--color-light) 85%, transparent); }
+.dark-mode  .recipe-form .input { background-color: color-mix(in oklab, var(--color-dark) 70%, transparent); }
+.recipe-form .input:focus {
+  border-color: color-mix(in oklab, var(--color-accent) 55%, white);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent) 25%, transparent);
+}
+
+/* Actions */
+.rf-actions {
+  margin-top: 16px;
+  display: flex; gap: 10px; justify-content: flex-end; align-items: center;
+}

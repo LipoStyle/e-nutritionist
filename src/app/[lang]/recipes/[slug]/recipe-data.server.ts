@@ -1,23 +1,38 @@
-// src/app/[lang]/recipes/[slug]/recipe-data.server.ts
-// Server-only utility: do NOT add "use client"
-import { recipesData } from "@/app/[lang]/recipes/CircleNav/recipesData";
+import { prisma } from '@/lib/prisma';
 
-export type Recipe = (typeof recipesData)[number];
+export type Lang = 'en' | 'es' | 'el';
 
-/** Normalize a string into a URL-safe slug */
-export function toSlug(input: string): string {
-  return input
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g, "") // strip non-alphanumeric
-    .replace(/\s+/g, "-") // spaces → dashes
-    .replace(/-+/g, "-"); // collapse multiple dashes
-}
+export async function getRecipeBySlug(lang: Lang, slug: string) {
+  const r = await prisma.recipe.findFirst({
+    where: { language: lang, slug },
+    include: {
+      ingredients: true,
+      instructions: { orderBy: { stepNumber: 'asc' } },
+      valuableInfo: true,
+      nutritionalFacts: true,
+      metaInfo: true,
+    },
+  });
+  if (!r) return null;
 
-/** Find a recipe by slug (case-insensitive) */
-export async function getRecipeBySlug(slug: string): Promise<Recipe | null> {
-  const s = toSlug(slug);
-  return (
-    recipesData.find((r) => toSlug(r.slug ?? r.title) === s) ?? null
-  );
+  return {
+    id: r.id,
+    title: r.title,
+    slug: r.slug,
+    language: r.language,
+    category: r.category,
+    short_description: r.shortDescription ?? null,
+    description: r.description ?? null,
+    image_url: r.imageUrl ?? null,
+    published_date: r.publishedDate ? r.publishedDate.toISOString() : null,
+    ingredients: r.ingredients.map(i => ({ id: i.id, name: i.name, quantity: i.quantity, size: i.size })),
+    instructions: r.instructions.map(s => ({ id: s.id, step_number: s.stepNumber, step_content: s.stepContent })),
+    valuable_info: r.valuableInfo
+      ? { duration: r.valuableInfo.duration, difficulty: r.valuableInfo.difficulty, portions: r.valuableInfo.portions }
+      : null,
+    nutritional_facts: r.nutritionalFacts.map(n => ({ id: n.id, name: n.name, quantity: n.quantity, size: n.size })),
+    meta_info: r.metaInfo
+      ? { meta_title: r.metaInfo.metaTitle ?? null, meta_description: r.metaInfo.metaDescription ?? null, meta_keywords: r.metaInfo.metaKeywords ?? null }
+      : null,
+  };
 }

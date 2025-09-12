@@ -207,6 +207,5 @@
   .slabRight {
     border-left: none;
     border-top: 1px solid var(--slab-sep);
-    margin-top: 10px; /* little spacing between blocks */
   }
 }

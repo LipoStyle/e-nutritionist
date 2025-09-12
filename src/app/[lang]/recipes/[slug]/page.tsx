@@ -18,12 +18,14 @@ import {
 } from "./helpers";
 import type { Params, Recipe } from "./types";
 
+export const dynamic = "force-dynamic";
+
 /* ── Metadata ─────────────────────────────────────────────── */
 export async function generateMetadata(
   { params }: { params: Promise<Params> }
 ): Promise<Metadata> {
-  const { slug } = await params; // ✅ await params
-  const recipe = (await getRecipeBySlug(slug)) as Recipe | null;
+  const { lang, slug } = await params; // include lang for DB query
+  const recipe = (await getRecipeBySlug(lang, slug)) as Recipe | null;
   if (!recipe) return {};
 
   const title = recipe.meta_info?.meta_title ?? recipe.title;
@@ -44,8 +46,8 @@ export async function generateMetadata(
 export default async function Page(
   { params }: { params: Promise<Params> }
 ) {
-  const { lang, slug } = await params; // ✅ await params
-  const recipe = (await getRecipeBySlug(slug)) as Recipe | null;
+  const { lang, slug } = await params; // include lang for DB query
+  const recipe = (await getRecipeBySlug(lang, slug)) as Recipe | null;
   if (!recipe) notFound();
 
   const img = normalizeImage(recipe);

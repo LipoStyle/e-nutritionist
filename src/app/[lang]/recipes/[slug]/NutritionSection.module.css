@@ -14,6 +14,7 @@
   font-size: clamp(1.15rem, 3vw, 1.6rem);
   margin: 32px 0 24px;  /* spacing top/bottom */
   text-align: center;
+  color: inherit;       /* theme will set it */
 }
 
 /* Nutrition Grid */
@@ -67,13 +68,18 @@
   font-weight: 600;
   color: var(--nutri-sub);
 }
-.nutriSubPlaceholder { height: 1.2rem; } /* keeps cards equal height if missing */
+.nutriSubPlaceholder { height: 1.2rem; }
 
 /* =========================
-   THEMING
+   THEMING (use :global for theme classes)
    ========================= */
 
-/* Light mode: white bg, success accent & subtext */
+/* LIGHT MODE */
+:global(.light-mode) .sectionTitle {
+  /* pick one: success or secondary; using success for clarity */
+  color: var(--color-dark);
+}
+
 :global(.light-mode) .nutriCard {
   --nutri-bg: #fff;
   --nutri-fg: var(--color-dark);
@@ -82,11 +88,15 @@
   --nutri-sub: var(--color-success);
 }
 
-/* Dark mode: accent bg, light text; darker rule for contrast */
+/* DARK MODE */
+:global(.dark-mode) .sectionTitle {
+  color: var(--color-light);
+}
+
 :global(.dark-mode) .nutriCard {
   --nutri-bg: var(--color-dark);
   --nutri-fg: var(--color-light);
   --nutri-border: color-mix(in oklab, #000 12%, transparent);
   --nutri-rule: var(--color-light);
-  --nutri-sub: var(--color-accent); /* slightly off-white */
+  --nutri-sub: var(--color-accent);
 }

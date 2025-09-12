@@ -1,53 +1,40 @@
-// app/(demo)/recipes-radial/page.tsx
-"use client";
+// app/[lang]/recipes/page.tsx
+import { prisma } from '@/lib/prisma';
+import RadialClient from './RadialClient';
 
-import { useMemo, useState } from "react";
-import CircleNav from "@/app/[lang]/recipes/CircleNav/CircleNav";
-import RecipeGrid from "@/app/[lang]/recipes/RecipeGrid/RecipeGrid";
-import { recipesData } from "@/app/[lang]/recipes/CircleNav/recipesData";
+export const dynamic = 'force-dynamic';
 
-export default function Page() {
-  const language = "en" as const;
+type Lang = 'en' | 'es' | 'el';
 
-  // First category from data (falls back to "Breakfast")
-  const firstCategory = useMemo(() => {
-    const first = recipesData.find((r) => r.language === language);
-    return first?.category ?? "Breakfast";
-  }, [language]);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ lang: Lang }>;
+}) {
+  const { lang: language } = await params; // await params
 
-  const [category, setCategory] = useState<string>(firstCategory);
+  const rows = await prisma.recipe.findMany({
+    where: { language }, // <- removed `{ category: { not: null } }`
+    select: { category: true },
+    distinct: ['category'],
+    orderBy: { category: 'asc' },
+  });
 
-  // 🔑 Use EXACT keys that appear in recipesData.category
+  const categories = rows.map(r => r.category).filter(Boolean);
+  const initialCategory = categories[0] ?? 'Breakfast';
+
   const bgByCategory: Record<string, string> = {
-    Breakfast: "/assets/recipes/categories/breakfast.jpg",
-    Lunch: "/assets/recipes/categories/launch.jpg",
-    Snack: "/assets/recipes/categories/snak.jpg",
-    Dessert: "/assets/recipes/categories/dessert.jpg",
-    // Dinner: "/assets/recipes/categories/dinner.jpg", // add if your data has "Dinner"
+    Breakfast: '/assets/recipes/categories/breakfast.jpg',
+    Lunch: '/assets/recipes/categories/lunch.jpg',
+    Snack: '/assets/recipes/categories/snack.jpg',
+    Dessert: '/assets/recipes/categories/dessert.jpg',
   };
 
   return (
-    <div
-      style={{
-        minHeight: "80vh",
-        display: "grid",
-        gridTemplateRows: "auto 1fr",
-      }}
-    >
-      <CircleNav
-        language={language}
-        radius={160}
-        startDeg={-90}
-        sweepDeg={360}
-        onCategorySelect={(cat) => setCategory(cat)}
-        /* ⬇ hero background changes with category */
-        backgroundForCategory={bgByCategory}
-        /* ⬇ center plate image matches the background exactly */
-        centerImageForCategory={bgByCategory}
-        selectedCategory={category}
-      />
-
-      <RecipeGrid language={language} category={category} />
-    </div>
+    <RadialClient
+      language={language}
+      initialCategory={initialCategory}
+      bgByCategory={bgByCategory}
+    />
   );
 }

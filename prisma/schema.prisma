@@ -1,14 +1,15 @@
+// ---------------- Generators / Datasource ----------------
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider  = "postgresql"
-  url       = env("PRISMA_DATABASE_URL")
-  directUrl = env("POSTGRES_URL")
+  url       = env("PRISMA_DATABASE_URL") // used by the client
+  directUrl = env("POSTGRES_URL")        // used by migrate/introspect
 }
 
-
+// ---------------- Existing models ----------------
 model Admin {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -35,6 +36,7 @@ model HeroSetting {
 
   @@unique([pageKey, language], name: "hero_page_lang_unique")
 }
+
 // --- enums ---
 enum Lang {
   en
@@ -42,46 +44,140 @@ enum Lang {
   el
 }
 
-// --- models ---
+// ---------------- Service Plans (existing) ----------------
 model ServicePlan {
-  id              String                @id @default(cuid())
-  language        Lang
-  slug            String                                   // SEO slug per language
-  title           String                @db.VarChar(140)
-  summary         String?               @db.VarChar(200)    // short card blurb
-  description     String                @db.Text            // full page content
-  priceCents      Int                                       // store money in cents
-  coverImage      String?               @db.VarChar(600)
-  order           Int                   @default(1)
-  isActive        Boolean               @default(true)
+  id          String  @id @default(cuid())
+  language    Lang
+  slug        String // SEO slug per language
+  title       String  @db.VarChar(140)
+  summary     String? @db.VarChar(200) // short card blurb
+  description String  @db.Text // full page content
+  priceCents  Int // store money in cents
+  coverImage  String? @db.VarChar(600)
+  order       Int     @default(1)
+  isActive    Boolean @default(true)
 
   // SEO
-  metaTitle       String?               @db.VarChar(70)
-  metaDescription String?               @db.VarChar(160)
+  metaTitle       String? @db.VarChar(70)
+  metaDescription String? @db.VarChar(160)
 
   // timestamps
-  createdAt       DateTime              @default(now())
-  updatedAt       DateTime              @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // relations
-  features        ServicePlanFeature[]
+  features ServicePlanFeature[]
 
   @@unique([language, slug], name: "service_plans_language_slug_key")
   @@index([language, order])
-  @@map("service_plans")                                   // snake_case in DB to avoid case issues
+  @@map("service_plans") // snake_case in DB
 }
 
 model ServicePlanFeature {
-  id        String      @id @default(cuid())
-  planId    String
-  name      String      @db.VarChar(300)
-  order     Int         @default(1)
+  id     String @id @default(cuid())
+  planId String
+  name   String @db.VarChar(300)
+  order  Int    @default(1)
 
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  plan      ServicePlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  plan ServicePlan @relation(fields: [planId], references: [id], onDelete: Cascade)
 
   @@index([planId, order])
   @@map("service_plan_features")
+}
+
+// ---------------- Recipes (updated: no string limits + shortDescription) ----------------
+enum Difficulty {
+  easy
+  medium
+  hard
+}
+
+model Recipe {
+  id               String    @id @default(cuid())
+  language         Lang
+  slug             String
+  title            String            // TEXT (no length limit)
+  shortDescription String?           // NEW: small summary
+  description      String?           // long description
+  category         String            // TEXT
+  imageUrl         String?           // TEXT (long URLs OK)
+  publishedDate    DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  // relations
+  ingredients       Ingredient[]
+  instructions      Instruction[]
+  valuableInfo      ValuableInfo?
+  nutritionalFacts  NutritionalFact[]
+  metaInfo          MetaInfo?
+
+  @@unique([language, slug], name: "recipes_language_slug_key")
+  @@index([language, category, publishedDate])
+  @@map("recipes")
+}
+
+model Ingredient {
+  id       String  @id @default(cuid())
+  recipeId String
+  name     String          // TEXT
+  quantity Float           // integer or decimal
+  size     String          // TEXT
+
+  recipe   Recipe  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@index([recipeId])
+  @@map("recipe_ingredients")
+}
+
+model Instruction {
+  id          String @id @default(cuid())
+  recipeId    String
+  stepNumber  Int
+  stepContent String @db.Text
+
+  recipe      Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@index([recipeId, stepNumber])
+  @@map("recipe_instructions")
+}
+
+model ValuableInfo {
+  id         String     @id @default(cuid())
+  recipeId   String     @unique
+  duration   String            // TEXT, flexible like "30–35"
+  difficulty Difficulty @default(easy)
+  portions   Int        @default(1)
+
+  recipe     Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@map("recipe_valuable_info")
+}
+
+model NutritionalFact {
+  id       String  @id @default(cuid())
+  recipeId String
+  name     String          // TEXT
+  quantity Float           // integer or decimal
+  size     String          // TEXT
+
+  recipe   Recipe  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@index([recipeId])
+  @@map("recipe_nutritional_facts")
+}
+
+model MetaInfo {
+  id              String  @id @default(cuid())
+  recipeId        String  @unique
+  metaTitle       String?         // TEXT
+  metaDescription String?         // TEXT
+  metaKeywords    String?         // TEXT
+
+  recipe          Recipe  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@map("recipe_meta_info")
 }
