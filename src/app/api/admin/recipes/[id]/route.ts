@@ -1,9 +1,8 @@
 // src/app/api/admin/recipes/[id]/route.ts
-
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-import { NextResponse, type NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { verifyAdminToken } from '@/lib/auth';
@@ -17,18 +16,21 @@ const normDiff = (v: unknown): 'easy' | 'medium' | 'hard' => {
   return (['easy', 'medium', 'hard'] as const).includes(s as any) ? (s as any) : 'easy';
 };
 
-// ---- READ -------------------------------------------------------------
+// ───────────────────────── GET ─────────────────────────
 export async function GET(
-  _req: NextRequest,
-  { params }: { params: { id: string } }
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const token = (await cookies()).get('admin_token')?.value;
+  const { id } = await params;
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get('admin_token')?.value;
   if (!token) return unauth();
   try { await verifyAdminToken(token); } catch { return unauth(); }
 
   try {
     const r = await prisma.recipe.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         ingredients: true,
         instructions: { orderBy: { stepNumber: 'asc' } },
@@ -37,7 +39,6 @@ export async function GET(
         metaInfo: true,
       },
     });
-
     if (!r) return j(404, { error: 'NOT_FOUND' });
 
     return j(200, {
@@ -50,28 +51,14 @@ export async function GET(
       description: r.description,
       image_url: r.imageUrl,
       published_date: r.publishedDate,
-      ingredients: r.ingredients.map(i => ({
-        id: i.id, name: i.name, quantity: i.quantity, size: i.size,
-      })),
-      instructions: r.instructions.map(s => ({
-        id: s.id, step_number: s.stepNumber, step_content: s.stepContent,
-      })),
+      ingredients: r.ingredients.map(i => ({ id: i.id, name: i.name, quantity: i.quantity, size: i.size })),
+      instructions: r.instructions.map(s => ({ id: s.id, step_number: s.stepNumber, step_content: s.stepContent })),
       valuable_info: r.valuableInfo
-        ? {
-            duration: r.valuableInfo.duration,
-            difficulty: r.valuableInfo.difficulty,
-            portions: r.valuableInfo.portions,
-          }
+        ? { duration: r.valuableInfo.duration, difficulty: r.valuableInfo.difficulty, portions: r.valuableInfo.portions }
         : null,
-      nutritional_facts: r.nutritionalFacts.map(n => ({
-        id: n.id, name: n.name, quantity: n.quantity, size: n.size,
-      })),
+      nutritional_facts: r.nutritionalFacts.map(n => ({ id: n.id, name: n.name, quantity: n.quantity, size: n.size })),
       meta_info: r.metaInfo
-        ? {
-            meta_title: r.metaInfo.metaTitle,
-            meta_description: r.metaInfo.metaDescription,
-            meta_keywords: r.metaInfo.metaKeywords,
-          }
+        ? { meta_title: r.metaInfo.metaTitle, meta_description: r.metaInfo.metaDescription, meta_keywords: r.metaInfo.metaKeywords }
         : null,
     });
   } catch (err: any) {
@@ -80,25 +67,24 @@ export async function GET(
   }
 }
 
-// ---- UPDATE -----------------------------------------------------------
+// ───────────────────────── PUT ─────────────────────────
 export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const token = (await cookies()).get('admin_token')?.value;
+  const { id } = await params;
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get('admin_token')?.value;
   if (!token) return unauth();
   try { await verifyAdminToken(token); } catch { return unauth(); }
 
   let body: any;
-  try {
-    body = await req.json();
-  } catch {
-    return j(400, { error: 'INVALID_JSON' });
-  }
+  try { body = await req.json(); } catch { return j(400, { error: 'INVALID_JSON' }); }
 
   try {
     const updated = await prisma.recipe.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         title: body.title ?? undefined,
         slug: body.slug ?? undefined,
@@ -110,35 +96,21 @@ export async function PUT(
         publishedDate: body.published_date ? new Date(body.published_date) : undefined,
 
         ingredients: Array.isArray(body.ingredients)
-          ? {
-              deleteMany: {},
-              create: body.ingredients.map((i: any) => ({
-                name: i.name,
-                quantity: Number(i.quantity) || 0,
-                size: i.size ?? '-',
-              })),
-            }
+          ? { deleteMany: {}, create: body.ingredients.map((i: any) => ({
+              name: i.name, quantity: Number(i.quantity) || 0, size: i.size ?? '-',
+            })) }
           : undefined,
 
         instructions: Array.isArray(body.instructions)
-          ? {
-              deleteMany: {},
-              create: body.instructions.map((s: any, idx: number) => ({
-                stepNumber: Number(s.step_number ?? idx + 1),
-                stepContent: s.step_content,
-              })),
-            }
+          ? { deleteMany: {}, create: body.instructions.map((s: any, idx: number) => ({
+              stepNumber: Number(s.step_number ?? idx + 1), stepContent: s.step_content,
+            })) }
           : undefined,
 
         nutritionalFacts: Array.isArray(body.nutritional_facts)
-          ? {
-              deleteMany: {},
-              create: body.nutritional_facts.map((n: any) => ({
-                name: n.name,
-                quantity: Number(n.quantity) || 0,
-                size: n.size ?? '-',
-              })),
-            }
+          ? { deleteMany: {}, create: body.nutritional_facts.map((n: any) => ({
+              name: n.name, quantity: Number(n.quantity) || 0, size: n.size ?? '-',
+            })) }
           : undefined,
 
         valuableInfo: body.valuable_info
@@ -181,27 +153,27 @@ export async function PUT(
     return j(200, { id: updated.id });
   } catch (err: any) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
-      return j(409, {
-        error: 'UNIQUE_CONSTRAINT',
-        message: 'A recipe with this language & slug already exists.',
-      });
+      return j(409, { error: 'UNIQUE_CONSTRAINT', message: 'A recipe with this language & slug already exists.' });
     }
     console.error('RECIPE_UPDATE_ERROR', err);
     return j(500, { error: 'DB_ERROR', message: err?.message || 'Unknown database error' });
   }
 }
 
-// ---- DELETE -----------------------------------------------------------
+// ───────────────────────── DELETE ─────────────────────────
 export async function DELETE(
-  _req: NextRequest,
-  { params }: { params: { id: string } }
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const token = (await cookies()).get('admin_token')?.value;
+  const { id } = await params;
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get('admin_token')?.value;
   if (!token) return unauth();
   try { await verifyAdminToken(token); } catch { return unauth(); }
 
   try {
-    await prisma.recipe.delete({ where: { id: params.id } });
+    await prisma.recipe.delete({ where: { id } });
     return j(200, { ok: true as const });
   } catch (err: any) {
     console.error('RECIPE_DELETE_ERROR', err);
