@@ -37,39 +37,42 @@ const messages: Record<Locale, Record<string, string>> = {
 }
 
 /** Simple, permissive phone regex: digits, spaces, plus, hyphens, parentheses */
-const phoneRegex = /^[+()\d][\d\s\-()+]{5,}$/ // optional field; validate only if provided
+const phoneRegex = /^[+()\d][\d\s\-()+]{5,}$/
 
 /** Build the schema with localized messages */
 export const getContactFormSchema = (locale: Locale) => {
   const m = messages[locale]
   return z.object({
     name: z
-      .string({ required_error: m.name_required })
+      .string()
       .trim()
-      .min(2, m.name_min),
+      .min(1, { error: m.name_required })
+      .min(2, { error: m.name_min }),
 
     email: z
-      .string({ required_error: m.email_required })
+      .string()
       .trim()
-      .email(m.email_invalid),
+      .min(1, { error: m.email_required })
+      .email({ error: m.email_invalid }),
 
     phone_number: z
       .string()
       .trim()
       .optional()
       .refine((val) => (val ? phoneRegex.test(val) : true), {
-        message: m.phone_invalid,
+        error: m.phone_invalid,
       }),
 
     subject: z
-      .string({ required_error: m.subject_required })
+      .string()
       .trim()
-      .min(3, m.subject_min),
+      .min(1, { error: m.subject_required })
+      .min(3, { error: m.subject_min }),
 
     message: z
       .string()
       .trim()
-      .max(2000, m.message_max)
+      .max(2000, { error: m.message_max })
       .optional(),
   })
 }
