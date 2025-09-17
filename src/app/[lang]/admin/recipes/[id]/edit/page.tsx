@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import '../../new/AdminRecipeForm.css';
@@ -49,6 +49,10 @@ function isoToDatetimeLocal(iso: string) {
   return `${yyyy}-${mm}-${dd}T${hh}:${mi}`;
 }
 
+/** Uploader constants (same as New) */
+const MAX_MB = 8;
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
 export default function AdminEditRecipePage() {
   const pathname = usePathname();
   const router = useRouter();
@@ -56,10 +60,7 @@ export default function AdminEditRecipePage() {
   const { lang, id } = useMemo(() => {
     const segs = pathname?.split('/').filter(Boolean) ?? [];
     // /[lang]/admin/recipes/[id]/edit
-    return {
-      lang: (segs[0] as Language) || 'en',
-      id: segs[3] || '',
-    };
+    return { lang: (segs[0] as Language) || 'en', id: segs[3] || '' };
   }, [pathname]);
 
   // Basics
@@ -68,7 +69,7 @@ export default function AdminEditRecipePage() {
   const [category, setCategory] = useState('');
   const [shortDescription, setShortDescription] = useState('');
   const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState(''); // S3 public URL after upload
   const [publishedDate, setPublishedDate] = useState<string>('');
 
   // Arrays
@@ -92,6 +93,13 @@ export default function AdminEditRecipePage() {
   const [err, setErr] = useState<string | null>(null);
   const [hint, setHint] = useState<string | null>(null);
 
+  // Uploader UX (same as New)
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  /* ========= LOAD EXISTING RECIPE ========= */
   useEffect(() => {
     async function load() {
       if (!id) return;
@@ -100,15 +108,10 @@ export default function AdminEditRecipePage() {
       setHint(null);
       try {
         const res = await fetch(`/api/admin/recipes/${id}`, { credentials: 'include' });
-        if (res.status === 404) {
-          setHint('Recipe not found.');
-          throw new Error('NOT_FOUND');
-        }
-        if (res.status === 401 || res.status === 403) {
-          setHint('You are not authenticated as admin. Please log in.');
-          throw new Error(`Not authorized (${res.status})`);
-        }
+        if (res.status === 404) { setHint('Recipe not found.'); throw new Error('NOT_FOUND'); }
+        if (res.status === 401 || res.status === 403) { setHint('You are not authenticated as admin.'); throw new Error(`Not authorized (${res.status})`); }
         if (!res.ok) throw new Error(`Failed to load recipe (${res.status})`);
+
         const ct = res.headers.get('content-type') || '';
         if (!ct.includes('application/json')) {
           const text = await res.text();
@@ -154,13 +157,9 @@ export default function AdminEditRecipePage() {
         if (r.valuable_info) {
           setDuration(r.valuable_info.duration || '');
           setDifficulty(r.valuable_info.difficulty || 'easy');
-          setPortions(
-            typeof r.valuable_info.portions === 'number' ? String(r.valuable_info.portions) : '1',
-          );
+          setPortions(typeof r.valuable_info.portions === 'number' ? String(r.valuable_info.portions) : '1');
         } else {
-          setDuration('');
-          setDifficulty('easy');
-          setPortions('1');
+          setDuration(''); setDifficulty('easy'); setPortions('1');
         }
 
         // SEO
@@ -176,18 +175,87 @@ export default function AdminEditRecipePage() {
     void load();
   }, [id]);
 
-  // helpers
+  /* ========= HELPERS ========= */
   function onTitleChange(v: string) {
     setTitle(v);
-    // do not auto-change slug if user has already edited it
+    // (Edit page keeps existing slug unless user changes it manually)
   }
-  function addIngredient() { setIngredients(arr => [...arr, { name: '', quantity: '', size: '' }]); }
-  function delIngredient(i: number) { setIngredients(arr => arr.length > 1 ? arr.filter((_, idx) => idx !== i) : arr); }
-  function addInstruction() { setInstructions(arr => [...arr, { step_content: '' }]); }
-  function delInstruction(i: number) { setInstructions(arr => arr.length > 1 ? arr.filter((_, idx) => idx !== i) : arr); }
-  function addNutritional() { setNutritionalFacts(arr => [...arr, { name: '', quantity: '', size: '' }]); }
-  function delNutritional(i: number) { setNutritionalFacts(arr => arr.length > 1 ? arr.filter((_, idx) => idx !== i) : arr); }
+  function addIngredient() { setIngredients((arr) => [...arr, { name: '', quantity: '', size: '' }]); }
+  function delIngredient(i: number) { setIngredients((arr) => arr.length > 1 ? arr.filter((_, idx) => idx !== i) : arr); }
+  function addInstruction() { setInstructions((arr) => [...arr, { step_content: '' }]); }
+  function delInstruction(i: number) { setInstructions((arr) => arr.length > 1 ? arr.filter((_, idx) => idx !== i) : arr); }
+  function addNutritional() { setNutritionalFacts((arr) => [...arr, { name: '', quantity: '', size: '' }]); }
+  function delNutritional(i: number) { setNutritionalFacts((arr) => arr.length > 1 ? arr.filter((_, idx) => idx !== i) : arr); }
 
+  /* ========= IMAGE UPLOAD (same flow as New) ========= */
+  function validateFile(file: File): string | null {
+    if (!ALLOWED_TYPES.includes(file.type)) return 'Only JPG, PNG, or WEBP images are allowed.';
+    const maxBytes = MAX_MB * 1024 * 1024;
+    if (file.size > maxBytes) return `Max file size is ${MAX_MB}MB.`;
+    return null;
+  }
+
+  async function requestPresign(filename: string, contentType: string, keyHint?: string) {
+    const q = new URLSearchParams({ filename, contentType, keyHint: keyHint ?? '' }).toString();
+    const res = await fetch(`/api/uploads/recipes?${q}`, { method: 'GET', credentials: 'include' });
+    if (!res.ok) throw new Error((await res.text()) || 'Failed to get upload URL.');
+    return (await res.json()) as { url: string; key: string; publicUrl: string };
+  }
+
+  function uploadWithProgress(putUrl: string, file: File): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', putUrl);
+      xhr.setRequestHeader('Content-Type', file.type);
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) setUploadProgress(Math.round((e.loaded / e.total) * 100));
+      };
+      xhr.onload = () => (xhr.status >= 200 && xhr.status < 300 ? resolve() : reject(new Error(`Upload failed (${xhr.status})`)));
+      xhr.onerror = () => reject(new Error('Network error during upload.'));
+      xhr.send(file);
+    });
+  }
+
+  async function handlePickFile(file: File | null) {
+    if (!file) return;
+    setUploadError(null);
+    const errMsg = validateFile(file);
+    if (errMsg) { setUploadError(errMsg); return; }
+
+    try {
+      setIsUploading(true);
+      setUploadProgress(1);
+
+      const hintSlug = slugify(slug || title || 'recipe');
+      const presign = await requestPresign(file.name, file.type, hintSlug);
+      await uploadWithProgress(presign.url, file);
+
+      setImageUrl(presign.publicUrl); // new S3 URL
+      setUploadProgress(100);
+    } catch (e) {
+      setUploadError(e instanceof Error ? e.message : 'Upload failed.');
+      setUploadProgress(0);
+    } finally {
+      setIsUploading(false);
+    }
+  }
+
+  function onInputFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0] || null;
+    void handlePickFile(f);
+    e.currentTarget.value = ''; // allow same file re-select
+  }
+
+  function onDrop(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault();
+    const f = e.dataTransfer.files?.[0] || null;
+    void handlePickFile(f);
+  }
+  function onDragOver(e: React.DragEvent<HTMLDivElement>) { e.preventDefault(); }
+  function triggerFileDialog() { fileInputRef.current?.click(); }
+  function clearImage() { setImageUrl(''); setUploadProgress(0); setUploadError(null); }
+
+  /* ========= SAVE ========= */
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!id) return;
@@ -232,30 +300,24 @@ export default function AdminEditRecipePage() {
       payload.nutritional_facts = nf;
 
       // valuable
-      const hasVal =
-        duration.trim() !== '' || (portions && portions !== '1') || difficulty;
-      if (hasVal) {
-        payload.valuable_info = {
-          duration: duration.trim() || '0',
-          difficulty: (difficulty || 'easy') as Difficulty,
-          portions: Number(portions || '1'),
-        };
-      } else {
-        // leave undefined to keep existing if route chooses; your API treats undefined as no-change
-        payload.valuable_info = undefined;
-      }
+      const hasVal = duration.trim() !== '' || (portions && portions !== '1') || difficulty;
+      payload.valuable_info = hasVal
+        ? {
+            duration: duration.trim() || '0',
+            difficulty: (difficulty || 'easy') as Difficulty,
+            portions: Number(portions || '1'),
+          }
+        : undefined;
 
       // meta
       const hasMeta = metaTitle.trim() || metaDescription.trim() || metaKeywords.trim();
-      if (hasMeta) {
-        payload.meta_info = {
-          meta_title: metaTitle.trim() || null,
-          meta_description: metaDescription.trim() || null,
-          meta_keywords: metaKeywords.trim() || null,
-        };
-      } else {
-        payload.meta_info = undefined;
-      }
+      payload.meta_info = hasMeta
+        ? {
+            meta_title: metaTitle.trim() || null,
+            meta_description: metaDescription.trim() || null,
+            meta_keywords: metaKeywords.trim() || null,
+          }
+        : undefined;
 
       // Required
       for (const key of ['title', 'slug', 'category']) {
@@ -282,7 +344,6 @@ export default function AdminEditRecipePage() {
         throw new Error(msg);
       }
 
-      // Back to view (id route)
       router.replace(`/${lang}/admin/recipes/${id}`);
     } catch (e) {
       setErr(e instanceof Error ? e.message : 'Unknown error');
@@ -324,7 +385,7 @@ export default function AdminEditRecipePage() {
               className="input"
               value={title}
               onChange={e => onTitleChange(e.target.value)}
-              placeholder="Recipe title"
+              placeholder="Sweet Potato & Veggie Hash with Eggs"
               required
               disabled={loading}
             />
@@ -335,7 +396,7 @@ export default function AdminEditRecipePage() {
               className="input"
               value={slug}
               onChange={e => setSlug(slugify(e.target.value))}
-              placeholder="my-recipe-slug"
+              placeholder="sweet-potato-veggie-hash"
               required
               disabled={loading}
             />
@@ -356,30 +417,69 @@ export default function AdminEditRecipePage() {
             <input className="input" value={lang} disabled />
             <small className="rf-help">Language is fixed by the URL for admin flow.</small>
           </div>
+
           <div className="rf-field rf-col-span-2">
             <label>Short Description</label>
             <input
               className="input"
               value={shortDescription}
               onChange={e => setShortDescription(e.target.value)}
-              placeholder="A quick, protein-packed hash…"
+              placeholder="A quick, protein-packed hash with sweet potato, veggies and eggs."
               disabled={loading}
             />
           </div>
+
+          {/* IMAGE UPLOADER (same UX as New) */}
           <div className="rf-field rf-col-span-2">
-            <label>Image URL</label>
-            <input
-              className="input"
-              value={imageUrl}
-              onChange={e => setImageUrl(e.target.value)}
-              placeholder="https://..."
-              disabled={loading}
-            />
-            {imageUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img className="rf-image-preview" src={imageUrl} alt="preview" />
+            <label>Recipe Image</label>
+
+            {imageUrl ? (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="rf-image-preview" src={imageUrl} alt="Recipe image" />
+                <div className="rf-row gap-8 mt-8">
+                  <button type="button" className="btn" onClick={() => fileInputRef.current?.click()} disabled={isUploading || loading}>
+                    {isUploading ? 'Uploading…' : 'Replace image'}
+                  </button>
+                  <button type="button" className="btn btn-ghost" onClick={clearImage} disabled={isUploading || loading}>
+                    Remove
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div
+                  className="rf-dropzone"
+                  onDrop={onDrop}
+                  onDragOver={onDragOver}
+                  onClick={() => fileInputRef.current?.click()}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <p><strong>Drag & drop</strong> an image here, or click to choose a file.</p>
+                  <p className="rf-help">JPG, PNG, WEBP — up to {MAX_MB}MB</p>
+                </div>
+              </>
             )}
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept={ALLOWED_TYPES.join(',')}
+              hidden
+              onChange={onInputFileChange}
+              disabled={isUploading || loading}
+            />
+
+            {isUploading && (
+              <div className="rf-progress">
+                <div className="rf-progress-bar" style={{ width: `${uploadProgress}%` }} />
+                <span className="rf-progress-label">{uploadProgress}%</span>
+              </div>
+            )}
+            {uploadError && <p className="rf-error">{uploadError}</p>}
           </div>
+
           <div className="rf-field rf-col-span-2">
             <label>Published Date</label>
             <input
@@ -390,6 +490,7 @@ export default function AdminEditRecipePage() {
               disabled={loading}
             />
           </div>
+
           <div className="rf-field rf-col-span-2">
             <label>Description (full)</label>
             <textarea
@@ -397,7 +498,7 @@ export default function AdminEditRecipePage() {
               rows={6}
               value={description}
               onChange={e => setDescription(e.target.value)}
-              placeholder="Long description of your recipe…"
+              placeholder="Longer description of your recipe..."
               disabled={loading}
             />
           </div>
@@ -411,21 +512,21 @@ export default function AdminEditRecipePage() {
               <div className="rf-rep-row" key={i}>
                 <input
                   className="input"
-                  placeholder="Name"
+                  placeholder="Name (e.g., Sweet Potatoes)"
                   value={it.name}
                   onChange={e => setIngredients(arr => arr.map((r, idx) => idx === i ? { ...r, name: e.target.value } : r))}
                   disabled={loading}
                 />
                 <input
                   className="input"
-                  placeholder="Quantity"
+                  placeholder="Quantity (e.g., 2)"
                   value={it.quantity}
                   onChange={e => setIngredients(arr => arr.map((r, idx) => idx === i ? { ...r, quantity: e.target.value } : r))}
                   disabled={loading}
                 />
                 <input
                   className="input"
-                  placeholder="Unit / Size"
+                  placeholder="Size / Unit (e.g., Medium)"
                   value={it.size}
                   onChange={e => setIngredients(arr => arr.map((r, idx) => idx === i ? { ...r, size: e.target.value } : r))}
                   disabled={loading}
@@ -474,12 +575,7 @@ export default function AdminEditRecipePage() {
             </div>
             <div className="rf-field">
               <label>Difficulty</label>
-              <select
-                className="input"
-                value={difficulty}
-                onChange={e => setDifficulty(e.target.value as Difficulty)}
-                disabled={loading}
-              >
+              <select className="input" value={difficulty} onChange={e => setDifficulty(e.target.value as Difficulty)} disabled={loading}>
                 <option value="easy">easy</option>
                 <option value="medium">medium</option>
                 <option value="hard">hard</option>
@@ -508,7 +604,7 @@ export default function AdminEditRecipePage() {
               <div className="rf-rep-row" key={i}>
                 <input
                   className="input"
-                  placeholder="Name (Protein, Vitamin C, …)"
+                  placeholder="Name (Protein, Carbs, Vitamin C, …)"
                   value={it.name}
                   onChange={e => setNutritionalFacts(arr => arr.map((r, idx) => idx === i ? { ...r, name: e.target.value } : r))}
                   disabled={loading}

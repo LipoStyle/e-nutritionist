@@ -1,0 +1,31 @@
+/* src/app/[lang]/contact/ContactLayout.module.css */
+
+.contentSection {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 24px 12px 36px;
+}
+
+.grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+.leftCol,
+.rightCol {
+  display: grid;
+  gap: 14px;
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: 1.05fr 1fr; /* slightly wider left */
+    gap: 24px;
+  }
+  .leftCol,
+  .rightCol {
+    gap: 16px;
+  }
+}

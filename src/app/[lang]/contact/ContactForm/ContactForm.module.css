@@ -1,0 +1,87 @@
+/* src/app/[lang]/contact/ContactForm/ContactForm.module.css */
+.section {
+  width: 100%;
+  margin: 0;
+  padding: 0; /* the card is the form */
+}
+
+.title {
+  font-weight: 800;
+  font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+  color: var(--color-light);
+  margin: 0 0 10px 4px;
+}
+
+.form {
+  background: color-mix(in oklab, var(--color-dark) 85%, transparent);
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.18);
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  border: 1px solid color-mix(in oklab, var(--color-light) 14%, transparent);
+  background: color-mix(in oklab, var(--color-dark) 75%, transparent);
+  color: var(--color-light);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font: inherit;
+  outline: none;
+}
+
+.form textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.form input::placeholder,
+.form textarea::placeholder {
+  color: color-mix(in oklab, var(--color-light) 60%, transparent);
+}
+
+.form input:focus-visible,
+.form textarea:focus-visible {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent) 30%, transparent);
+}
+
+.form button {
+  justify-self: start;
+  border: none;
+  background: var(--color-accent);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,.18);
+}
+
+.form button[disabled] {
+  opacity: .7;
+  cursor: not-allowed;
+}
+
+.form button:hover:not([disabled]),
+.form button:focus-visible:not([disabled]) {
+  outline: none;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0,0,0,.2);
+}
+
+.success {
+  color: #36d399;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.error {
+  color: #ff6b6b;
+  margin-top: 10px;
+  font-weight: 600;
+}

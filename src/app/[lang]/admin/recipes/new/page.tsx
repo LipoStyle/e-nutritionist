@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import './AdminRecipeForm.css';
@@ -21,6 +21,9 @@ function slugify(input: string) {
     .replace(/(^-|-$)+/g, '');
 }
 
+const MAX_MB = 8;
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
 export default function AdminNewRecipePage() {
   const pathname = usePathname();
   const router = useRouter();
@@ -36,7 +39,10 @@ export default function AdminNewRecipePage() {
   const [category, setCategory] = useState('');
   const [shortDescription, setShortDescription] = useState('');
   const [description, setDescription] = useState('');
+
+  // IMPORTANT: this now holds the final S3 URL after upload
   const [imageUrl, setImageUrl] = useState('');
+
   const [publishedDate, setPublishedDate] = useState<string>('');
 
   // Arrays
@@ -58,6 +64,12 @@ export default function AdminNewRecipePage() {
   const [saving, setSaving] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [hint, setHint] = useState<string | null>(null);
+
+  // Uploader UX
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   function onTitleChange(v: string) {
     setTitle(v);
@@ -165,13 +177,117 @@ export default function AdminNewRecipePage() {
         throw new Error(msg);
       }
 
-      // Success → back to list
       router.replace(`/${lang}/admin/recipes`);
     } catch (e) {
       setErr(e instanceof Error ? e.message : 'Unknown error');
     } finally {
       setSaving(false);
     }
+  }
+
+  // ===== Image Upload helpers =====
+
+  function validateFile(file: File): string | null {
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      return 'Only JPG, PNG, or WEBP images are allowed.';
+    }
+    const maxBytes = MAX_MB * 1024 * 1024;
+    if (file.size > maxBytes) {
+      return `Max file size is ${MAX_MB}MB.`;
+    }
+    return null;
+  }
+
+  async function requestPresign(filename: string, contentType: string, keyHint?: string) {
+    const q = new URLSearchParams({
+      filename,
+      contentType,
+      keyHint: keyHint ?? '',
+    }).toString();
+
+    const res = await fetch(`/api/uploads/recipes?${q}`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(txt || 'Failed to get upload URL.');
+    }
+    return (await res.json()) as { url: string; key: string; publicUrl: string };
+  }
+
+  function uploadWithProgress(putUrl: string, file: File): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', putUrl);
+      xhr.setRequestHeader('Content-Type', file.type);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const pct = Math.round((e.loaded / e.total) * 100);
+          setUploadProgress(pct);
+        }
+      };
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) resolve();
+        else reject(new Error(`Upload failed (${xhr.status})`));
+      };
+      xhr.onerror = () => reject(new Error('Network error during upload.'));
+      xhr.send(file);
+    });
+  }
+
+  async function handlePickFile(file: File | null) {
+    if (!file) return;
+    setUploadError(null);
+    const errMsg = validateFile(file);
+    if (errMsg) { setUploadError(errMsg); return; }
+
+    try {
+      setIsUploading(true);
+      setUploadProgress(1);
+
+      const hintSlug = slugify(slug || title || 'recipe');
+      const presign = await requestPresign(file.name, file.type, hintSlug);
+      await uploadWithProgress(presign.url, file);
+
+      // Success → set the final public URL into imageUrl so it’s saved with the recipe
+      setImageUrl(presign.publicUrl);
+      setUploadProgress(100);
+    } catch (e) {
+      setUploadError(e instanceof Error ? e.message : 'Upload failed.');
+      setUploadProgress(0);
+    } finally {
+      setIsUploading(false);
+    }
+  }
+
+  function onInputFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0] || null;
+    handlePickFile(f);
+    // clear value so choosing the same file again re-triggers change
+    e.currentTarget.value = '';
+  }
+
+  function onDrop(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault();
+    const f = e.dataTransfer.files?.[0] || null;
+    handlePickFile(f);
+  }
+
+  function onDragOver(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault();
+  }
+
+  function triggerFileDialog() {
+    fileInputRef.current?.click();
+  }
+
+  function clearImage() {
+    setImageUrl('');
+    setUploadProgress(0);
+    setUploadError(null);
   }
 
   return (
@@ -210,6 +326,7 @@ export default function AdminNewRecipePage() {
               required
             />
           </div>
+
           <div className="rf-field">
             <label>Slug *</label>
             <input
@@ -220,6 +337,7 @@ export default function AdminNewRecipePage() {
               required
             />
           </div>
+
           <div className="rf-field">
             <label>Category *</label>
             <input
@@ -230,6 +348,7 @@ export default function AdminNewRecipePage() {
               required
             />
           </div>
+
           <div className="rf-field">
             <label>Language</label>
             <select className="input" value={lang} disabled>
@@ -239,6 +358,7 @@ export default function AdminNewRecipePage() {
             </select>
             <small className="rf-help">Language comes from the URL.</small>
           </div>
+
           <div className="rf-field rf-col-span-2">
             <label>Short Description</label>
             <input
@@ -248,19 +368,57 @@ export default function AdminNewRecipePage() {
               placeholder="A quick, protein-packed hash with sweet potato, veggies and eggs."
             />
           </div>
+
+          {/* IMAGE UPLOADER */}
           <div className="rf-field rf-col-span-2">
-            <label>Image URL</label>
-            <input
-              className="input"
-              value={imageUrl}
-              onChange={e => setImageUrl(e.target.value)}
-              placeholder="https://..."
-            />
-            {imageUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img className="rf-image-preview" src={imageUrl} alt="preview" />
+            <label>Recipe Image</label>
+
+            {imageUrl ? (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="rf-image-preview" src={imageUrl} alt="Recipe image" />
+                <div className="rf-row gap-8 mt-8">
+                  <button type="button" className="btn" onClick={triggerFileDialog} disabled={isUploading}>
+                    {isUploading ? 'Uploading…' : 'Replace image'}
+                  </button>
+                  <button type="button" className="btn btn-ghost" onClick={clearImage} disabled={isUploading}>
+                    Remove
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div
+                  className="rf-dropzone"
+                  onDrop={onDrop}
+                  onDragOver={onDragOver}
+                  onClick={triggerFileDialog}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <p><strong>Drag & drop</strong> an image here, or click to choose a file.</p>
+                  <p className="rf-help">JPG, PNG, WEBP — up to {MAX_MB}MB</p>
+                </div>
+
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept={ALLOWED_TYPES.join(',')}
+                  hidden
+                  onChange={onInputFileChange}
+                />
+              </>
             )}
+
+            {isUploading && (
+              <div className="rf-progress">
+                <div className="rf-progress-bar" style={{ width: `${uploadProgress}%` }} />
+                <span className="rf-progress-label">{uploadProgress}%</span>
+              </div>
+            )}
+            {uploadError && <p className="rf-error">{uploadError}</p>}
           </div>
+
           <div className="rf-field rf-col-span-2">
             <label>Published Date</label>
             <input
@@ -270,6 +428,7 @@ export default function AdminNewRecipePage() {
               onChange={e => setPublishedDate(e.target.value)}
             />
           </div>
+
           <div className="rf-field rf-col-span-2">
             <label>Description (full)</label>
             <textarea

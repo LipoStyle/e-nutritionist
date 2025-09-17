@@ -1,0 +1,41 @@
+/* src/app/[lang]/contact/ContactInfo/ContactInfo.module.css */
+.section {
+  width: 100%;
+  margin: 0;
+  padding: 16px;
+  background: color-mix(in oklab, var(--color-dark) 85%, transparent);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.18);
+}
+
+.title {
+  font-weight: 800;
+  font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+  color: var(--color-light);
+  margin-bottom: 10px;
+}
+
+.list {
+  display: grid;
+  gap: 10px;
+}
+
+.list li {
+  color: var(--color-light);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.list a {
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px dashed color-mix(in oklab, var(--color-accent) 70%, transparent);
+}
+
+.list a:hover,
+.list a:focus-visible {
+  outline: none;
+  border-bottom-style: solid;
+}
