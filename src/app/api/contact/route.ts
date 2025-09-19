@@ -3,20 +3,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getTransporter } from '@/lib/mail';
 import { getContactFormSchema, type Locale } from '@/app/[lang]/contact/ContactForm/schema';
 
-// Optional simple spam honeypot key (add a hidden input on the form if you like)
-const HONEYPOT_FIELD = 'company'; // not in UI
+export const runtime = 'nodejs'; // ✅ Nodemailer needs Node runtime (not Edge)
+
+const HONEYPOT_FIELD = 'company';
 
 export async function POST(req: NextRequest) {
   try {
     const locale = (req.headers.get('x-locale') ?? 'en') as Locale;
 
     const body = await req.json().catch(() => ({}));
-    // Honeypot: if bot filled it, bail silently
     if (typeof body[HONEYPOT_FIELD] === 'string' && body[HONEYPOT_FIELD].trim() !== '') {
       return NextResponse.json({ ok: true });
     }
 
-    // Validate with your v4 schema
     const schema = getContactFormSchema(locale);
     const parsed = schema.safeParse({
       name: body.name,
@@ -32,7 +31,6 @@ export async function POST(req: NextRequest) {
 
     const values = parsed.data;
 
-    // Build email content
     const siteName = process.env.SITE_NAME ?? 'Website';
     const adminTo = process.env.ADMIN_EMAIL;
     const fromEmail = process.env.FROM_EMAIL ?? process.env.SMTP_USER;
@@ -71,18 +69,18 @@ export async function POST(req: NextRequest) {
       </div>
     `;
 
-    // Send to admin
-    const transporter = getTransporter();
+    // ✅ await the transporter (async + cached)
+    const transporter = await getTransporter();
+
     await transporter.sendMail({
       from: fromEmail,
       to: adminTo,
-      replyTo: values.email, // lets you reply directly to the sender
+      replyTo: values.email,
       subject: `[${siteName}] New contact: ${values.subject}`,
       text,
       html,
     });
 
-    // Optional auto-reply to user
     if (process.env.SEND_AUTOREPLY === 'true') {
       const ackText =
         locale === 'es'
@@ -91,11 +89,9 @@ export async function POST(req: NextRequest) {
           ? `Γεια σου ${values.name},\n\nΛάβαμε το μήνυμά σου και θα απαντήσουμε σύντομα.\n\n— ${siteName}`
           : `Hi ${values.name},\n\nWe received your message and will get back to you soon.\n\n— ${siteName}`;
 
-      const ackHtml = `
-        <div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu">
+      const ackHtml = `<div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu">
           <p>${ackText.replace(/\n/g, '<br/>')}</p>
-        </div>
-      `;
+        </div>`;
 
       await transporter.sendMail({
         from: fromEmail,
@@ -113,22 +109,8 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Small helper to avoid HTML injection inside the email
 function escapeHtml(str: string) {
-  return str.replace(/[&<>"']/g, (ch) => {
-    switch (ch) {
-      case '&':
-        return '&amp;';
-      case '<':
-        return '&lt;';
-      case '>':
-        return '&gt;';
-      case '"':
-        return '&quot;';
-      case "'":
-        return '&#39;';
-      default:
-        return ch;
-    }
-  });
+  return str.replace(/[&<>"']/g, (ch) =>
+    ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : ch === '"' ? '&quot;' : '&#39;'
+  );
 }
