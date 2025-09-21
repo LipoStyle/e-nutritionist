@@ -1,63 +1,80 @@
 // src/app/api/admin/service-plans/route.ts
-import { NextResponse } from 'next/server';
-import { cookies, headers } from 'next/headers';
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
+import { NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
-import { ServicePlanCreate } from '@/lib/zod/servicePlan';
-import { verifyAdminToken } from '@/lib/auth';
-import type { Lang } from '@prisma/client';
+import { requireAdmin } from '@/lib/auth';
+import { ServicePlanUpsertSchema } from '@/lib/validators/servicePlan';
+import { serializeServicePlanAdmin } from '@/lib/serializers/servicePlan';
 
-async function requireAdminOr401() {
-  try {
-    const cookieStore = await cookies();
-    const tokenFromCookie = cookieStore.get('admin_token')?.value;
-
-    const auth = (await headers()).get('authorization') || '';
-    const tokenFromHeader = auth.toLowerCase().startsWith('bearer ')
-      ? auth.slice(7).trim()
-      : null;
-
-    const token = tokenFromCookie || tokenFromHeader;
-    if (!token) {
-      const err = new Error('Unauthorized'); (err as any).status = 401; throw err;
-    }
-    await verifyAdminToken(token);
-  } catch {
-    const err = new Error('Unauthorized'); (err as any).status = 401; throw err;
-  }
+function slugify(s: string) {
+  return s
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 64);
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  await requireAdmin(req);
+
+  const body = await req.json().catch(() => ({}));
+  const parsed = ServicePlanUpsertSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ ok: false, issues: parsed.error.issues }, { status: 400 });
+  }
+  const d = parsed.data;
+
   try {
-    await requireAdminOr401();
+    // Normalize/trim
+    const title = d.title.trim();
+    const summary = d.summary?.trim() ?? null;
+    const description = d.description.trim();
+    const billingPeriod = d.billing_period?.trim() ?? null;
+    const slug = d.slug?.trim() ? d.slug.trim() : slugify(title);
 
-    const raw = await req.json();
-    if (typeof raw.language === 'string') raw.language = raw.language.toLowerCase();
-
-    const input = ServicePlanCreate.parse(raw);
+    const featuresData = (d.features ?? [])
+      .map((f, i) => ({
+        name: f.name.trim(),
+        order: f.order ?? i + 1,
+      }))
+      .filter((f) => f.name.length > 0);
 
     const created = await prisma.servicePlan.create({
       data: {
-        language: (input.language as unknown) as Lang,
-        slug: input.slug,
-        title: input.title,
-        summary: input.summary,
-        description: input.description,
-        priceCents: input.priceCents,
-        coverImage: input.coverImage,
-        order: input.order,
-        isActive: input.isActive,
-        metaTitle: input.metaTitle,
-        metaDescription: input.metaDescription,
-        features: input.features.length
-          ? { create: input.features.map((f) => ({ name: f.name, order: f.order })) }
-          : undefined,
+        language: d.language,
+        slug,
+        title,
+        summary,
+        description,
+        priceCents: Math.round(d.price * 100),
+        billingPeriod,
+        order: d.order,
+        isActive: d.is_active,
+        ...(featuresData.length
+          ? { features: { createMany: { data: featuresData } } }
+          : {}),
       },
-      include: { features: { orderBy: { order: 'asc' } } },
+      include: { features: true },
     });
 
-    return NextResponse.json({ ok: true, item: created }, { status: 201 });
-  } catch (e: any) {
-    const status = e?.status === 401 ? 401 : (e?.name === 'ZodError' ? 422 : 500);
-    return NextResponse.json({ ok: false, error: e?.message, issues: e?.issues }, { status });
+    return NextResponse.json(
+      { ok: true, item: serializeServicePlanAdmin(created) },
+      { status: 201, headers: { Location: `/admin/service-plans/${created.id}` } }
+    );
+  } catch (err: any) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
+      // unique([language, slug])
+      return NextResponse.json(
+        { ok: false, error: 'Slug must be unique per language.' },
+        { status: 409 }
+      );
+    }
+    console.error('Create service plan error:', err);
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }

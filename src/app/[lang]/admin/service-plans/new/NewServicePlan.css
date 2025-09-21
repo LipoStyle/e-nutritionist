@@ -1,31 +1,55 @@
-/* Container */
+/* ===============  New Service Plan (admin)  =============== */
+/* Assumes global vars:
+   --color-dark, --color-light, --color-accent
+   (optional) --color-danger (fallback provided)
+*/
+
+/* ---------- Container ---------- */
 .nsp {
   width: min(900px, 100%);
-  margin: 0 auto;
+  margin: 120px auto 0 auto;
   padding: 24px;
+  color: var(--color-dark, #16232a);
+}
+
+.dark-mode .nsp {
+  color: var(--color-light, #e4eef0);
 }
 
 .nsp__title {
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0 0 16px 0;
 }
 
-/* Alert */
+/* ---------- Alerts ---------- */
 .nsp-alert {
-  border: 1px solid;
+  --_ring: var(--color-accent, #ff5b04);
+  --_border: color-mix(in oklab, var(--_ring) 40%, transparent);
+  --_bg: color-mix(in oklab, var(--_ring) 8%, transparent);
+  --_fg: var(--color-dark, #16232a);
+
+  border: 1px solid var(--_border);
+  background: var(--_bg);
+  color: var(--_fg);
   border-radius: 12px;
   padding: 10px 12px;
   margin-bottom: 12px;
   font-size: 0.95rem;
 }
+
 .nsp-alert--error {
-  background: #fef2f2;
-  border-color: #fecaca;
-  color: #991b1b;
+  --_ring: var(--color-danger, #dc2626);
+  --_border: color-mix(in oklab, var(--_ring) 40%, transparent);
+  --_bg: color-mix(in oklab, var(--_ring) 10%, transparent);
+  --_fg: color-mix(in oklab, var(--color-dark, #16232a) 90%, #000 10%);
 }
 
-/* Form layout */
+.dark-mode .nsp-alert {
+  --_fg: var(--color-light, #e4eef0);
+}
+
+/* ---------- Form layout ---------- */
 .nsp-form {
   display: grid;
   gap: 14px;
@@ -52,16 +76,16 @@
   font-size: 0.95rem;
 }
 
-/* Inputs */
+/* ---------- Inputs ---------- */
 .nsp-input,
 .nsp-textarea {
   width: 100%;
   border: 1px solid color-mix(in oklab, var(--color-dark, #16232a) 18%, transparent);
-  background: color-mix(in oklab, #ffffff 80%, transparent);
+  background: color-mix(in oklab, #ffffff 85%, transparent);
   color: var(--color-dark, #16232a);
   border-radius: 10px;
-  padding: 8px 10px;
-  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.2s ease;
+  padding: 9px 11px;
+  transition: border-color .15s ease, background-color .15s ease, box-shadow .2s ease;
 }
 
 .dark-mode .nsp-input,
@@ -87,15 +111,15 @@
   font-size: 0.85rem;
 }
 
-/* Checkbox */
+/* ---------- Checkbox ---------- */
 .nsp-checkbox {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding-top: 24px; /* visually aligns with number input */
+  padding-top: 24px; /* align with number input */
 }
 
-/* Actions */
+/* ---------- Buttons ---------- */
 .nsp-actions {
   display: flex;
   gap: 10px;
@@ -112,7 +136,7 @@
   border-radius: 12px;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: transform 0.06s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  transition: transform .06s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease, filter .2s ease;
   text-decoration: none;
   user-select: none;
 }
@@ -130,7 +154,7 @@
   background: var(--color-accent, #ff5b04);
   color: #fff;
   border-color: var(--color-accent, #ff5b04);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
 }
 .nsp-btn--primary:hover:not([disabled]) {
   filter: brightness(0.98);
@@ -150,4 +174,47 @@
 }
 .dark-mode .nsp-btn--outline:hover {
   background: color-mix(in oklab, var(--color-light, #e4eef0) 8%, transparent);
+}
+
+/* Small + danger variants (used in repeater & delete) */
+.nsp-btn--xs {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  border-radius: 10px;
+}
+.nsp-btn--danger {
+  --_danger: var(--color-danger, #dc2626);
+  background: var(--_danger);
+  border-color: var(--_danger);
+  color: #fff;
+}
+.nsp-btn--danger:hover {
+  filter: brightness(0.98);
+}
+
+/* ---------- Features Repeater ---------- */
+.nsp-repeater {
+  display: grid;
+  gap: 10px;
+}
+
+.nsp-repeater__item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px dashed color-mix(in oklab, var(--color-dark, #16232a) 18%, transparent);
+  background: color-mix(in oklab, #ffffff 70%, transparent);
+}
+
+.dark-mode .nsp-repeater__item {
+  border-color: color-mix(in oklab, var(--color-light, #e4eef0) 24%, transparent);
+  background: color-mix(in oklab, var(--color-light, #e4eef0) 8%, transparent);
+}
+
+.nsp-repeater__actions {
+  display: inline-flex;
+  gap: 6px;
 }

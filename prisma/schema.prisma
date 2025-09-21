@@ -44,22 +44,18 @@ enum Lang {
   el
 }
 
-// ---------------- Service Plans (existing) ----------------
+// ---------------- Service Plans (final) ----------------
 model ServicePlan {
-  id          String  @id @default(cuid())
-  language    Lang
-  slug        String // SEO slug per language
-  title       String  @db.VarChar(140)
-  summary     String? @db.VarChar(200) // short card blurb
-  description String  @db.Text // full page content
-  priceCents  Int // store money in cents
-  coverImage  String? @db.VarChar(600)
-  order       Int     @default(1)
-  isActive    Boolean @default(true)
-
-  // SEO
-  metaTitle       String? @db.VarChar(70)
-  metaDescription String? @db.VarChar(160)
+  id            String  @id @default(cuid())
+  language      Lang
+  slug          String                // SEO slug per language
+  title         String  @db.VarChar(140)
+  summary       String? @db.VarChar(200) // short card blurb
+  description   String  @db.Text        // full page content
+  priceCents    Int                     // store money in cents
+  billingPeriod String? @db.VarChar(40) // free text: "month", "3 months", etc.
+  order         Int     @default(1)
+  isActive      Boolean @default(true)
 
   // timestamps
   createdAt DateTime @default(now())
@@ -70,7 +66,7 @@ model ServicePlan {
 
   @@unique([language, slug], name: "service_plans_language_slug_key")
   @@index([language, order])
-  @@map("service_plans") // snake_case in DB
+  @@map("service_plans") // table name in DB
 }
 
 model ServicePlanFeature {
@@ -85,8 +81,9 @@ model ServicePlanFeature {
   plan ServicePlan @relation(fields: [planId], references: [id], onDelete: Cascade)
 
   @@index([planId, order])
-  @@map("service_plan_features")
+  @@map("service_plan_features") // table name in DB
 }
+
 
 // ---------------- Recipes (updated: no string limits + shortDescription) ----------------
 enum Difficulty {

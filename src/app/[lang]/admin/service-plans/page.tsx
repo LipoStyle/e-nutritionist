@@ -4,7 +4,7 @@ export const runtime = 'nodejs';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import './ServicePlansAdmin.css';
-import DeletePlanButton from './DeletePlanButton'; // ⬅️ add this
+import DeletePlanButton from './DeletePlanButton';
 
 type Lang = 'en' | 'es' | 'el';
 
@@ -12,11 +12,11 @@ type ServicePlanListItem = {
   id: string;
   slug: string;
   title: string;
-  priceCents: number | null;
+  priceCents: number;
+  billingPeriod: string | null;
   isActive: boolean;
   language: Lang;
   summary: string | null;
-  coverImage: string | null;
   order: number;
   updatedAt: Date;
 };
@@ -29,17 +29,14 @@ function formatPrice(cents: number | null | undefined) {
 function isMissingTableError(e: unknown) {
   const code = (e as { code?: string } | null)?.code;
   const msg = String((e as { message?: string } | null)?.message ?? '').toLowerCase();
-  return (
-    code === 'P2021' ||
-    msg.includes('does not exist') ||
-    (msg.includes('relation') && msg.includes('does not exist'))
-  );
+  return code === 'P2021' || msg.includes('does not exist') || (msg.includes('relation') && msg.includes('does not exist'));
 }
 
 export default async function ServicePlansAdminPage({
   params,
 }: {
-  params: Promise<{ lang: string }>;
+  // 👇 make params a Promise and await it
+  params: Promise<{ lang: Lang }>;
 }) {
   const { lang } = await params;
 
@@ -47,16 +44,17 @@ export default async function ServicePlansAdminPage({
 
   try {
     items = await prisma.servicePlan.findMany({
+      where: { language: lang },
       orderBy: [{ order: 'asc' }, { updatedAt: 'desc' }],
       select: {
         id: true,
         slug: true,
         title: true,
         priceCents: true,
+        billingPeriod: true, // needs fresh Prisma Client
         isActive: true,
         language: true,
         summary: true,
-        coverImage: true,
         order: true,
         updatedAt: true,
       },
@@ -65,23 +63,17 @@ export default async function ServicePlansAdminPage({
     if (isMissingTableError(e)) {
       return (
         <div className="sp-admin">
-          <div className="sp-header">
-            <h1 className="sp-title">Service Plans</h1>
-          </div>
+          <div className="sp-header"><h1 className="sp-title">Service Plans</h1></div>
           <div className="sp-alert sp-alert--warn">
             <p className="sp-alert__title">Database tables not found.</p>
-            <p className="sp-alert__text">
-              Run <code>npx prisma db push</code> (or generate a diff migration) for the DB this app is using.
-            </p>
+            <p className="sp-alert__text">Run <code>npx prisma db push</code> (or create a migration) for this DB.</p>
           </div>
         </div>
       );
     }
     return (
       <div className="sp-admin">
-        <div className="sp-header">
-          <h1 className="sp-title">Service Plans</h1>
-        </div>
+        <div className="sp-header"><h1 className="sp-title">Service Plans</h1></div>
         <p className="sp-error">
           Failed to load plans: {String((e as { message?: string } | null)?.message ?? e)}
         </p>
@@ -117,18 +109,15 @@ export default async function ServicePlansAdminPage({
               </div>
 
               <h3 className="sp-card__title">{p.title}</h3>
-              <div className="sp-card__price">{formatPrice(p.priceCents)}</div>
-
+              <div className="sp-card__price">
+                {formatPrice(p.priceCents)}{p.billingPeriod ? ` / ${p.billingPeriod}` : ''}
+              </div>
               {p.summary && <p className="sp-card__summary">{p.summary}</p>}
 
               <div className="sp-card__actions">
-                <Link href={`/${lang}/admin/service-plans/${p.id}`} className="sp-btn sp-btn--outline">
-                  View
-                </Link>
-                <Link href={`/${lang}/admin/service-plans/${p.id}/edit`} className="sp-btn sp-btn--outline">
-                  Edit
-                </Link>
-                <DeletePlanButton id={p.id} lang={p.language} /> {/* ⬅️ NEW */}
+                <Link href={`/${lang}/admin/service-plans/${p.id}`} className="sp-btn sp-btn--outline">View</Link>
+                <Link href={`/${lang}/admin/service-plans/${p.id}/edit`} className="sp-btn sp-btn--outline">Edit</Link>
+                <DeletePlanButton id={p.id} lang={p.language} />
               </div>
             </div>
           ))}

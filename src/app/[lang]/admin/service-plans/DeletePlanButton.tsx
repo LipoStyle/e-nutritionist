@@ -2,7 +2,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 type Lang = 'en' | 'es' | 'el';
 
@@ -21,10 +21,16 @@ export default function DeletePlanButton({
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
 
+  const listUrl = `/${lang}/admin/service-plans`;
+  const onListPage = useMemo(() => pathname === listUrl, [pathname, listUrl]);
+  const onPlanPage = useMemo(
+    () => Boolean(pathname && pathname.startsWith(`${listUrl}/`)),
+    [pathname, listUrl]
+  );
+
   async function onDelete() {
     if (loading) return;
-    const ok = window.confirm(confirmText);
-    if (!ok) return;
+    if (!window.confirm(confirmText)) return;
 
     setLoading(true);
     try {
@@ -33,19 +39,26 @@ export default function DeletePlanButton({
         credentials: 'include',
       });
 
-      if (res.status === 401) {
-        const from = encodeURIComponent(pathname || `/${lang}/admin/service-plans`);
-        router.push(`/${lang}/admin?from=${from}`);
+      if (res.status === 401 || res.status === 403) {
+        const from = encodeURIComponent(pathname || listUrl);
+        router.push(`/${lang}/admin/login?from=${from}`);
         return;
       }
 
       if (!res.ok) {
         const j = await res.json().catch(() => null);
-        throw new Error(j?.error || 'Failed to delete');
+        throw new Error(j?.error || `Delete failed (${res.status})`);
       }
 
-      // Success — refresh the server component list
-      router.refresh();
+      // Success
+      if (onPlanPage && !onListPage) {
+        // deleting from /[lang]/admin/service-plans/[id] or /edit
+        router.replace(listUrl);
+        router.refresh();
+      } else {
+        // already on the list
+        router.refresh();
+      }
     } catch (e: unknown) {
       const msg = (e as { message?: string })?.message || 'Delete failed';
       alert(msg);

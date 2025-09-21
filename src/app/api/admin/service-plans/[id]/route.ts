@@ -1,111 +1,133 @@
-// src/app/api/admin/service-plans/[id]/route.ts
-export const runtime = 'nodejs';
-
-import { NextResponse, type NextRequest } from 'next/server';
-import { cookies as nextCookies, headers as nextHeaders } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { ServicePlanUpdate } from '@/lib/zod/servicePlan';
-import { verifyAdminToken } from '@/lib/auth';
+import { ServicePlanUpsertSchema } from '@/lib/validators/servicePlan';
+import { requireAdmin } from '@/lib/auth';
+import type { Prisma } from '@prisma/client';
 
-function jsonError(message: string, status = 500, extra?: Record<string, unknown>) {
-  return NextResponse.json({ ok: false, error: message, ...(extra ?? {}) }, { status });
+export const runtime = 'nodejs'; // optional
+export const dynamic = 'force-dynamic'; // avoid caching in dev
+
+function slugify(s: string) {
+  return s.toLowerCase().trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 64);
 }
 
-async function requireAdminOr401() {
-  // Use `await` to satisfy environments where these are async
-  const cookieStore = await nextCookies();
-  const tokenFromCookie = cookieStore.get('admin_token')?.value ?? null;
-
-  const hdrs = await nextHeaders();
-  const auth = hdrs.get('authorization') || '';
-  const tokenFromHeader = auth.toLowerCase().startsWith('bearer ')
-    ? auth.slice(7).trim()
-    : null;
-
-  const token = tokenFromCookie || tokenFromHeader;
-  if (!token) throw Object.assign(new Error('Unauthorized'), { status: 401 });
-
-  await verifyAdminToken(token);
+function serializeAdmin(plan: any) {
+  return {
+    id: plan.id,
+    slug: plan.slug,
+    title: plan.title,
+    summary: plan.summary ?? null,
+    description: plan.description,
+    price: plan.priceCents / 100,
+    billing_period: plan.billingPeriod ?? null,
+    language: plan.language,
+    is_active: plan.isActive,
+    order: plan.order,
+    created_at: plan.createdAt.toISOString(),
+    updated_at: plan.updatedAt.toISOString(),
+    features: plan.features
+      .sort((a: any, b: any) => a.order - b.order)
+      .map((f: any) => ({
+        id: f.id,
+        name: f.name,
+        service_plan_id: f.planId,
+        created_at: f.createdAt.toISOString(),
+        updated_at: f.updatedAt.toISOString(),
+      })),
+  };
 }
 
-// Leave `context` untyped for Vercel’s strict validator.
-export async function GET(_req: NextRequest, context: any) {
-  try {
-    await requireAdminOr401();
-    const { id } = await (context?.params ?? {});
+// 👇 IMPORTANT: params is a Promise in Next 15 — await it in each handler
+type Ctx = { params: Promise<{ id: string }> };
 
-    const item = await prisma.servicePlan.findUnique({
-      where: { id },
-      include: { features: { orderBy: { order: 'asc' } } },
-    });
+export async function GET(req: NextRequest, ctx: Ctx) {
+  await requireAdmin(req);
+  const { id } = await ctx.params;
 
-    if (!item) return jsonError('Not found', 404);
-    return NextResponse.json({ ok: true, item });
-  } catch (e: any) {
-    return jsonError(e?.message || 'Server error', e?.status ?? 500);
+  const plan = await prisma.servicePlan.findUnique({
+    where: { id },
+    include: { features: true },
+  });
+  if (!plan) return NextResponse.json({ ok: false, error: 'Not found' }, { status: 404 });
+
+  return NextResponse.json({ ok: true, item: serializeAdmin(plan) });
+}
+
+export async function PATCH(req: NextRequest, ctx: Ctx) {
+  await requireAdmin(req);
+  const { id } = await ctx.params;
+
+  const body = await req.json().catch(() => ({}));
+  const parsed = ServicePlanUpsertSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ ok: false, issues: parsed.error.issues }, { status: 400 });
   }
-}
+  const d = parsed.data;
 
-export async function PATCH(req: NextRequest, context: any) {
   try {
-    await requireAdminOr401();
-    const { id } = await (context?.params ?? {});
+    const data: Prisma.ServicePlanUpdateInput = {
+      language: d.language,
+      title: d.title,
+      summary: d.summary ?? null,
+      description: d.description,
+      priceCents: Math.round(d.price * 100),
+      billingPeriod: d.billing_period ?? null,
+      order: d.order,
+      isActive: d.is_active,
+    };
+    if (typeof d.slug === 'string') {
+      data.slug = d.slug.length ? d.slug : slugify(d.title);
+    }
 
-    const body = await req.json().catch(() => ({}));
-    const input = ServicePlanUpdate.parse({ ...body, id });
+    await prisma.servicePlan.update({ where: { id }, data });
 
-    // Only set provided fields
-    await prisma.servicePlan.update({
-      where: { id },
-      data: {
-        ...(input.language !== undefined && { language: input.language }),
-        ...(input.slug !== undefined && { slug: input.slug }),
-        ...(input.title !== undefined && { title: input.title }),
-        ...(input.summary !== undefined && { summary: input.summary }),
-        ...(input.description !== undefined && { description: input.description }),
-        ...(input.priceCents !== undefined && { priceCents: input.priceCents }),
-        ...(input.coverImage !== undefined && { coverImage: input.coverImage }),
-        ...(input.order !== undefined && { order: input.order }),
-        ...(input.isActive !== undefined && { isActive: input.isActive }),
-        ...(input.metaTitle !== undefined && { metaTitle: input.metaTitle }),
-        ...(input.metaDescription !== undefined && { metaDescription: input.metaDescription }),
-      },
+    // features: delete missing, upsert existing/new
+    const keepIds = new Set((d.features ?? []).filter(f => f.id).map(f => f.id as string));
+    await prisma.servicePlanFeature.deleteMany({
+      where: { planId: id, NOT: keepIds.size ? { id: { in: Array.from(keepIds) } } : {} },
     });
-
-    // Replace features if provided
-    if (Array.isArray(input.features)) {
-      await prisma.servicePlanFeature.deleteMany({ where: { planId: id } });
-      if (input.features.length) {
-        await prisma.servicePlanFeature.createMany({
-          data: input.features.map((f) => ({
-            planId: id,
-            name: f.name,
-            order: f.order ?? 1,
-          })),
-        });
+    for (const [i, f] of (d.features ?? []).entries()) {
+      const payload = { name: f.name, order: f.order ?? i + 1 };
+      if (f.id) {
+        await prisma.servicePlanFeature.update({ where: { id: f.id }, data: payload });
+      } else {
+        await prisma.servicePlanFeature.create({ data: { planId: id, ...payload } });
       }
     }
 
-    const full = await prisma.servicePlan.findUnique({
+    const updated = await prisma.servicePlan.findUnique({
       where: { id },
-      include: { features: { orderBy: { order: 'asc' } } },
+      include: { features: true },
     });
+    if (!updated) return NextResponse.json({ ok: false, error: 'Not found' }, { status: 404 });
 
-    return NextResponse.json({ ok: true, item: full });
-  } catch (e: any) {
-    const status = e?.status ?? (e?.name === 'ZodError' ? 422 : 500);
-    return jsonError(e?.message || 'Update failed', status, { issues: e?.issues });
+    return NextResponse.json({ ok: true, item: serializeAdmin(updated) });
+  } catch (err: any) {
+    if (err?.code === 'P2002') {
+      return NextResponse.json({ ok: false, error: 'Slug must be unique per language.' }, { status: 409 });
+    }
+    console.error('Update service plan error:', err);
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }
 
-export async function DELETE(_req: NextRequest, context: any) {
-  try {
-    await requireAdminOr401();
-    const { id } = await (context?.params ?? {});
+export async function DELETE(req: NextRequest, ctx: Ctx) {
+  await requireAdmin(req);
+  const { id } = await ctx.params;
 
+  try {
+    await prisma.servicePlanFeature.deleteMany({ where: { planId: id } });
     await prisma.servicePlan.delete({ where: { id } });
-    return new Response(null, { status: 204 }); // no body for 204
-  } catch (e: any) {
-    return jsonError(e?.message || 'Delete failed', e?.status ?? 500);
+    return NextResponse.json({ ok: true });
+  } catch (err: any) {
+    if (err?.code === 'P2025') {
+      return NextResponse.json({ ok: false, error: 'Not found' }, { status: 404 });
+    }
+    console.error('Delete service plan error:', err);
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 });
   }
 }

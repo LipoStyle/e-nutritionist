@@ -1,25 +1,22 @@
 'use client';
 
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import './NewServicePlan.css';
 
-const LANGS = ['en', 'es', 'el'] as const;
-type Lang = typeof LANGS[number];
+type Lang = 'en' | 'es' | 'el';
+
+type FeatureRow = { id?: string; name: string; order: number };
 
 type FormState = {
-  language: Lang;
   title: string;
-  slug: string;
   summary: string;
   description: string;
-  price: string; // € string -> convert to cents
-  coverImage: string;
+  price: string;          // euros string -> number
+  billingPeriod: string;  // "one-time", "month", "3 months", ...
   order: number;
   isActive: boolean;
-  metaTitle: string;
-  metaDescription: string;
-  featuresText: string; // one per line
+  features: FeatureRow[];
 };
 
 function toSlug(s: string) {
@@ -42,96 +39,120 @@ function parseErr(e: unknown): string {
 
 export default function NewServicePlanClient({ lang }: { lang: Lang }) {
   const router = useRouter();
-  const sp = useSearchParams();
   const pathname = usePathname();
 
-  const initialLang: Lang = (() => {
-    const q = (sp.get('lang') || lang) as Lang;
-    return (LANGS as readonly string[]).includes(q) ? q : 'en';
-  })();
-
   const [form, setForm] = useState<FormState>({
-    language: initialLang,
     title: '',
-    slug: '',
     summary: '',
     description: '',
     price: '60.00',
-    coverImage: '',
+    billingPeriod: 'one-time',
     order: 1,
     isActive: true,
-    metaTitle: '',
-    metaDescription: '',
-    featuresText: '',
+    features: [{ name: '', order: 1 }],
   });
   const [saving, setSaving] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-
-  // For showing Zod field errors (422)
   const [fieldIssues, setFieldIssues] = useState<string[] | null>(null);
 
   const priceCents = useMemo(
     () => Math.round((parseFloat(form.price || '0') || 0) * 100),
     [form.price]
   );
+  const priceNumber = useMemo(
+    () => (Number.isFinite(parseFloat(form.price)) ? parseFloat(form.price) : 0),
+    [form.price]
+  );
 
-  const safeLang: Lang = form.language || initialLang || 'en';
+  // --- Features editor helpers
+  function renumber(features: FeatureRow[]) {
+    return features.map((f, i) => ({ ...f, order: i + 1 }));
+  }
+  function setFeatureName(idx: number, name: string) {
+    setForm((f) => {
+      const next = [...f.features];
+      next[idx] = { ...next[idx], name };
+      return { ...f, features: next };
+    });
+  }
+  function addFeature(afterIndex?: number) {
+    setForm((f) => {
+      const next = [...f.features];
+      const insertAt = typeof afterIndex === 'number' ? afterIndex + 1 : next.length;
+      next.splice(insertAt, 0, { name: '', order: insertAt + 1 });
+      return { ...f, features: renumber(next) };
+    });
+  }
+  function removeFeature(idx: number) {
+    setForm((f) => {
+      const next = [...f.features];
+      next.splice(idx, 1);
+      return { ...f, features: renumber(next.length ? next : [{ name: '', order: 1 }]) };
+    });
+  }
+  function moveFeature(idx: number, dir: -1 | 1) {
+    setForm((f) => {
+      const next = [...f.features];
+      const j = idx + dir;
+      if (j < 0 || j >= next.length) return f;
+      const [row] = next.splice(idx, 1);
+      next.splice(j, 0, row);
+      return { ...f, features: renumber(next) };
+    });
+  }
 
   async function handleCreate() {
     setSaving(true);
     setErr(null);
     setFieldIssues(null);
     try {
-      // Convert featuresText -> features[]
-      const features = (form.featuresText || '')
-        .split('\n')
-        .map((s) => s.trim())
-        .filter(Boolean)
-        .map((name, idx) => ({ name, order: idx + 1 }));
+      const features = form.features
+        .map((r, idx) => ({ name: r.name.trim(), order: idx + 1 }))
+        .filter((r) => r.name.length > 0);
+
+      // slug is generated behind the scenes from title (DB/API still require it)
+      const slug = toSlug(form.title);
 
       const res = await fetch('/api/admin/service-plans', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({
-          language: form.language,
-          slug: form.slug,
+          language: lang,                           // auto from route
+          slug,                                     // generated, no UI
           title: form.title,
           summary: form.summary || null,
           description: form.description,
-          priceCents,
-          coverImage: form.coverImage || null,
+          price: priceNumber,                       // euros
+          billing_period: form.billingPeriod || null,
           order: form.order,
-          isActive: form.isActive,
-          metaTitle: form.metaTitle || null,
-          metaDescription: form.metaDescription || null,
-          features, // ✅ send the array the API expects
-          // NOTE: do NOT send featuresText — Zod .strict() would reject unknown keys
+          is_active: form.isActive,
+          features,
         }),
       });
 
-      if (res.status === 401) {
-        const from = encodeURIComponent(pathname || `/${safeLang}/admin/service-plans/new`);
-        router.push(`/${safeLang}/admin?from=${from}`);
+      if (res.status === 401 || res.status === 403) {
+        const from = encodeURIComponent(pathname || `/${lang}/admin/service-plans/new`);
+        router.push(`/${lang}/admin/login?from=${from}`);
         return;
       }
 
-      if (res.status === 422) {
+      if (res.status === 400 || res.status === 422) {
         const j = await res.json().catch(() => null);
         const issues: string[] =
-          j?.issues?.map((i: any) => (i?.message ? `${i.path?.join('.') || ''}: ${i.message}` : 'Invalid input')) ??
-          [j?.error || 'Validation error'];
+          j?.issues?.map((i: any) =>
+            i?.message ? `${(i.path?.join?.('.') || '')}: ${i.message}` : 'Invalid input'
+          ) ?? [j?.error || 'Validation error'];
         setFieldIssues(issues);
         throw new Error('Please correct the highlighted fields.');
       }
 
       if (!res.ok) {
         const j = await res.json().catch(() => null);
-        throw new Error(j?.error || 'Failed to create');
+        throw new Error(j?.error || `Failed to create (${res.status})`);
       }
 
-      // ✅ Success
-      router.replace(`/${safeLang}/admin/service-plans?created=1`);
+      router.replace(`/${lang}/admin/service-plans?created=1`);
     } catch (e: unknown) {
       setErr(parseErr(e));
     } finally {
@@ -143,56 +164,26 @@ export default function NewServicePlanClient({ lang }: { lang: Lang }) {
     <div className="nsp">
       <h1 className="nsp__title">Create Service Plan</h1>
 
-      {err && (
-        <div className="nsp-alert nsp-alert--error" role="alert">
-          {err}
-        </div>
-      )}
+      {err && <div className="nsp-alert nsp-alert--error" role="alert">{err}</div>}
 
       {fieldIssues && fieldIssues.length > 0 && (
         <div className="nsp-alert nsp-alert--error" role="alert">
           <ul style={{ margin: 0, paddingLeft: '1.2rem' }}>
-            {fieldIssues.map((m, i) => (
-              <li key={i}>{m}</li>
-            ))}
+            {fieldIssues.map((m, i) => <li key={i}>{m}</li>)}
           </ul>
         </div>
       )}
 
       <div className="nsp-form">
-        <label className="nsp-field">
-          <span className="nsp-label">Language</span>
-          <select
-            value={form.language}
-            onChange={(e) => setForm((f) => ({ ...f, language: e.target.value as Lang }))}
-            className="nsp-input"
-          >
-            {LANGS.map((l) => (
-              <option key={l} value={l}>
-                {l}
-              </option>
-            ))}
-          </select>
-        </label>
+        {/* Language is auto from route; show read-only chip if you want */}
+        {/* <div className="nsp-field"><span className="nsp-label">Language</span><div>{lang.toUpperCase()}</div></div> */}
 
         <label className="nsp-field">
           <span className="nsp-label">Title</span>
           <input
             className="nsp-input"
             value={form.title}
-            onChange={(e) => {
-              const title = e.target.value;
-              setForm((f) => ({ ...f, title, slug: f.slug ? f.slug : toSlug(title) }));
-            }}
-          />
-        </label>
-
-        <label className="nsp-field">
-          <span className="nsp-label">Slug</span>
-          <input
-            className="nsp-input"
-            value={form.slug}
-            onChange={(e) => setForm((f) => ({ ...f, slug: toSlug(e.target.value) }))}
+            onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
           />
         </label>
 
@@ -227,11 +218,12 @@ export default function NewServicePlanClient({ lang }: { lang: Lang }) {
         </label>
 
         <label className="nsp-field">
-          <span className="nsp-label">Cover image URL</span>
+          <span className="nsp-label">Billing period</span>
           <input
+            placeholder='e.g. "one-time", "month", "3 months", "6 months"'
             className="nsp-input"
-            value={form.coverImage}
-            onChange={(e) => setForm((f) => ({ ...f, coverImage: e.target.value }))}
+            value={form.billingPeriod}
+            onChange={(e) => setForm((f) => ({ ...f, billingPeriod: e.target.value }))}
           />
         </label>
 
@@ -242,9 +234,7 @@ export default function NewServicePlanClient({ lang }: { lang: Lang }) {
               type="number"
               className="nsp-input"
               value={form.order}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, order: Number(e.target.value || 1) }))
-              }
+              onChange={(e) => setForm((f) => ({ ...f, order: Number(e.target.value || 1) }))}
             />
           </label>
 
@@ -258,32 +248,57 @@ export default function NewServicePlanClient({ lang }: { lang: Lang }) {
           </label>
         </div>
 
-        <label className="nsp-field">
-          <span className="nsp-label">Meta title</span>
-          <input
-            className="nsp-input"
-            value={form.metaTitle}
-            onChange={(e) => setForm((f) => ({ ...f, metaTitle: e.target.value }))}
-          />
-        </label>
+        {/* --- Features repeater --- */}
+        <div className="nsp-field">
+          <div className="nsp-label" style={{ marginBottom: 8 }}>Features</div>
 
-        <label className="nsp-field">
-          <span className="nsp-label">Meta description</span>
-          <input
-            className="nsp-input"
-            value={form.metaDescription}
-            onChange={(e) => setForm((f) => ({ ...f, metaDescription: e.target.value }))}
-          />
-        </label>
+          <div className="nsp-repeater">
+            {form.features.map((row, i) => (
+              <div key={i} className="nsp-repeater__item">
+                <input
+                  className="nsp-input"
+                  placeholder={`Feature #${i + 1}`}
+                  value={row.name}
+                  onChange={(e) => setFeatureName(i, e.target.value)}
+                />
+                <div className="nsp-repeater__actions">
+                  <button
+                    type="button"
+                    className="nsp-btn nsp-btn--xs"
+                    onClick={() => moveFeature(i, -1)}
+                    disabled={i === 0}
+                    title="Move up"
+                  >
+                    ↑
+                  </button>
+                  <button
+                    type="button"
+                    className="nsp-btn nsp-btn--xs"
+                    onClick={() => moveFeature(i, +1)}
+                    disabled={i === form.features.length - 1}
+                    title="Move down"
+                  >
+                    ↓
+                  </button>
+                  <button
+                    type="button"
+                    className="nsp-btn nsp-btn--danger nsp-btn--xs"
+                    onClick={() => removeFeature(i)}
+                    title="Remove"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
 
-        <label className="nsp-field">
-          <span className="nsp-label">Features (one per line)</span>
-          <textarea
-            className="nsp-textarea"
-            value={form.featuresText}
-            onChange={(e) => setForm((f) => ({ ...f, featuresText: e.target.value }))}
-          />
-        </label>
+          <div style={{ marginTop: 8 }}>
+            <button type="button" className="nsp-btn nsp-btn--outline" onClick={() => addFeature()}>
+              + Add feature
+            </button>
+          </div>
+        </div>
 
         <div className="nsp-actions">
           <button className="nsp-btn nsp-btn--primary" disabled={saving} onClick={handleCreate}>

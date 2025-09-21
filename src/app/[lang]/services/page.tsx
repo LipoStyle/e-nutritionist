@@ -1,10 +1,9 @@
-// src/app/[lang]/recipes/page.tsx
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 import Link from 'next/link';
 import Hero from '@/app/components/shared/Hero/Hero';
-import { serviceHeroTranslations } from './translations';
 import { resolveLocale } from '../i18n/utils';
 import { getHeroSettings } from '@/lib/hero';
 import { prisma } from '@/lib/prisma';
@@ -18,36 +17,35 @@ type PublicPlan = {
   title: string;
   summary: string | null;
   priceCents: number;
-  coverImage: string | null;
   order: number;
   features: { id: string; name: string; order: number }[];
 };
 
-function formatPrice(cents: number | null | undefined) {
-  const value = typeof cents === 'number' ? cents : 0;
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR' }).format(value / 100);
+function formatAmount(cents?: number | null) {
+  const whole = Math.round((cents ?? 0) / 100);
+  return `${whole}€`;
 }
 
-export default async function RecipesPage({ params }: { params: Promise<{ lang: string }> }) {
+export default async function ServicesPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   const locale = resolveLocale(lang) as Lang;
-  const t = serviceHeroTranslations[locale];
 
-  const hs = await getHeroSettings('recipes', locale);
-  const bookingHref = hs?.bookHref ?? `/${locale}/book-consultation`;
+  // Pull hero copy for "services" (fallbacks if not configured)
+  const hs = await getHeroSettings('services', locale);
+  const bookingHref = hs?.bookHref ?? `/${locale}/contact`;
 
+  // Load active plans for the current language
   let plans: PublicPlan[] = [];
   try {
     plans = await prisma.servicePlan.findMany({
       where: { language: locale, isActive: true },
-      orderBy: [{ order: 'asc' }, { priceCents: 'asc' }],
+      orderBy: [{ order: 'asc' }, { updatedAt: 'desc' }],
       select: {
         id: true,
         slug: true,
         title: true,
         summary: true,
         priceCents: true,
-        coverImage: true,
         order: true,
         features: {
           orderBy: { order: 'asc' },
@@ -62,18 +60,18 @@ export default async function RecipesPage({ params }: { params: Promise<{ lang: 
   return (
     <>
       <Hero
-        title={hs?.title || undefined}
-        description={hs?.description ?? t.description}
-        message={hs?.message ?? t.message}
-        bookText={hs?.bookText ?? t.bookText}
+        title={hs?.title || 'Service Plans'}
+        description={hs?.description ?? 'Choose the plan that fits your goals.'}
+        message={hs?.message ?? ''}
+        bookText={hs?.bookText ?? 'Book a Consultation'}
         bookHref={bookingHref}
-        bgImage={hs?.bgImage ?? '/assets/images/hero/recipes.jpg'}
+        bgImage={hs?.bgImage ?? '/assets/images/hero/services.jpg'}
         overlayOpacity={hs?.overlayOpacity ?? 0.6}
         offsetHeader={hs?.offsetHeader ?? true}
         height={(hs?.height as 'compact' | 'default' | 'tall') ?? 'default'}
         headingLevel={1}
         imagePriority={false}
-        ariaLabel={t.ariaLabel}
+        ariaLabel="Services hero"
       />
 
       <section className="service-plans-container">
@@ -85,30 +83,19 @@ export default async function RecipesPage({ params }: { params: Promise<{ lang: 
           ) : (
             plans.map((p) => (
               <article key={p.id} className="service-card" tabIndex={0}>
-                {/* Optional image on top */}
-                {p.coverImage && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={p.coverImage}
-                    alt=""
-                    loading="lazy"
-                    style={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 12, marginBottom: 12 }}
-                  />
-                )}
-
                 <h3 className="service-title">{p.title}</h3>
 
-                <div className="service-price">
-                  {formatPrice(p.priceCents)} <span>EUR</span>
-                </div>
+                <div className="service-price">{formatAmount(p.priceCents)}</div>
 
                 <div className="seperator-line" />
 
                 {p.features.length > 0 && (
-                  <ul className="features-list">
+                  <ul className="features-list" aria-label="Included features">
                     {p.features.map((f) => (
                       <li key={f.id} className="feature-item">
-                        <span className="feature-tick">✓</span>
+                        <span className="feature-tick" aria-hidden>
+                          ✓
+                        </span>
                         <span className="feature-name">{f.name}</span>
                       </li>
                     ))}
@@ -117,10 +104,7 @@ export default async function RecipesPage({ params }: { params: Promise<{ lang: 
 
                 {p.summary && <p className="service-description">{p.summary}</p>}
 
-                <Link
-                  href={`${bookingHref}?plan=${encodeURIComponent(p.slug)}`}
-                  className="cta-button"
-                >
+                <Link href={`${bookingHref}?plan=${encodeURIComponent(p.slug)}`} className="cta-button">
                   Book now
                 </Link>
               </article>
