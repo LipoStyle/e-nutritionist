@@ -4,6 +4,7 @@ import { homeHeroTranslations } from './translations'
 import { getHeroSettings } from '@/lib/hero' // <- helper we added earlier
 import ServicesCarouselSection from '@/app/components/shared/ServiceCaruselSection/ServicesCarouselSection';
 import HeroHome from '../components/shared/hero-home/HeroHome';
+import HomeServices from '../components/shared/home-services/HomeServices';
 
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
@@ -16,6 +17,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
   return (
     <>
     <HeroHome />
+    <HomeServices />
     </>
    
   )

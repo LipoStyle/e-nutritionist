@@ -1,0 +1,158 @@
+/* =========================================
+   Home Services — Glass cards + Reveal anims
+   Aligns with global variables
+========================================= */
+
+:root { --hs-grid-gap: 28px; }
+
+/* Section wrapper */
+.homeServices { padding: 0; background: transparent; }
+.homeServices__inner { max-width: 1440px; margin: 0 auto; padding: 48px 0 24px; }
+
+/* Intro */
+.homeServices__header { padding: 0 6vw 20px; }
+.homeServices__title {
+  font-family: var(--font-secondary);
+  color: var(--color-light);
+  font-size: clamp(22px, 3vw, 36px);
+}
+.homeServices__subtitle {
+  color: color-mix(in oklab, var(--color-light) 85%, var(--color-white));
+  opacity: 0.9; margin-top: 6px;
+}
+
+/* Grid */
+.homeServices__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--hs-grid-gap);
+}
+
+/* Card: Glass-on-image */
+.homeServices__card--glass {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  height: 420px;
+  background: var(--color-dark);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.12);
+}
+
+/* Media */
+.homeServices__media {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  transform: scale(1.02);
+  transition: transform 600ms ease, filter 600ms ease;
+}
+.homeServices__card--glass:hover .homeServices__media {
+  transform: scale(1.05);
+  filter: saturate(1.05) contrast(1.05) brightness(0.95);
+}
+
+/* Glass overlay */
+.homeServices__glass {
+  position: absolute; inset: auto 0 0 0;
+  padding: 18px 20px 20px;
+  display: grid; gap: 10px;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.55) 0%,
+    rgba(0,0,0,0.35) 40%,
+    rgba(0,0,0,0.05) 75%,
+    transparent 100%
+  );
+  color: var(--color-light);
+}
+
+/* Meta row */
+.homeServices__metaTop { display: flex; align-items: center; justify-content: space-between; opacity: 0.9; }
+.homeServices__dots { letter-spacing: 2px; }
+.homeServices__priceBadge {
+  background: rgba(0,0,0,0.45);
+  color: var(--color-light);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px; font-weight: 800;
+}
+
+/* Title + desc on glass */
+.homeServices__titleGlass { font-family: var(--font-secondary); font-size: clamp(18px, 1.6vw, 22px); color: var(--color-white); }
+.homeServices__desc { font-size: 14px; color: color-mix(in oklab, var(--color-light) 85%, var(--color-white)); }
+
+/* CTA row (override CTA visuals on glass) */
+.homeServices__ctaRow { display: flex; gap: 12px; align-items: center; margin-top: 6px; }
+.homeServices__ctaRow .cta-button {
+  background: var(--color-white);
+  color: var(--color-dark);
+  border-radius: 999px;
+  padding: 10px 18px;
+  min-width: 120px;
+  text-align: center;
+}
+.homeServices__ctaRow .cta-button::before {
+  background: color-mix(in oklab, var(--color-dark) 85%, black);
+}
+.homeServices__ctaRow .cta-button:hover { color: var(--color-light); transform: translateY(-1px); }
+.homeServices__ctaRow .cta-button-secondary { border-color: rgba(255,255,255,0.22); color: var(--color-light); }
+.homeServices__ctaRow .cta-button-secondary:hover { background: var(--color-soft-white); }
+
+/* Badge */
+.homeServices__badge {
+  position: absolute; top: 10px; right: 10px;
+  padding: 4px 10px; font-size: 12px;
+  border-radius: 999px; background: var(--color-accent);
+  color: var(--color-dark); font-weight: 800; letter-spacing: 0.25px;
+}
+
+/* CTA Banner */
+.homeServices__ctaBanner {
+  margin-top: 48px;
+  text-align: center;
+  display: flex; flex-direction: column;
+  gap: 16px; align-items: center; justify-content: center;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--color-soft-white);
+}
+.light-mode .homeServices__ctaBanner {
+  background: color-mix(in oklab, var(--color-light) 60%, var(--color-white));
+}
+.homeServices__ctaBanner p {
+  font-size: 18px; font-weight: 500; color: var(--color-dark);
+}
+
+/* ======================
+   Reveal Animations
+====================== */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 600ms ease,
+    transform 600ms ease;
+  /* stagger (set via inline --stagger from TSX) */
+  transition-delay: calc((var(--stagger, 0) * 70ms));
+  will-change: opacity, transform;
+}
+[data-animate].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .homeServices__grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .homeServices__card--glass { height: 400px; }
+}
+@media (max-width: 640px) {
+  .homeServices__grid { grid-template-columns: 1fr; gap: 16px; }
+  .homeServices__card--glass { height: 380px; border-radius: 20px; }
+  .homeServices__ctaRow { gap: 10px; }
+}
