@@ -1,0 +1,150 @@
+:root {
+  --color-dark: #16232a;
+  --color-accent: #ff5b04;
+  --color-secondary: #075056;
+  --color-light: #e4eef0;
+  --color-white: #ffffff;
+  --color-soft-white: rgba(255, 255, 255, 0.05);
+  --color-soft-white-hover: rgba(255, 255, 255, 0.2);
+  --color-soft-white-blur: rgba(255, 255, 255, 0.5);
+  --color-overlay: rgba(22, 35, 42, 0.8);
+  --header-height: 200px;
+
+  /* Component-level sizing overrides */
+  --hero-height-desktop: 86vh;
+  --hero-height-mobile: 72vh;
+}
+
+.heroHome {
+  position: relative;
+  width: 100%;
+  height: var(--hero-height-desktop);
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--color-light);
+}
+
+@media (max-width: 768px) {
+  .heroHome { height: var(--hero-height-mobile); }
+}
+
+.heroSlides { position: relative; width: 100%; height: 100%; }
+
+/* 🔑 Fix: disable pointer events on inactive slides */
+.heroSlide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 500ms ease, transform 800ms ease;
+  pointer-events: none; /* 🚫 inactive */
+}
+.heroSlide.is-active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto; /* ✅ active slide clickable */
+}
+
+.heroSlide__bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  filter: saturate(1.05) contrast(1.05);
+  transform: scale(1.06);
+  animation: heroZoom 14s ease-out both;
+  pointer-events: none;
+}
+
+/* Overlay */
+.heroSlide__overlay {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 6vw;
+  padding-top: clamp(6vh, 8vh, 10vh);
+  background: linear-gradient(to top, var(--color-overlay) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0) 70%);
+  color: var(--color-light);
+  text-align: left;
+}
+
+.heroTitle {
+  font-size: clamp(28px, 4vw, 56px);
+  line-height: 1.1;
+  margin: 0 0 16px;
+  font-weight: 800;
+  font-family: var(--font-secondary);
+}
+.heroSubtitle {
+  font-size: clamp(14px, 1.6vw, 20px);
+  opacity: 0.95;
+  margin: 0 0 28px;
+  max-width: 70ch;
+  font-family: var(--font-primary);
+}
+
+.heroActions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+/* Controls */
+.heroControls {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 8px;
+  z-index: 3;
+  pointer-events: none; /* only buttons themselves clickable */
+}
+.heroControl {
+  pointer-events: auto; /* ✅ make arrows clickable */
+  width: 42px; height: 42px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(0,0,0,0.38);
+  cursor: pointer;
+}
+.heroControl:hover { background: rgba(0,0,0,0.5); }
+.heroControl--prev::before, .heroControl--next::before {
+  content: ""; display: block; width: 8px; height: 8px;
+  border-top: 2px solid var(--color-light);
+  border-right: 2px solid var(--color-light);
+  margin: 0 auto;
+}
+.heroControl--prev::before { transform: rotate(-135deg); }
+.heroControl--next::before { transform: rotate(45deg); }
+
+/* Dots */
+.heroDots {
+  position: absolute; left: 50%; bottom: 52px;
+  transform: translateX(-50%);
+  display: flex; gap: 8px; z-index: 3;
+  pointer-events: auto; /* ✅ dots clickable */
+}
+.heroDot {
+  width: 9px; height: 9px; border-radius: 999px;
+  background: rgba(255,255,255,0.5);
+  border: none; cursor: pointer;
+}
+.heroDot.is-active { background: var(--color-white); }
+
+/* Scroll Cue */
+.heroScrollCue {
+  position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%) rotate(45deg);
+  width: 28px; height: 28px;
+  border-bottom: 2px solid rgba(255,255,255,0.7);
+  border-right: 2px solid rgba(255,255,255,0.7);
+  opacity: 0.8;
+}
+
+.visuallyHidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 1px, 1px); white-space: nowrap; border: 0;
+}
+
+@keyframes heroZoom { from { transform: scale(1.08); } to { transform: scale(1.02); } }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .heroSlide__overlay { padding: 0 5vw; padding-top: 6vh; }
+  .heroActions { gap: 10px; }
+}

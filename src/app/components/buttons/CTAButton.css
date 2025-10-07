@@ -1,20 +1,27 @@
-/* 🌟 GENERAL STYLING (Functionality & Layout First) */
+/* 🌟 GENERAL STYLING */
 .cta-button {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   padding: 12px 20px;
   text-decoration: none;
   overflow: hidden;
-  font-family: var(--font-secondary, 'Poppins', sans-serif);
-  font-weight: bold;
+  font-family: var(--font-secondary, 'Josefin Sans', sans-serif);
+  font-weight: 700;
+  letter-spacing: 0.2px;
   border-radius: 5px;
-  transition:
-    color 0.3s ease-in-out,
-    background-color 0.3s ease-in-out;
-  z-index: 1;
   cursor: pointer;
+
+  transition:
+    color 0.25s ease-in-out,
+    background-color 0.25s ease-in-out,
+    transform 0.15s ease;
+  z-index: 0; /* keep pseudo behind text */
 }
 
-/* 🔹 Pseudo-element for sliding background effect */
+/* Sliding background effect */
 .cta-button::before {
   content: '';
   position: absolute;
@@ -26,38 +33,34 @@
   transition: left 0.3s ease-in-out;
 }
 
-.cta-button:hover::before {
-  left: 0;
-}
+.cta-button:hover::before { left: 0; }
+.cta-button:active { transform: translateY(1px); }
+.cta-button:focus-visible { outline: 2px solid var(--color-light); outline-offset: 2px; }
 
-/* =========================================================
-   🌟 COLOR STYLING — Light & Dark Modes
-   ========================================================= */
-
-/* 🔹 Light Mode */
+/* =========================
+   Light Mode (SUCCESS theme)
+   ========================= */
 .light-mode .cta-button {
-  background-color: var(--color-success); /* orange */
+  background-color: var(--color-success);     /* ✅ success in light mode */
   color: var(--color-white);
 }
-
 .light-mode .cta-button::before {
-  background-color: var(--color-dark); /* deep blue/green */
+  background-color: color-mix(in oklab, var(--color-dark) 85%, black);
 }
-
 .light-mode .cta-button:hover {
-  color: var(--color-white);
+  color: var(--color-light);
 }
 
-/* 🔹 Dark Mode */
+/* =========================
+   Dark Mode (ACCENT theme)
+   ========================= */
 .dark-mode .cta-button {
-  background-color: var(--color-accent); /* teal */
-  color: var(--color-light); /* soft background */
+  background-color: var(--color-accent);      /* ✅ accent in dark mode */
+  color: var(--color-dark);
 }
-
 .dark-mode .cta-button::before {
-  background-color: var(--color-white);
+  background-color: var(--color-light);
 }
-
 .dark-mode .cta-button:hover {
   color: var(--color-dark);
 }

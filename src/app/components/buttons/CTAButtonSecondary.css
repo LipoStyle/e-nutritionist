@@ -1,0 +1,67 @@
+/* =========================================
+   Secondary (ghost/outline) CTA (global-aligned)
+   ========================================= */
+.cta-button-secondary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-family: var(--font-secondary, 'Josefin Sans', sans-serif);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+
+  background: transparent;
+  border: 1px solid color-mix(in oklab, var(--color-light) 60%, var(--color-white));
+  color: var(--color-light);
+
+  transition:
+    transform 0.15s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+/* Dark mode (default) — light outline on dark bg */
+.dark-mode .cta-button-secondary {
+  border-color: color-mix(in oklab, var(--color-light) 60%, var(--color-white));
+  color: var(--color-light);
+}
+.dark-mode .cta-button-secondary:hover {
+  background: color-mix(in oklab, var(--color-secondary) 18%, transparent);
+  border-color: color-mix(in oklab, var(--color-light) 70%, var(--color-secondary));
+}
+
+.dark-mode .cta-button-secondary:active {
+  transform: translateY(1px);
+}
+
+/* Light mode — dark outline & text for contrast */
+.light-mode .cta-button-secondary {
+  border-color: color-mix(in oklab, var(--color-dark) 70%, var(--color-light));
+  color: var(--color-white);
+}
+.light-mode .cta-button-secondary:hover {
+  background: color-mix(in oklab, var(--color-light) 70%, var(--color-white));
+  color: var(--color-dark);
+}
+.light-mode .cta-button-secondary:active {
+  transform: translateY(1px);
+}
+
+/* Focus states (consistent brand cue) */
+.cta-button-secondary:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Optional: subtle icon spacing if you add icons later */
+.cta-button-secondary > svg,
+.cta-button-secondary > span + svg,
+.cta-button-secondary > svg + span {
+  margin-left: 6px; /* tweak as needed */
+}
