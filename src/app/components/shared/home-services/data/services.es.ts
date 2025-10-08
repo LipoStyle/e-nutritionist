@@ -10,6 +10,7 @@ export const servicesES: ServiceCardData[] = [
     badge: "nuevo",
     detailsHref: "/es/services/el-manual-de-macros",
     bookingHref: "/es/shop/el-manual-de-macros",
+    showHomeService: true, // ✅ show on homepage
   },
   {
     id: "audit",
@@ -19,6 +20,7 @@ export const servicesES: ServiceCardData[] = [
     image: "/assets/images/home-services/image1.jpg",
     detailsHref: "/es/services/la-auditoria-fisica",
     bookingHref: "/es/booking/auditoria-fisica",
+    showHomeService: true, // ✅ show on homepage
   },
   {
     id: "ignition",
@@ -28,6 +30,7 @@ export const servicesES: ServiceCardData[] = [
     image: "/assets/images/home-services/image1.jpg",
     detailsHref: "/es/services/programa-encendido",
     bookingHref: "/es/booking/auditoria-fisica",
+    showHomeService: true, // ✅ show on homepage
   },
   {
     id: "intensive",

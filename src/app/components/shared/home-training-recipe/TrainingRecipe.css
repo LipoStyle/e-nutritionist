@@ -1,0 +1,127 @@
+:root {
+  --tr-height: 440px; /* total card height */
+  --tr-speed: 42s;    /* loop duration */
+}
+
+/* Section framing */
+.trSection { padding: 48px 0; }
+.trHeader { padding: 0 6vw 16px; }
+.trHeader h2 {
+  font-family: var(--font-secondary);
+  color: var(--color-light);
+  font-size: clamp(22px, 3vw, 32px);
+}
+.trSubtitle {
+  color: color-mix(in oklab, var(--color-light) 85%, var(--color-white));
+  opacity: 0.95;
+}
+
+/* Viewport shows exactly 3 slides, no gaps */
+.trViewport { width: 100%; overflow: hidden; }
+.trTrack {
+  display: flex;
+  gap: 0;
+  will-change: transform;
+  animation: trMarquee var(--tr-speed) linear infinite;
+}
+@keyframes trMarquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.trViewport:hover .trTrack,
+.trViewport:focus-within .trTrack { animation-play-state: paused; }
+
+/* Slide: 1/3 each, two halves stacked */
+.trSlide {
+  width: calc(100% / 3);
+  flex: 0 0 auto;
+  height: var(--tr-height);
+  display: grid;
+  grid-template-rows: 1fr 1fr; /* top training / bottom recipe */
+  background: var(--color-dark);
+  overflow: hidden;
+}
+
+/* Halves (shared) */
+.trHalf { position: relative; display: block; text-decoration: none; isolation: isolate; }
+.trHalf__bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  transform: scale(1.02);
+  transition: transform 400ms ease, filter 400ms ease;
+  z-index: 0;
+}
+.trHalf__bg--dim { background: rgba(0,0,0,0.2); } /* neutral backing for recipe half */
+
+.trHalf__overlay {
+  position: relative; z-index: 1;
+  height: 100%;
+  color: var(--color-light);
+  padding: 14px;
+  display: grid;
+}
+
+/* Training overlay layout */
+.trHalf__overlay--training {
+  align-content: end;
+  gap: 6px;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 65%);
+}
+.trHalf--training:hover .trHalf__bg {
+  transform: scale(1.06);
+  filter: saturate(1.05) contrast(1.05) brightness(0.95);
+}
+
+/* Recipe overlay layout: thumb + text + button in a row that wraps on small screens */
+.trHalf__overlay--recipe {
+  align-content: center;
+  gap: 12px;
+  grid-template-columns: auto 1fr auto;
+}
+.trRecipeThumb {
+  width: 56px; height: 56px;
+  border-radius: 999px;
+  object-fit: cover; object-position: center;
+  border: 2px solid rgba(255,255,255,0.6);
+}
+.trRecipeText { display: grid; gap: 4px; align-content: center; }
+
+/* Typography */
+.trKicker {
+  font-size: 12px; letter-spacing: 0.6px; text-transform: uppercase;
+  opacity: 0.9;
+}
+.trTitle {
+  font-size: clamp(14px, 1.4vw, 18px);
+  color: var(--color-white);
+  line-height: 1.2;
+}
+.trBlurb {
+  font-size: 13px;
+  color: color-mix(in oklab, var(--color-light) 90%, var(--color-white));
+  opacity: 0.95;
+}
+
+/* Small secondary button variant */
+.cta-button-secondary--sm {
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .trTrack { animation: none; }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .trSlide { width: 50%; } /* show 2 per view */
+}
+@media (max-width: 640px) {
+  .trSlide { width: 100%; } /* show 1 per view */
+  :root { --tr-height: 400px; }
+  .trHalf__overlay--recipe { grid-template-columns: 1fr; justify-items: start; }
+  .trRecipeThumb { width: 52px; height: 52px; }
+}

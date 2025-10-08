@@ -1,0 +1,107 @@
+.homeAbout { width: 100%; padding: 56px 6vw; }
+.homeAbout__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr; /* image a touch wider */
+  gap: clamp(24px, 4vw, 48px);
+}
+
+/* LEFT: sticky image */
+.homeAbout__mediaWrap { position: relative; }
+.homeAbout__media {
+  position: sticky;
+  top: calc(var(--header-height, 120px) + 16px);
+  height: min(72vh, 780px);
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+  overflow: hidden;
+}
+/* force top-crop alignment */
+.homeAbout__media--top { background-position: top center; }
+
+/* RIGHT: content */
+.homeAbout__content { display: grid; align-content: start; gap: 20px; }
+.homeAbout__header { display: grid; gap: 10px; }
+.homeAbout__intro {
+  font-size: 14px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-light) 70%, var(--color-white));
+}
+.homeAbout__title {
+  font-family: var(--font-secondary);
+  color: var(--color-light);
+  font-size: clamp(24px, 3.2vw, 40px);
+  line-height: 1.15;
+}
+.homeAbout__lead {
+  color: color-mix(in oklab, var(--color-light) 92%, var(--color-white));
+  font-size: 16px;
+  max-width: 70ch;
+}
+
+/* 3 credentials in a row */
+.homeAbout__creds {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+}
+.homeAbout__creds li {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--color-soft-white);
+  color: var(--color-light);
+  font-weight: 700;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* USPs (3 bullets) */
+.homeAbout__usps {
+  margin-top: 4px;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  color: color-mix(in oklab, var(--color-light) 92%, var(--color-white));
+}
+.homeAbout__usps li::marker { color: var(--color-accent); }
+
+/* Optional longer copy */
+.homeAbout__body { display: grid; gap: 12px; }
+.homeAbout__paragraph {
+  color: color-mix(in oklab, var(--color-light) 92%, var(--color-white));
+  font-size: 16px;
+  max-width: 70ch;
+}
+
+/* Actions */
+.homeAbout__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* Reveal anims */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms ease, transform 600ms ease;
+  transition-delay: calc((var(--stagger, 0) * 70ms));
+  will-change: opacity, transform;
+}
+[data-animate].is-visible { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .homeAbout__inner { grid-template-columns: 1fr; }
+  .homeAbout__media { position: relative; top: 0; height: 42vh; }
+}
+@media (max-width: 640px) {
+  .homeAbout { padding: 40px 5vw; }
+  .homeAbout__creds { grid-template-columns: 1fr; }
+  .homeAbout__actions { flex-direction: column; }
+}

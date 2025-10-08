@@ -1,41 +1,53 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 import './HomeServices.css'
 
 import CTAButton from '@/app/components/buttons/CTAButton'
 import CTAButtonSecondary from '@/app/components/buttons/CTAButtonSecondary'
-import { ServiceCardData } from './types'
+import type { ServiceCardData } from './types'
 
 import { servicesEN } from './data/services.en'
 import { servicesES } from './data/services.es'
 import { servicesEL } from './data/services.el'
 
-export interface HomeServicesProps {
-  lang?: 'en' | 'es' | 'el'
+type Lang = 'en' | 'es' | 'el'
+const SUPPORTED: Lang[] = ['en', 'es', 'el']
+
+const withLang = (lang: Lang, path: string) => {
+  if (!path) return path
+  const parts = path.split('/').filter(Boolean)
+  if (parts.length > 0 && SUPPORTED.includes(parts[0] as Lang)) return path
+  return `/${lang}${path.startsWith('/') ? '' : '/'}${path}`
 }
 
-const HomeServices: React.FC<HomeServicesProps> = ({ lang = 'en' }) => {
+export interface HomeServicesProps {
+  lang?: Lang
+}
+
+const HomeServices: React.FC<HomeServicesProps> = ({ lang }) => {
+  const pathname = usePathname() || '/'
+  const detected = useMemo<Lang>(() => {
+    const seg = pathname.split('/').filter(Boolean)[0]
+    return (SUPPORTED.includes(seg as Lang) ? (seg as Lang) : 'en')
+  }, [pathname])
+
+  const locale = (lang ?? detected) as Lang
   const data =
-    lang === 'es' ? servicesES :
-    lang === 'el' ? servicesEL :
+    locale === 'es' ? servicesES :
+    locale === 'el' ? servicesEL :
     servicesEN
 
-  // Only the services flagged for homepage
   const items = data.filter((s: ServiceCardData) => s.showHomeService)
 
-  // --- IntersectionObserver to reveal on enter -----------------
+  // IntersectionObserver reveal-on-enter
   const sectionRef = useRef<HTMLElement | null>(null)
-
   useEffect(() => {
     const root = sectionRef.current
     if (!root) return
 
-    const nodes = Array.from(
-      root.querySelectorAll<HTMLElement>('[data-animate]')
-    )
-
-    // Respect reduced motion
+    const nodes = Array.from(root.querySelectorAll<HTMLElement>('[data-animate]'))
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) {
       nodes.forEach((el) => el.classList.add('is-visible'))
@@ -59,21 +71,22 @@ const HomeServices: React.FC<HomeServicesProps> = ({ lang = 'en' }) => {
   }, [])
 
   return (
-    <section
-      className="homeServices"
-      aria-labelledby="home-services-title"
-      ref={sectionRef}
-    >
+    <section className="homeServices" aria-labelledby="home-services-title" ref={sectionRef}>
       <div className="homeServices__inner">
-
-        {/* Intro Section */}
+        {/* Intro */}
         <header className="homeServices__header" data-animate>
           <h2 id="home-services-title" className="homeServices__title">
-            Tailored Services for Every Journey
+            {/* If you have localized headings, swap these strings by locale */}
+            {locale === 'es' ? 'Servicios diseñados para tu camino' :
+             locale === 'el' ? 'Υπηρεσίες προσαρμοσμένες στο ταξίδι σου' :
+             'Tailored Services for Every Journey'}
           </h2>
           <p className="homeServices__subtitle">
-            Whether you’re starting out, optimizing performance, or striving for mastery —
-            choose the plan that fits your lifestyle.
+            {locale === 'es'
+              ? 'Tanto si empiezas, optimizas el rendimiento o buscas la maestría — elige el plan que encaja contigo.'
+              : locale === 'el'
+              ? 'Είτε ξεκινάς, είτε βελτιστοποιείς την απόδοση, είτε στοχεύεις στη μαεστρία — διάλεξε το πλάνο που σου ταιριάζει.'
+              : 'Whether you’re starting out, optimizing performance, or striving for mastery — choose the plan that fits your lifestyle.'}
           </p>
         </header>
 
@@ -85,22 +98,14 @@ const HomeServices: React.FC<HomeServicesProps> = ({ lang = 'en' }) => {
               role="listitem"
               className="homeServices__card homeServices__card--glass"
               data-animate
-              style={{ ['--stagger' as any]: idx }} // CSS var for stagger
+              style={{ ['--stagger' as any]: idx }}
             >
-              {/* Background media */}
-              <div
-                className="homeServices__media"
-                style={{ backgroundImage: `url(${s.image})` }}
-                aria-hidden
-              />
+              <div className="homeServices__media" style={{ backgroundImage: `url(${s.image})` }} aria-hidden />
 
-              {/* Glass overlay content (bottom) */}
               <div className="homeServices__glass">
                 <div className="homeServices__metaTop">
                   <span className="homeServices__dots" aria-hidden>•••</span>
-                  {s.priceLabel && (
-                    <span className="homeServices__priceBadge">{s.priceLabel}</span>
-                  )}
+                  {s.priceLabel && <span className="homeServices__priceBadge">{s.priceLabel}</span>}
                 </div>
 
                 <h3 className="homeServices__titleGlass">{s.title}</h3>
@@ -108,13 +113,13 @@ const HomeServices: React.FC<HomeServicesProps> = ({ lang = 'en' }) => {
 
                 <div className="homeServices__ctaRow">
                   <CTAButton
-                    text="Book Consultation"
-                    link={s.bookingHref}
+                    text={locale === 'es' ? 'Reservar consulta' : locale === 'el' ? 'Κράτηση συνεδρίας' : 'Book Consultation'}
+                    link={withLang(locale, s.bookingHref)}
                     ariaLabel={`Book: ${s.title}`}
                   />
                   <CTAButtonSecondary
-                    text="Learn More"
-                    link={s.detailsHref}
+                    text={locale === 'es' ? 'Más información' : locale === 'el' ? 'Μάθε περισσότερα' : 'Learn More'}
+                    link={withLang(locale, s.detailsHref)}
                     ariaLabel={`Learn more: ${s.title}`}
                   />
                 </div>
@@ -131,8 +136,18 @@ const HomeServices: React.FC<HomeServicesProps> = ({ lang = 'en' }) => {
 
         {/* CTA Banner */}
         <div className="homeServices__ctaBanner" data-animate style={{ ['--stagger' as any]: items.length + 1 }}>
-          <p>Want to explore all coaching and program options?</p>
-          <CTAButton text="View All Services" link="/services" ariaLabel="View all services" />
+          <p>
+            {locale === 'es'
+              ? '¿Quieres ver todas las opciones de programas y coaching?'
+              : locale === 'el'
+              ? 'Θέλεις να δεις όλες τις επιλογές προγραμμάτων και coaching;'
+              : 'Want to explore all coaching and program options?'}
+          </p>
+          <CTAButton
+            text={locale === 'es' ? 'Ver todos los servicios' : locale === 'el' ? 'Δες όλες τις υπηρεσίες' : 'View All Services'}
+            link={withLang(locale, '/services')}
+            ariaLabel="View all services"
+          />
         </div>
       </div>
     </section>

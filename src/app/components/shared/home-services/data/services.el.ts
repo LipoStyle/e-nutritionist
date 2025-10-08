@@ -10,6 +10,7 @@ export const servicesEL: ServiceCardData[] = [
     badge: "νέο",
     detailsHref: "/el/services/egcheiridio-makrothreptikon",
     bookingHref: "/el/shop/egcheiridio-makrothreptikon",
+    showHomeService: true, // ✅ show on homepage
   },
   {
     id: "audit",
@@ -19,6 +20,7 @@ export const servicesEL: ServiceCardData[] = [
     image: "/assets/images/home-services/image1.jpg",
     detailsHref: "/el/services/elegxos-somatikis-diaplaseis",
     bookingHref: "/el/booking/elegxos-somatikis",
+    showHomeService: true, // ✅ show on homepage
   },
   {
     id: "ignition",
@@ -28,6 +30,7 @@ export const servicesEL: ServiceCardData[] = [
     image: "/assets/images/home-services/image1.jpg",
     detailsHref: "/el/services/prog-anaplexis",
     bookingHref: "/el/booking/elegxos-somatikis",
+    showHomeService: true, // ✅ show on homepage
   },
   {
     id: "intensive",
