@@ -15,6 +15,7 @@
   --hero-height-mobile: 72vh;
 }
 
+/* ===== Base layout (desktop defaults) ===== */
 .heroHome {
   position: relative;
   width: 100%;
@@ -24,25 +25,21 @@
   color: var(--color-light);
 }
 
-@media (max-width: 768px) {
-  .heroHome { height: var(--hero-height-mobile); }
-}
-
 .heroSlides { position: relative; width: 100%; height: 100%; }
 
-/* 🔑 Fix: disable pointer events on inactive slides */
+/* Inactive slides are not clickable */
 .heroSlide {
   position: absolute;
   inset: 0;
   opacity: 0;
   transform: scale(1.02);
   transition: opacity 500ms ease, transform 800ms ease;
-  pointer-events: none; /* 🚫 inactive */
+  pointer-events: none;
 }
 .heroSlide.is-active {
   opacity: 1;
   transform: scale(1);
-  pointer-events: auto; /* ✅ active slide clickable */
+  pointer-events: auto;
 }
 
 .heroSlide__bg {
@@ -54,7 +51,7 @@
   pointer-events: none;
 }
 
-/* Overlay */
+/* Overlay (desktop baseline) */
 .heroSlide__overlay {
   position: relative;
   z-index: 2;
@@ -64,7 +61,12 @@
   justify-content: center;
   padding: 0 6vw;
   padding-top: clamp(6vh, 8vh, 10vh);
-  background: linear-gradient(to top, var(--color-overlay) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0) 70%);
+  background: linear-gradient(
+    to top,
+    var(--color-overlay) 0%,
+    rgba(0,0,0,0.15) 40%,
+    rgba(0,0,0,0) 70%
+  );
   color: var(--color-light);
   text-align: left;
 }
@@ -95,7 +97,7 @@
   pointer-events: none; /* only buttons themselves clickable */
 }
 .heroControl {
-  pointer-events: auto; /* ✅ make arrows clickable */
+  pointer-events: auto;
   width: 42px; height: 42px;
   border-radius: 999px;
   border: 0;
@@ -117,7 +119,7 @@
   position: absolute; left: 50%; bottom: 52px;
   transform: translateX(-50%);
   display: flex; gap: 8px; z-index: 3;
-  pointer-events: auto; /* ✅ dots clickable */
+  pointer-events: auto;
 }
 .heroDot {
   width: 9px; height: 9px; border-radius: 999px;
@@ -126,9 +128,12 @@
 }
 .heroDot.is-active { background: var(--color-white); }
 
-/* Scroll Cue */
+/* Scroll Cue (base) */
 .heroScrollCue {
-  position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%) rotate(45deg);
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%) rotate(45deg);
   width: 28px; height: 28px;
   border-bottom: 2px solid rgba(255,255,255,0.7);
   border-right: 2px solid rgba(255,255,255,0.7);
@@ -142,16 +147,28 @@
 }
 
 @keyframes heroZoom { from { transform: scale(1.08); } to { transform: scale(1.02); } }
-/* ===== Mobile-only hero layout + smoother animations ===== */
+
+/* ===== Mobile-specific layout & animations ===== */
 @media (max-width: 768px) {
-  /* Center content vertically & horizontally */
+  .heroHome { height: var(--hero-height-mobile); }
+
+  /* Background: smoother zoom-out on mobile */
+  .heroSlide__bg {
+    animation: heroZoomMobile 12s ease-out both;
+  }
+  @keyframes heroZoomMobile {
+    from { transform: scale(1.12); }
+    to   { transform: scale(1.00); }
+  }
+
+  /* Center content vertically & horizontally on mobile */
   .heroSlide__overlay {
     display: flex;
     flex-direction: column;
-    justify-content: center;   /* vertical center */
-    align-items: center;       /* horizontal center */
+    justify-content: center;    /* vertical center */
+    align-items: center;        /* horizontal center */
     text-align: center;
-    padding: 0 6vw;
+    padding: 0 6vw;             /* remove extra top padding */
     background: linear-gradient(
       to top,
       var(--color-overlay) 0%,
@@ -160,17 +177,38 @@
     );
   }
 
-  /* Buttons inline on mobile */
+  /* Keep buttons inline on mobile; push lower */
   .heroActions {
     display: flex;
-    flex-direction: row;        /* keep side-by-side */
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 12px;
-    flex-wrap: nowrap;          /* prevent stacking */
+    flex-wrap: nowrap;
+    margin-top: 18px;           /* lower than before */
   }
 
-  /* Initial hidden states */
+  /* Dots vs Arrow: add vertical spacing */
+  .heroDots { bottom: 72px; }
+  .heroScrollCue {
+    bottom: 32px;
+    transform: translate(-50%, 0) rotate(45deg);
+    animation: hh-cue-float 2s ease-in-out infinite;
+    opacity: 0.9;
+  }
+  @keyframes hh-cue-float {
+    0%, 100% { transform: translate(-50%, 0) rotate(45deg);    opacity: 0.85; }
+    50%      { transform: translate(-50%, -8px) rotate(45deg); opacity: 1;    }
+  }
+
+  /* Larger, friendlier mobile typography */
+  .heroTitle   { font-size: clamp(32px, 7.2vw, 44px); }
+  .heroSubtitle{
+    font-size: clamp(16px, 4.4vw, 19px);
+    margin-bottom: 24px; /* more space above CTAs */
+  }
+
+  /* Entrance animations (smoother/staggered) */
   .heroTitle,
   .heroSubtitle,
   .heroActions a {
@@ -178,30 +216,23 @@
     will-change: transform, opacity;
   }
 
-  /* Easing for a softer feel */
-  /* cubic-bezier for gentle ease-out */
-  /* Title: top -> down + fade */
   @keyframes hh-title-down {
     from { transform: translateY(-18px); opacity: 0; }
     to   { transform: translateY(0);      opacity: 1; }
   }
-  /* Paragraph: bottom -> top + fade */
   @keyframes hh-para-up {
     from { transform: translateY(22px); opacity: 0; }
     to   { transform: translateY(0);    opacity: 1; }
   }
-  /* Primary CTA: left -> right + fade */
   @keyframes hh-btn-left-right {
     from { transform: translateX(-18px); opacity: 0; }
     to   { transform: translateX(0);      opacity: 1; }
   }
-  /* Secondary CTA: right -> left + fade */
   @keyframes hh-btn-right-left {
     from { transform: translateX(18px); opacity: 0; }
     to   { transform: translateX(0);    opacity: 1; }
   }
 
-  /* Trigger on active slide, with longer delays/durations */
   .heroSlide.is-active .heroTitle {
     animation: hh-title-down 720ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both;
   }
@@ -215,7 +246,21 @@
     animation: hh-btn-right-left 680ms cubic-bezier(0.22, 1, 0.36, 1) 760ms both;
   }
 
-  /* Respect reduced motion */
+  /* Move Prev/Next controls lower */
+  .heroControls {
+    top: auto;
+    bottom: 22%;
+    left: 0;
+    right: 0;
+    height: auto;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    pointer-events: none;
+  }
+  .heroControl { pointer-events: auto; }
+
+  /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .heroTitle,
     .heroSubtitle,
@@ -223,6 +268,14 @@
       transform: none !important;
       opacity: 1 !important;
       animation: none !important;
+    }
+    .heroSlide__bg {
+      animation: none !important;
+      transform: scale(1) !important;
+    }
+    .heroScrollCue {
+      animation: none !important;
+      transform: translate(-50%, 0) rotate(45deg) !important;
     }
   }
 }
