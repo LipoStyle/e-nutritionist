@@ -143,8 +143,89 @@
 
 @keyframes heroZoom { from { transform: scale(1.08); } to { transform: scale(1.02); } }
 
-/* Mobile */
+/* ===== Mobile-only hero layout + animations ===== */
 @media (max-width: 768px) {
-  .heroSlide__overlay { padding: 0 5vw; padding-top: 6vh; }
-  .heroActions { gap: 10px; }
+  /* Center content vertically & horizontally */
+  .heroSlide__overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* vertical center */
+    align-items: center;       /* horizontal center */
+    text-align: center;
+    padding: 0 6vw;            /* remove extra top padding */
+    background: linear-gradient(
+      to top,
+      var(--color-overlay) 0%,
+      rgba(0,0,0,0.18) 35%,
+      rgba(0,0,0,0) 65%
+    );
+  }
+
+  .heroActions {
+    justify-content: center;   /* center the buttons row */
+    gap: 12px;
+  }
+
+  /* Initial hidden states (so non-active slides don't flash) */
+  .heroTitle,
+  .heroSubtitle,
+  .heroActions a {
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  /* Title: top -> down + fade */
+  @keyframes hh-title-down {
+    from { transform: translateY(-16px); opacity: 0; }
+    to   { transform: translateY(0);     opacity: 1; }
+  }
+
+  /* Paragraph: right -> left + fade */
+  @keyframes hh-para-right-left {
+    from { transform: translateX(22px); opacity: 0; }
+    to   { transform: translateX(0);     opacity: 1; }
+  }
+
+  /* Primary CTA: left -> right + fade */
+  @keyframes hh-btn-left-right {
+    from { transform: translateX(-18px); opacity: 0; }
+    to   { transform: translateX(0);      opacity: 1; }
+  }
+
+  /* Secondary CTA: right -> left + fade */
+  @keyframes hh-btn-right-left {
+    from { transform: translateX(18px); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
+  }
+
+  /* Trigger animations only on the active slide */
+  .heroSlide.is-active .heroTitle {
+    animation: hh-title-down 480ms ease-out 100ms both;
+  }
+  .heroSlide.is-active .heroSubtitle {
+    animation: hh-para-right-left 520ms ease-out 220ms both;
+  }
+
+  /* Buttons: first = primary, second = secondary */
+  .heroSlide.is-active .heroActions a:nth-child(1) {
+    animation: hh-btn-left-right 480ms ease-out 320ms both;
+  }
+  .heroSlide.is-active .heroActions a:nth-child(2) {
+    animation: hh-btn-right-left 480ms ease-out 360ms both;
+  }
+
+  /* Accessibility: respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .heroTitle,
+    .heroSubtitle,
+    .heroActions a {
+      transform: none !important;
+      opacity: 1 !important;
+      animation: none !important;
+    }
+  }
+}
+@media (max-width: 480px) {
+  .heroActions { flex-direction: column; width: 100%; }
+  .heroActions a { width: 100%; text-align: center; }
 }
