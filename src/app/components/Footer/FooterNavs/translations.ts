@@ -56,7 +56,7 @@ const t: Record<Lang, FooterNavTranslation> = {
       emailLabel: 'Email',
       phoneLabel: 'Phone',
       addressLabel: 'Address',
-      email: 'thimiosarvanitis@gmail.com',
+      email: 'info@e-nutritionist.com',
       phone: '+34613497305',
       address: 'Calle Cañete 18, Madrid, Spain',
     },

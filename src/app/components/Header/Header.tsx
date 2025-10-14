@@ -72,7 +72,7 @@ const Header = ({ lang }: HeaderProps) => {
           <Navbar isOpen={false} closeNavbar={closeNavbar} lang={lang} isMobile={false} />
         )}
 
-        <CTAButton text={ctaText} link={`/${lang}/book-consultation`} />
+        <CTAButton text={ctaText} link={`https://calendar.google.com/calendar/u/0/appointments/AcZssZ1ZKA4hOGC52fSzMnzNNlrgcMYEppqRLbXwhVA=`} />
       </div>
 
       {/* 🔹 Logo Row */}

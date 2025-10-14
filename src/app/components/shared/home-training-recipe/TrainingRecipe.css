@@ -47,8 +47,8 @@
 .trHalf__bg {
   position: absolute; inset: 0;
   background-size: cover; background-position: center;
-  transform: scale(1.02);
-  transition: transform 400ms ease, filter 400ms ease;
+  transform: none;              /* ✅ no default scale */
+  transition: none;             /* ✅ no animation */
   z-index: 0;
 }
 .trHalf__bg--dim { background: rgba(0,0,0,0.2); } /* neutral backing for recipe half */
@@ -61,30 +61,52 @@
   display: grid;
 }
 
-/* Training overlay layout */
+/* ✅ TRAINING: fixed overlay, no hover effects */
 .trHalf__overlay--training {
   align-content: end;
   gap: 6px;
-  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 65%);
+  background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 65%);
 }
-.trHalf--training:hover .trHalf__bg {
-  transform: scale(1.06);
-  filter: saturate(1.05) contrast(1.05) brightness(0.95);
+.trHalf--training:hover .trHalf__bg,
+.trHalf--training:focus .trHalf__bg {
+  transform: none;    /* prevent zoom */
+  filter: none;       /* prevent filter changes */
+  transition: none;
 }
 
-/* Recipe overlay layout: thumb + text + button in a row that wraps on small screens */
-.trHalf__overlay--recipe {
-  align-content: center;
-  gap: 12px;
-  grid-template-columns: auto 1fr auto;
+/* ✅ RECIPE: right-side separator + vertical column layout */
+.trHalf--recipe {
+  border-right: 1px solid rgba(255,255,255,0.18);
 }
+
+/* If you changed markup to .trRecipeCol, this is the primary rule: */
+.trRecipeCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  background: none;
+  padding: 16px;
+}
+
+/* If you kept the old class, also force column layout here for compatibility */
+.trHalf__overlay--recipe {
+  display: flex;              /* override previous grid */
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  background: none;
+  padding: 16px;
+}
+
 .trRecipeThumb {
   width: 56px; height: 56px;
   border-radius: 999px;
   object-fit: cover; object-position: center;
   border: 2px solid rgba(255,255,255,0.6);
 }
-.trRecipeText { display: grid; gap: 4px; align-content: center; }
 
 /* Typography */
 .trKicker {
@@ -100,6 +122,7 @@
   font-size: 13px;
   color: color-mix(in oklab, var(--color-light) 90%, var(--color-white));
   opacity: 0.95;
+  max-width: 60ch;
 }
 
 /* Small secondary button variant */
@@ -122,6 +145,7 @@
 @media (max-width: 640px) {
   .trSlide { width: 100%; } /* show 1 per view */
   :root { --tr-height: 400px; }
-  .trHalf__overlay--recipe { grid-template-columns: 1fr; justify-items: start; }
+  .trRecipeCol,
+  .trHalf__overlay--recipe { gap: 6px; }
   .trRecipeThumb { width: 52px; height: 52px; }
 }

@@ -1,0 +1,70 @@
+/* Section shell */
+.ctaBanner {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: clamp(36px, 8vw, 80px) 6vw;
+  isolation: isolate;
+  --cta-overlay: 0.35; /* default */
+}
+
+.ctaBanner__bg {
+  position: absolute; inset: 0;
+  background-image: var(--cta-bg);
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.02);
+  filter: saturate(1.05) contrast(1.05);
+  z-index: 0; pointer-events: none;
+}
+
+.ctaBanner__overlay {
+  position: absolute; inset: 0;
+  background: rgba(22,35,42, var(--cta-overlay)); /* var(--color-dark) with opacity */
+  z-index: 1; pointer-events: none;
+}
+
+/* Content */
+.ctaBanner__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  text-align: left;
+}
+
+.ctaBanner__kicker {
+  font-family: var(--font-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: clamp(12px, 1.4vw, 14px);
+  color: color-mix(in oklab, var(--color-light) 92%, var(--color-white));
+  opacity: 0.95;
+}
+
+.ctaBanner__title {
+  font-family: var(--font-secondary);
+  color: var(--color-light);
+  font-size: clamp(24px, 3.6vw, 44px);
+  line-height: 1.12;
+}
+
+.ctaBanner__subtitle {
+  color: color-mix(in oklab, var(--color-light) 92%, var(--color-white));
+  max-width: 70ch;
+  opacity: 0.95;
+}
+
+.ctaBanner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ctaBanner__bg { transform: none; }
+}

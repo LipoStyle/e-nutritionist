@@ -37,6 +37,7 @@ const TrainingRecipe: React.FC<TrainingRecipeProps> = ({ lang, title, subtitle }
     locale === 'el' ? pairsEL :
     pairsEN
 
+  // duplicate for seamless loop
   const looped = [...data, ...data]
 
   const learnMoreLabel =
@@ -65,7 +66,7 @@ const TrainingRecipe: React.FC<TrainingRecipeProps> = ({ lang, title, subtitle }
         <div className="trTrack" role="list">
           {looped.map((p, idx) => (
             <article className="trSlide" role="listitem" key={`${p.id}-${idx}`}>
-              {/* Top: Training */}
+              {/* Top: Training (static overlay, no hover anim; CSS controls that) */}
               <Link
                 className="trHalf trHalf--training"
                 href={withLang(locale, p.trainingHref)}
@@ -81,18 +82,13 @@ const TrainingRecipe: React.FC<TrainingRecipeProps> = ({ lang, title, subtitle }
                 </div>
               </Link>
 
-              {/* Bottom: Recipe */}
+              {/* Bottom: Recipe (right-side separator + column layout) */}
               <div className="trHalf trHalf--recipe">
                 <div className="trHalf__bg trHalf__bg--dim" />
-                <div className="trHalf__overlay trHalf__overlay--recipe">
+                <div className="trHalf__overlay trRecipeCol">
                   <img src={p.recipeThumb} alt={p.recipeTitle} className="trRecipeThumb" />
-                  <div className="trRecipeText">
-                    <span className="trKicker">
-                      {locale === 'es' ? 'Receta' : locale === 'el' ? 'Συνταγή' : 'Recipe'}
-                    </span>
-                    <h3 className="trTitle">{p.recipeTitle}</h3>
-                    <p className="trBlurb">{p.recipeBlurb}</p>
-                  </div>
+                  <h3 className="trTitle">{p.recipeTitle}</h3>
+                  <p className="trBlurb">{p.recipeBlurb}</p>
                   <Link
                     className="cta-button-secondary cta-button-secondary--sm"
                     href={withLang(locale, p.recipeHref)}
