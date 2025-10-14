@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'  // ⬅️ add Suspense
 import './Header.css'
 
 import BurgerMenu from './BurgerMenu/BurgerMenu'
@@ -13,7 +13,7 @@ import LanguagePicker from '../buttons/LanguagePicker'
 type Lang = 'en' | 'es' | 'el'
 
 type HeaderProps = {
-  lang: Lang // align with Navbar/Footer
+  lang: Lang
 }
 
 const Header = ({ lang }: HeaderProps) => {
@@ -37,7 +37,6 @@ const Header = ({ lang }: HeaderProps) => {
     handleResize()
     window.addEventListener('resize', handleResize)
     window.addEventListener('scroll', handleScroll)
-
     return () => {
       window.removeEventListener('resize', handleResize)
       window.removeEventListener('scroll', handleScroll)
@@ -47,13 +46,10 @@ const Header = ({ lang }: HeaderProps) => {
   const toggleBurger = () => setBurgerOpen((prev) => !prev)
   const closeNavbar = () => setBurgerOpen(false)
 
-  // Optional CTA translation (keep or remove if you prefer static text)
   const ctaText =
-    lang === 'es'
-      ? 'Reserva una consulta'
-      : lang === 'el'
-        ? 'Κλείσε ραντεβού'
-        : 'Book a Consultation'
+    lang === 'es' ? 'Reserva una consulta'
+    : lang === 'el' ? 'Κλείσε ραντεβού'
+    : 'Book a Consultation'
 
   return (
     <header className={`header ${scrolling ? 'hidden' : ''}`}>
@@ -62,7 +58,10 @@ const Header = ({ lang }: HeaderProps) => {
         {!isMobile && (
           <div className="header-features">
             <DarkModeToggle />
-            <LanguagePicker />
+            {/* ⬇️ wrap LanguagePicker in Suspense */}
+            <Suspense fallback={null}>
+              <LanguagePicker />
+            </Suspense>
           </div>
         )}
 
@@ -72,7 +71,10 @@ const Header = ({ lang }: HeaderProps) => {
           <Navbar isOpen={false} closeNavbar={closeNavbar} lang={lang} isMobile={false} />
         )}
 
-        <CTAButton text={ctaText} link={`https://calendar.google.com/calendar/u/0/appointments/AcZssZ1ZKA4hOGC52fSzMnzNNlrgcMYEppqRLbXwhVA=`} />
+        <CTAButton
+          text={ctaText}
+          link={`https://calendar.google.com/calendar/u/0/appointments/AcZssZ1ZKA4hOGC52fSzMnzNNlrgcMYEppqRLbXwhVA=`}
+        />
       </div>
 
       {/* 🔹 Logo Row */}
