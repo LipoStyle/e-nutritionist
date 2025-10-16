@@ -10,16 +10,19 @@
   --color-overlay: rgba(22, 35, 42, 0.8);
   --header-height: 200px;
 
-  /* Component-level sizing overrides */
+  /* Component sizing */
   --hero-height-desktop: 86vh;
   --hero-height-mobile: 72vh;
+
+  /* Easing */
+  --e-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ===== Base layout (desktop defaults) ===== */
+/* ===== Base (mobile settings applied to ALL) ===== */
 .heroHome {
   position: relative;
   width: 100%;
-  height: var(--hero-height-desktop);
+  height: var(--hero-height-mobile); /* mobile height as universal base */
   overflow: hidden;
   isolation: isolate;
   color: var(--color-light);
@@ -27,7 +30,7 @@
 
 .heroSlides { position: relative; width: 100%; height: 100%; }
 
-/* Inactive slides are not clickable */
+/* Slide lifecycle */
 .heroSlide {
   position: absolute;
   inset: 0;
@@ -42,59 +45,90 @@
   pointer-events: auto;
 }
 
+/* Background */
 .heroSlide__bg {
   position: absolute; inset: 0;
   background-size: cover; background-position: center;
   filter: saturate(1.05) contrast(1.05);
-  transform: scale(1.06);
-  animation: heroZoom 14s ease-out both;
+  transform: scale(1.12);                    /* mobile zoom as default */
+  animation: heroZoomMobile 12s ease-out both;
   pointer-events: none;
 }
+@keyframes heroZoomMobile {
+  from { transform: scale(1.12); }
+  to   { transform: scale(1.00); }
+}
 
-/* Overlay (desktop baseline) */
+/* Overlay — centered both axes, mobile gradient as default */
 .heroSlide__overlay {
   position: relative;
   z-index: 2;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center;    /* vertical center */
+  align-items: center;        /* horizontal center */
+  text-align: center;
   padding: 0 6vw;
-  padding-top: clamp(6vh, 8vh, 10vh);
   background: linear-gradient(
     to top,
     var(--color-overlay) 0%,
-    rgba(0,0,0,0.15) 40%,
-    rgba(0,0,0,0) 70%
+    rgba(0,0,0,0.18) 35%,
+    rgba(0,0,0,0) 65%
   );
   color: var(--color-light);
-  text-align: left;
 }
 
+/* Typography (mobile-first) */
 .heroTitle {
-  font-size: clamp(28px, 4vw, 56px);
+  font-size: clamp(32px, 7.2vw, 44px);
   line-height: 1.1;
   margin: 0 0 16px;
   font-weight: 800;
   font-family: var(--font-secondary);
+
+  /* entrance */
+  opacity: 0;
+  will-change: transform, opacity;
 }
 .heroSubtitle {
-  font-size: clamp(14px, 1.6vw, 20px);
+  font-size: clamp(16px, 4.4vw, 19px);
   opacity: 0.95;
-  margin: 0 0 28px;
+  margin: 0 0 24px;    /* more room above CTAs */
   max-width: 70ch;
   font-family: var(--font-primary);
+
+  /* entrance */
+  opacity: 0;
+  will-change: transform, opacity;
 }
 
-.heroActions { display: flex; gap: 16px; flex-wrap: wrap; }
+/* Actions */
+.heroActions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+  margin-top: 18px;
+}
+.heroActions a {
+  opacity: 0; /* animates in */
+  will-change: transform, opacity;
+}
 
-/* Controls */
+/* Controls — friendlier placement (was mobile-only, now default) */
 .heroControls {
   position: absolute; inset: 0;
+  top: auto;
+  bottom: 22%;
+  left: 0; right: 0;
+  height: auto;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 8px;
+  padding: 0 10px;
   z-index: 3;
-  pointer-events: none; /* only buttons themselves clickable */
+  pointer-events: none; /* only buttons clickable */
 }
 .heroControl {
   pointer-events: auto;
@@ -114,9 +148,9 @@
 .heroControl--prev::before { transform: rotate(-135deg); }
 .heroControl--next::before { transform: rotate(45deg); }
 
-/* Dots */
+/* Dots — with extra bottom spacing (mobile setting as default) */
 .heroDots {
-  position: absolute; left: 50%; bottom: 52px;
+  position: absolute; left: 50%; bottom: 72px;
   transform: translateX(-50%);
   display: flex; gap: 8px; z-index: 3;
   pointer-events: auto;
@@ -128,154 +162,91 @@
 }
 .heroDot.is-active { background: var(--color-white); }
 
-/* Scroll Cue (base) */
+/* Scroll cue — floating by default */
 .heroScrollCue {
   position: absolute;
   left: 50%;
-  bottom: 20px;
-  transform: translateX(-50%) rotate(45deg);
+  bottom: 32px;
+  transform: translate(-50%, 0) rotate(45deg);
   width: 28px; height: 28px;
   border-bottom: 2px solid rgba(255,255,255,0.7);
   border-right: 2px solid rgba(255,255,255,0.7);
-  opacity: 0.8;
+  opacity: 0.9;
+  animation: hh-cue-float 2s ease-in-out infinite;
+}
+@keyframes hh-cue-float {
+  0%, 100% { transform: translate(-50%, 0) rotate(45deg);    opacity: 0.85; }
+  50%      { transform: translate(-50%, -8px) rotate(45deg); opacity: 1;    }
 }
 
-.visuallyHidden {
-  position: absolute; width: 1px; height: 1px;
-  padding: 0; margin: -1px; overflow: hidden;
-  clip: rect(0, 0, 1px, 1px); white-space: nowrap; border: 0;
+/* Entrance keyframes (mobile set, now base) */
+@keyframes hh-title-down {
+  from { transform: translateY(-18px); opacity: 0; }
+  to   { transform: translateY(0);      opacity: 1; }
+}
+@keyframes hh-para-up {
+  from { transform: translateY(22px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes hh-btn-left-right {
+  from { transform: translateX(-18px); opacity: 0; }
+  to   { transform: translateX(0);      opacity: 1; }
+}
+@keyframes hh-btn-right-left {
+  from { transform: translateX(18px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
 }
 
-@keyframes heroZoom { from { transform: scale(1.08); } to { transform: scale(1.02); } }
+/* Trigger entrance when slide becomes active */
+.heroSlide.is-active .heroTitle {
+  animation: hh-title-down 720ms var(--e-out) 200ms both;
+}
+.heroSlide.is-active .heroSubtitle {
+  animation: hh-para-up 780ms var(--e-out) 420ms both;
+}
+.heroSlide.is-active .heroActions a:nth-child(1) {
+  animation: hh-btn-left-right 680ms var(--e-out) 640ms both;
+}
+.heroSlide.is-active .heroActions a:nth-child(2) {
+  animation: hh-btn-right-left 680ms var(--e-out) 760ms both;
+}
 
-/* ===== Mobile-specific layout & animations ===== */
-@media (max-width: 768px) {
-  .heroHome { height: var(--hero-height-mobile); }
+/* ===== Desktop-up refinements only (keep same behavior, just scale space/type) ===== */
+@media (min-width: 769px) {
+  .heroHome { height: var(--hero-height-desktop); }
 
-  /* Background: smoother zoom-out on mobile */
+  /* Slightly slower, broader background zoom for big screens */
   .heroSlide__bg {
-    animation: heroZoomMobile 12s ease-out both;
-  }
-  @keyframes heroZoomMobile {
-    from { transform: scale(1.12); }
-    to   { transform: scale(1.00); }
+    animation-duration: 14s;
+    transform: scale(1.08);
   }
 
-  /* Center content vertically & horizontally on mobile */
   .heroSlide__overlay {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;    /* vertical center */
-    align-items: center;        /* horizontal center */
-    text-align: center;
-    padding: 0 6vw;             /* remove extra top padding */
-    background: linear-gradient(
-      to top,
-      var(--color-overlay) 0%,
-      rgba(0,0,0,0.18) 35%,
-      rgba(0,0,0,0) 65%
-    );
+    padding: 0 6vw;
+    /* keep centered per your request */
   }
 
-  /* Keep buttons inline on mobile; push lower */
-  .heroActions {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: nowrap;
-    margin-top: 18px;           /* lower than before */
-  }
+  .heroTitle   { font-size: clamp(28px, 4vw, 56px); }
+  .heroSubtitle{ font-size: clamp(14px, 1.6vw, 20px); margin-bottom: 28px; }
 
-  /* Dots vs Arrow: add vertical spacing */
-  .heroDots { bottom: 72px; }
-  .heroScrollCue {
-    bottom: 32px;
-    transform: translate(-50%, 0) rotate(45deg);
-    animation: hh-cue-float 2s ease-in-out infinite;
-    opacity: 0.9;
-  }
-  @keyframes hh-cue-float {
-    0%, 100% { transform: translate(-50%, 0) rotate(45deg);    opacity: 0.85; }
-    50%      { transform: translate(-50%, -8px) rotate(45deg); opacity: 1;    }
-  }
+  /* Controls can stay lower per the unified spec; adjust if you prefer original desktop spot */
+}
 
-  /* Larger, friendlier mobile typography */
-  .heroTitle   { font-size: clamp(32px, 7.2vw, 44px); }
-  .heroSubtitle{
-    font-size: clamp(16px, 4.4vw, 19px);
-    margin-bottom: 24px; /* more space above CTAs */
-  }
-
-  /* Entrance animations (smoother/staggered) */
+/* ===== Reduced motion (global) ===== */
+@media (prefers-reduced-motion: reduce) {
   .heroTitle,
   .heroSubtitle,
   .heroActions a {
-    opacity: 0;
-    will-change: transform, opacity;
+    transform: none !important;
+    opacity: 1 !important;
+    animation: none !important;
   }
-
-  @keyframes hh-title-down {
-    from { transform: translateY(-18px); opacity: 0; }
-    to   { transform: translateY(0);      opacity: 1; }
+  .heroSlide__bg {
+    animation: none !important;
+    transform: scale(1) !important;
   }
-  @keyframes hh-para-up {
-    from { transform: translateY(22px); opacity: 0; }
-    to   { transform: translateY(0);    opacity: 1; }
-  }
-  @keyframes hh-btn-left-right {
-    from { transform: translateX(-18px); opacity: 0; }
-    to   { transform: translateX(0);      opacity: 1; }
-  }
-  @keyframes hh-btn-right-left {
-    from { transform: translateX(18px); opacity: 0; }
-    to   { transform: translateX(0);    opacity: 1; }
-  }
-
-  .heroSlide.is-active .heroTitle {
-    animation: hh-title-down 720ms cubic-bezier(0.22, 1, 0.36, 1) 200ms both;
-  }
-  .heroSlide.is-active .heroSubtitle {
-    animation: hh-para-up 780ms cubic-bezier(0.22, 1, 0.36, 1) 420ms both;
-  }
-  .heroSlide.is-active .heroActions a:nth-child(1) {
-    animation: hh-btn-left-right 680ms cubic-bezier(0.22, 1, 0.36, 1) 640ms both;
-  }
-  .heroSlide.is-active .heroActions a:nth-child(2) {
-    animation: hh-btn-right-left 680ms cubic-bezier(0.22, 1, 0.36, 1) 760ms both;
-  }
-
-  /* Move Prev/Next controls lower */
-  .heroControls {
-    top: auto;
-    bottom: 22%;
-    left: 0;
-    right: 0;
-    height: auto;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-    pointer-events: none;
-  }
-  .heroControl { pointer-events: auto; }
-
-  /* Reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .heroTitle,
-    .heroSubtitle,
-    .heroActions a {
-      transform: none !important;
-      opacity: 1 !important;
-      animation: none !important;
-    }
-    .heroSlide__bg {
-      animation: none !important;
-      transform: scale(1) !important;
-    }
-    .heroScrollCue {
-      animation: none !important;
-      transform: translate(-50%, 0) rotate(45deg) !important;
-    }
+  .heroScrollCue {
+    animation: none !important;
+    transform: translate(-50%, 0) rotate(45deg) !important;
   }
 }

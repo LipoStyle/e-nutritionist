@@ -62,14 +62,14 @@ function Dots({ count, active, onJump }: { count: number; active: number; onJump
           role="tab"
           aria-selected={i === active}
           aria-controls={`hero-slide-${i}`}
+          aria-label={`Go to slide ${i + 1}`}   // <-- a11y label, no visible text node
           onClick={() => onJump(i)}
-        >
-          <span className="visuallyHidden">Go to slide {i + 1}</span>
-        </button>
+        />
       ))}
     </div>
   );
 }
+
 
 function Controls({ onPrev, onNext }: { onPrev: () => void; onNext: () => void }) {
   return (

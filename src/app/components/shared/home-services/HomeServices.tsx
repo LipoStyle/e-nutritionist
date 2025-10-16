@@ -30,7 +30,7 @@ const HomeServices: React.FC<HomeServicesProps> = ({ lang }) => {
   const pathname = usePathname() || '/'
   const detected = useMemo<Lang>(() => {
     const seg = pathname.split('/').filter(Boolean)[0]
-    return (SUPPORTED.includes(seg as Lang) ? (seg as Lang) : 'en')
+    return SUPPORTED.includes(seg as Lang) ? (seg as Lang) : 'en'
   }, [pathname])
 
   const locale = (lang ?? detected) as Lang
@@ -41,7 +41,7 @@ const HomeServices: React.FC<HomeServicesProps> = ({ lang }) => {
 
   const items = data.filter((s: ServiceCardData) => s.showHomeService)
 
-  // IntersectionObserver reveal-on-enter
+  // IntersectionObserver reveal-on-enter (supports repeat via data-animate-repeat)
   const sectionRef = useRef<HTMLElement | null>(null)
   useEffect(() => {
     const root = sectionRef.current
@@ -55,15 +55,27 @@ const HomeServices: React.FC<HomeServicesProps> = ({ lang }) => {
     }
 
     const io = new IntersectionObserver(
-      (entries, obs) => {
+      (entries) => {
         entries.forEach((entry) => {
+          const el = entry.target as HTMLElement
+          const repeat = el.hasAttribute('data-animate-repeat')
+
           if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            obs.unobserve(entry.target)
+            el.classList.add('is-visible')
+            if (!repeat) {
+              io.unobserve(el) // one-time animations stop observing
+            }
+          } else if (repeat) {
+            // reset when leaving viewport so it can animate again on re-entry
+            el.classList.remove('is-visible')
           }
         })
       },
-      { rootMargin: '0px 0px -5% 0px', threshold: 0.15 }
+      {
+        root: null,
+        rootMargin: '0px 0px -5% 0px',
+        threshold: 0.15,
+      }
     )
 
     nodes.forEach((el) => io.observe(el))
@@ -74,9 +86,8 @@ const HomeServices: React.FC<HomeServicesProps> = ({ lang }) => {
     <section className="homeServices" aria-labelledby="home-services-title" ref={sectionRef}>
       <div className="homeServices__inner">
         {/* Intro */}
-        <header className="homeServices__header" data-animate>
+        <header className="homeServices__header" data-animate data-animate-repeat>
           <h2 id="home-services-title" className="homeServices__title">
-            {/* If you have localized headings, swap these strings by locale */}
             {locale === 'es' ? 'Servicios diseñados para tu camino' :
              locale === 'el' ? 'Υπηρεσίες προσαρμοσμένες στο ταξίδι σου' :
              'Tailored Services for Every Journey'}
@@ -98,9 +109,14 @@ const HomeServices: React.FC<HomeServicesProps> = ({ lang }) => {
               role="listitem"
               className="homeServices__card homeServices__card--glass"
               data-animate
+              data-animate-repeat
               style={{ ['--stagger' as any]: idx }}
             >
-              <div className="homeServices__media" style={{ backgroundImage: `url(${s.image})` }} aria-hidden />
+              <div
+                className="homeServices__media"
+                style={{ backgroundImage: `url(${s.image})` }}
+                aria-hidden
+              />
 
               <div className="homeServices__glass">
                 <div className="homeServices__metaTop">
@@ -135,7 +151,12 @@ const HomeServices: React.FC<HomeServicesProps> = ({ lang }) => {
         </div>
 
         {/* CTA Banner */}
-        <div className="homeServices__ctaBanner" data-animate style={{ ['--stagger' as any]: items.length + 1 }}>
+        <div
+          className="homeServices__ctaBanner"
+          data-animate
+          data-animate-repeat
+          style={{ ['--stagger' as any]: items.length + 1 }}
+        >
           <p>
             {locale === 'es'
               ? '¿Quieres ver todas las opciones de programas y coaching?'

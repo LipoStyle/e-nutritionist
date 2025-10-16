@@ -1,9 +1,27 @@
-.homeAbout { width: 100%; padding: 56px 6vw; }
+/* =========================================
+   Home About — oklab mixes + smooth viewport animations
+========================================= */
+
+:root {
+  --ha-reveal-dur: 900ms;
+  --ha-reveal-ease: cubic-bezier(.22,.61,.36,1);
+  --ha-stagger-step: 140ms;
+}
+
+/* Section wrapper (inherits page mode colors; add subtle depth) */
+.homeAbout {
+  width: 100%;
+  padding: 56px 6vw;
+  background-image:
+    radial-gradient(1200px 600px at 10% -12%, color-mix(in oklab, var(--color-white) 22%, transparent), transparent 55%),
+    linear-gradient(180deg, color-mix(in oklab, var(--color-white) 10%, transparent), transparent 42%);
+}
+
 .homeAbout__inner {
   max-width: 1280px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.05fr 1fr; /* image a touch wider */
+  grid-template-columns: 1.05fr 1fr;
   gap: clamp(24px, 4vw, 48px);
 }
 
@@ -16,34 +34,53 @@
   border-radius: 20px;
   background-size: cover;
   background-position: center;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+  box-shadow: 0 18px 40px color-mix(in oklab, black 35%, transparent);
   overflow: hidden;
 }
-/* force top-crop alignment */
 .homeAbout__media--top { background-position: top center; }
 
 /* RIGHT: content */
 .homeAbout__content { display: grid; align-content: start; gap: 20px; }
 .homeAbout__header { display: grid; gap: 10px; }
+
 .homeAbout__intro {
   font-size: 14px;
   letter-spacing: 0.6px;
   text-transform: uppercase;
-  color: color-mix(in oklab, var(--color-light) 70%, var(--color-white));
+  color: color-mix(in oklab, var(--color-secondary) 68%, var(--color-light));
+  opacity: .92;
 }
 .homeAbout__title {
   font-family: var(--font-secondary);
-  color: var(--color-light);
+  color: color-mix(in oklab, var(--color-light) 96%, var(--color-white));
   font-size: clamp(24px, 3.2vw, 40px);
   line-height: 1.15;
+
+  /* enter from bottom */
+  opacity: 0;
+  transform: translateY(26px);
 }
 .homeAbout__lead {
-  color: color-mix(in oklab, var(--color-light) 92%, var(--color-white));
+  color: color-mix(in oklab, var(--color-light) 88%, var(--color-white));
   font-size: 16px;
   max-width: 70ch;
+
+  /* enter from bottom */
+  opacity: 0;
+  transform: translateY(26px);
 }
 
-/* 3 credentials in a row */
+/* Trigger header child anims once container is visible */
+.homeAbout__header.is-visible .homeAbout__title {
+  animation: ha-slideUpFade var(--ha-reveal-dur) var(--ha-reveal-ease) forwards;
+  animation-delay: 80ms;
+}
+.homeAbout__header.is-visible .homeAbout__lead {
+  animation: ha-slideUpFade var(--ha-reveal-dur) var(--ha-reveal-ease) forwards;
+  animation-delay: 240ms;
+}
+
+/* 3 credentials */
 .homeAbout__creds {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -54,14 +91,14 @@
 .homeAbout__creds li {
   padding: 10px 12px;
   border-radius: 12px;
-  background: var(--color-soft-white);
-  color: var(--color-light);
+  background: color-mix(in oklab, var(--color-soft-white) 80%, transparent);
+  color: color-mix(in oklab, var(--color-light) 95%, var(--color-white));
   font-weight: 700;
   text-align: center;
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid color-mix(in oklab, var(--color-white) 14%, transparent);
 }
 
-/* USPs (3 bullets) */
+/* USPs */
 .homeAbout__usps {
   margin-top: 4px;
   padding-left: 18px;
@@ -69,7 +106,7 @@
   gap: 6px;
   color: color-mix(in oklab, var(--color-light) 92%, var(--color-white));
 }
-.homeAbout__usps li::marker { color: var(--color-accent); }
+.homeAbout__usps li::marker { color: color-mix(in oklab, var(--color-accent) 92%, var(--color-white)); }
 
 /* Optional longer copy */
 .homeAbout__body { display: grid; gap: 12px; }
@@ -82,17 +119,33 @@
 /* Actions */
 .homeAbout__actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
-/* Reveal anims */
+/* ---------- Reveal system (viewport-triggered; supports stagger) ---------- */
 [data-animate] {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 600ms ease, transform 600ms ease;
-  transition-delay: calc((var(--stagger, 0) * 70ms));
+  transform: translateY(18px);
+  transition:
+    opacity var(--ha-reveal-dur) var(--ha-reveal-ease),
+    transform var(--ha-reveal-dur) var(--ha-reveal-ease);
+  transition-delay: calc((var(--stagger, 0) * var(--ha-stagger-step)));
   will-change: opacity, transform;
 }
 [data-animate].is-visible { opacity: 1; transform: translateY(0); }
+
+/* Paragraphs already pass --stagger inline; nothing else needed */
+
+/* Keyframes */
+@keyframes ha-slideUpFade {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  [data-animate] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  [data-animate],
+  .homeAbout__title,
+  .homeAbout__lead {
+    opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important;
+  }
 }
 
 /* Responsive */

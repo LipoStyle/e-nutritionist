@@ -1,8 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import React from 'react'
-
+import React, { useEffect, useState } from 'react'
 import './Hero.css'
 import CTAButton from '../../buttons/CTAButton'
 
@@ -22,7 +21,14 @@ type HeroProps = {
   imagePriority?: boolean
 }
 
-type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' // ✅ avoids JSX namespace
+type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+
+// 🔒 Utility: render only after client mount
+function useHasMounted() {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  return mounted
+}
 
 export default function Hero({
   title,
@@ -39,19 +45,21 @@ export default function Hero({
   headingLevel = 1,
   imagePriority = false,
 }: HeroProps) {
+  const hasMounted = useHasMounted()
+  if (!hasMounted) return null // ✅ avoid hydration mismatch
+
   const classes =
     `hero hero--${height}` +
     (offsetHeader ? ' hero--offset-header' : '') +
     (className ? ` ${className}` : '')
 
-  // Accessible heading handling without JSX namespace types
   const headingTag = (`h${headingLevel}` as HeadingTag)
   const Heading: React.ElementType = headingTag
   const titleId = title ? 'hero-title' : undefined
   const sectionA11y = title ? { 'aria-labelledby': titleId } : { 'aria-label': ariaLabel }
 
   return (
-    <section className={classes} {...sectionA11y}>
+    <section className={classes} {...sectionA11y} suppressHydrationWarning>
       {/* Background image */}
       {bgImage && (
         <div className="hero__bg" aria-hidden="true">
@@ -66,13 +74,19 @@ export default function Hero({
         </div>
       )}
 
-      {/* Overlay — force opacity inline so it wins over theme presets */}
-      <div className="hero__overlay" style={{ opacity: overlayOpacity }} aria-hidden="true" />
+      {/* Overlay */}
+      <div
+        className="hero__overlay"
+        style={{ backgroundColor: `rgba(0,0,0,${overlayOpacity})` }}
+        aria-hidden="true"
+      />
 
-      {/* Centered stack */}
+      {/* Content */}
       <div className="hero__center">
         {title && <Heading id={titleId} className="hero__title anim-fade-up">{title}</Heading>}
-        {description && <p className="hero__description anim-fade-up-delayed">{description}</p>}
+        {description && (
+          <p className="hero__description anim-fade-up-delayed">{description}</p>
+        )}
 
         {(message || bookHref) && (
           <div
@@ -80,7 +94,9 @@ export default function Hero({
             {...(bookHref ? { role: 'group', 'aria-label': 'Hero quick action' } : {})}
           >
             {message && <span className="hero__message">{message}</span>}
-            {bookHref && <CTAButton text={bookText} link={bookHref} ariaLabel={bookText} />}
+            {bookHref && (
+              <CTAButton text={bookText} link={bookHref} ariaLabel={bookText} />
+            )}
           </div>
         )}
 

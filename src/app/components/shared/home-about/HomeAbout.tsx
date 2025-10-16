@@ -40,22 +40,31 @@ const HomeAbout: React.FC<HomeAboutProps> = ({ lang }) => {
     locale === 'el' ? aboutEL :
     aboutEN
 
-  // reveal on enter
+  // reveal on enter (with optional repeat)
   const rootRef = useRef<HTMLElement | null>(null)
   useEffect(() => {
     const root = rootRef.current
     if (!root) return
+
     const nodes = Array.from(root.querySelectorAll<HTMLElement>('[data-animate]'))
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduce) { nodes.forEach(n => n.classList.add('is-visible')); return }
-    const io = new IntersectionObserver((entries, obs) => {
+
+    const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
+        const el = e.target as HTMLElement
+        const repeat = el.hasAttribute('data-animate-repeat')
         if (e.isIntersecting) {
-          e.target.classList.add('is-visible')
-          obs.unobserve(e.target)
+          el.classList.add('is-visible')
+          if (!repeat) {
+            io.unobserve(el) // one-time animation
+          }
+        } else if (repeat) {
+          el.classList.remove('is-visible') // reset for next entry
         }
       })
-    }, { threshold: 0.12 })
+    }, { root: null, rootMargin: '0px 0px -5% 0px', threshold: 0.15 })
+
     nodes.forEach(n => io.observe(n))
     return () => io.disconnect()
   }, [])
@@ -81,7 +90,7 @@ const HomeAbout: React.FC<HomeAboutProps> = ({ lang }) => {
     <section className="homeAbout" aria-labelledby="home-about-title" ref={rootRef}>
       <div className="homeAbout__inner">
         {/* LEFT: Image (sticky, top-aligned crop) */}
-        <aside className="homeAbout__mediaWrap" data-animate>
+        <aside className="homeAbout__mediaWrap" data-animate data-animate-repeat>
           <div
             className="homeAbout__media homeAbout__media--top"
             style={{ backgroundImage: `url(${data.image})` }}
@@ -92,7 +101,7 @@ const HomeAbout: React.FC<HomeAboutProps> = ({ lang }) => {
 
         {/* RIGHT: Content */}
         <div className="homeAbout__content">
-          <header className="homeAbout__header" data-animate>
+          <header className="homeAbout__header" data-animate data-animate-repeat>
             {data.intro && <h3 className="homeAbout__intro">{data.intro}</h3>}
             <h2 id="home-about-title" className="homeAbout__title">{data.title}</h2>
             {data.lead && <p className="homeAbout__lead">{data.lead}</p>}
@@ -100,14 +109,14 @@ const HomeAbout: React.FC<HomeAboutProps> = ({ lang }) => {
 
           {/* 3 credentials in a row */}
           {creds.length > 0 && (
-            <ul className="homeAbout__creds" data-animate>
+            <ul className="homeAbout__creds" data-animate data-animate-repeat>
               {creds.map((c, i) => <li key={i}>{c}</li>)}
             </ul>
           )}
 
           {/* 3 USPs */}
           {usps.length > 0 && (
-            <ul className="homeAbout__usps" data-animate>
+            <ul className="homeAbout__usps" data-animate data-animate-repeat>
               {usps.map((u, i) => <li key={i}>{u}</li>)}
             </ul>
           )}
@@ -120,6 +129,7 @@ const HomeAbout: React.FC<HomeAboutProps> = ({ lang }) => {
                   key={i}
                   className="homeAbout__paragraph"
                   data-animate
+                  data-animate-repeat
                   style={{ ['--stagger' as any]: i }}
                 >
                   {p}
@@ -129,7 +139,7 @@ const HomeAbout: React.FC<HomeAboutProps> = ({ lang }) => {
           ) : null}
 
           {/* Actions */}
-          <div className="homeAbout__actions" data-animate>
+          <div className="homeAbout__actions" data-animate data-animate-repeat>
             <CTAButton
               text={primaryLabel}
               link={primaryHref}
