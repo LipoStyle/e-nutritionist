@@ -126,7 +126,7 @@ const ui: Record<
 
 export default function ContactContent({ locale }: { locale: Locale }) {
   const t = ui[locale];
-  const rootRef = useRef<HTMLSectionElement | null>(null);
+  const rootRef = useRef<HTMLOptionElement | null>(null);
 
   // Reveal engine (no deps): supports directions via data-reveal="up|left|right"
   useEffect(() => {

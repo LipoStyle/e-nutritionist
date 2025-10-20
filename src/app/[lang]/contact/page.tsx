@@ -6,13 +6,25 @@ import { getHeroSettings } from '@/lib/hero'
 import ContactContent from './ContactContent'
 import './ContactLayout.css'
 
-export default async function ContactPage(
-  { params }: { params: { lang: string } }   // <-- fixed typing
-) {
-  const { lang } = params
-  const locale = resolveLocale(lang) as 'en' | 'es' | 'el'
+type Lang = 'en' | 'es' | 'el'
+
+// optional: timeout guard
+async function withTimeout<T>(p: Promise<T>, ms = 6000): Promise<T | null> {
+  return Promise.race([
+    p,
+    new Promise<null>((r) => setTimeout(() => r(null), ms)),
+  ]) as Promise<T | null>
+}
+
+export default async function ContactPage({
+  params,
+}: {
+  params: Promise<{ lang: Lang }>
+}) {
+  const { lang } = await params
+  const locale = resolveLocale(lang) as Lang
   const t = contactHeroTranslations[locale]
-  const hs = await getHeroSettings('contact', locale)
+  const hs = await withTimeout(getHeroSettings('contact', locale))
 
   return (
     <>
@@ -21,7 +33,10 @@ export default async function ContactPage(
         description={hs?.description ?? t.description}
         message={hs?.message ?? t.message}
         bookText={hs?.bookText ?? t.bookText}
-        bookHref={hs?.bookHref ?? `https://calendar.google.com/calendar/u/0/appointments/AcZssZ1ZKA4hOGC52fSzMnzNNlrgcMYEppqRLbXwhVA=`}
+        bookHref={
+          hs?.bookHref ??
+          'https://calendar.google.com/calendar/u/0/appointments/AcZssZ1ZKA4hOGC52fSzMnzNNlrgcMYEppqRLbXwhVA='
+        }
         bgImage={hs?.bgImage ?? '/assets/images/hero/contact-us.jpg'}
         overlayOpacity={hs?.overlayOpacity ?? 0.6}
         offsetHeader={hs?.offsetHeader ?? true}
@@ -31,10 +46,13 @@ export default async function ContactPage(
         ariaLabel={t.ariaLabel}
       />
 
-      {/* Contact area */}
       <main className="contactMain">
         <ContactContent locale={locale} />
       </main>
     </>
   )
+}
+
+export async function generateStaticParams() {
+  return [{ lang: 'en' }, { lang: 'es' }, { lang: 'el' }]
 }

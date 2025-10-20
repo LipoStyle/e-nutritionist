@@ -10,16 +10,26 @@ import { aboutHeroTranslations } from "./translations";
 import { resolveLocale } from "../i18n/utils";
 import { getHeroSettings } from "@/lib/hero";
 
+type Lang = "en" | "es" | "el";
+
+// optional: timeout guard so a slow CMS doesn’t hang the page
+async function withTimeout<T>(p: Promise<T>, ms = 6000): Promise<T | null> {
+  return Promise.race([
+    p,
+    new Promise<null>((r) => setTimeout(() => r(null), ms)),
+  ]) as Promise<T | null>;
+}
+
 export default async function AboutPage({
   params,
 }: {
-  params: { lang: string };
+  params: Promise<{ lang: Lang }>;
 }) {
-  const { lang } = params;
-  const locale = resolveLocale(lang) as "en" | "es" | "el";
+  const { lang } = await params;
+  const locale = resolveLocale(lang) as Lang;
 
   const t = aboutHeroTranslations[locale];
-  const hs = await getHeroSettings("about", locale);
+  const hs = await withTimeout(getHeroSettings("about", locale));
 
   return (
     <>
@@ -38,7 +48,6 @@ export default async function AboutPage({
         ariaLabel={t.ariaLabel}
       />
 
-      {/* Keep sections inside <main> so we can style page background if needed */}
       <main className="aboutMain">
         <AboutSection lang={locale} />
         <AboutValues lang={locale} />
@@ -49,4 +58,9 @@ export default async function AboutPage({
       </main>
     </>
   );
+}
+
+// (nice-to-have)
+export async function generateStaticParams() {
+  return [{ lang: "en" }, { lang: "es" }, { lang: "el" }];
 }
