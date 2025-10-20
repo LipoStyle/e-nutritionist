@@ -1,7 +1,3 @@
-// =============================================
-// About Page Assembly
-// Combines all About components in order
-// =============================================
 import Hero from "@/app/components/shared/Hero/Hero";
 import AboutSection from "./aboutsection/AboutSection";
 import AboutValues from "./values/Values";
@@ -17,9 +13,9 @@ import { getHeroSettings } from "@/lib/hero";
 export default async function AboutPage({
   params,
 }: {
-  params: Promise<{ lang: string }>;
+  params: { lang: string };
 }) {
-  const { lang } = await params;
+  const { lang } = params;
   const locale = resolveLocale(lang) as "en" | "es" | "el";
 
   const t = aboutHeroTranslations[locale];
@@ -27,7 +23,6 @@ export default async function AboutPage({
 
   return (
     <>
-      {/* Hero */}
       <Hero
         title={hs?.title || undefined}
         description={hs?.description ?? t.description}
@@ -43,13 +38,15 @@ export default async function AboutPage({
         ariaLabel={t.ariaLabel}
       />
 
-      {/* Content Sections */}
-      <AboutSection lang={locale} />
-      <AboutValues lang={locale} />
-      <AboutMission lang={locale} />
-      <AboutCredentials lang={locale} />
-      <AboutLifestyle lang={locale} />
-      <AboutFinalCta lang={locale} />
+      {/* Keep sections inside <main> so we can style page background if needed */}
+      <main className="aboutMain">
+        <AboutSection lang={locale} />
+        <AboutValues lang={locale} />
+        <AboutMission lang={locale} />
+        <AboutCredentials lang={locale} />
+        <AboutLifestyle lang={locale} />
+        <AboutFinalCta lang={locale} />
+      </main>
     </>
   );
 }

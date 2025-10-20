@@ -11,6 +11,7 @@
   --color-dark-transparent: rgba(22, 35, 42, 0.95);
   --color-secondary-transparent: rgba(7, 80, 86, 0.85);
   --color-light-transparent: rgba(228, 238, 240, 0.95);
+  --color-light-transparent-glass: rgba(228, 238, 240, 0.692);
 
   /* ⚠️ Status / Utility */
   --color-success: #2ecc71;

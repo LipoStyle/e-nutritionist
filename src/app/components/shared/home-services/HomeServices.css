@@ -1,4 +1,6 @@
+/* ========================== */
 /* heights + glass band control */
+/* ========================== */
 :root {
   --hs-grid-gap: 28px;
   --hs-radius: 24px;
@@ -19,47 +21,139 @@
   --hs-card-gap: 160ms;
 }
 
-/* ---------- Section background & text ---------- */
+/* ========================== */
+/* Section background & text  */
+/* ========================== */
 .homeServices {
   padding: 0;
+  /* keep your base/dark blend for non-light/dark mode targets */
   background: color-mix(in oklab, var(--color-dark) 10%, var(--color-light));
-  color: var(--color-secondary);
+  color: #fff; /* clearer text on busy bg */
   background-image:
     radial-gradient(1200px 600px at 15% -10%, color-mix(in oklab, var(--color-white) 70%, transparent), transparent 55%),
     linear-gradient(180deg, color-mix(in oklab, var(--color-white) 18%, transparent), transparent 40%);
+
+  /* overlay system needs positioning */
+  position: relative;
 }
+
+/* --- Dark overlay above background, below content --- */
+.homeServices::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.48); /* tweak strength to taste */
+  pointer-events: none;
+  z-index: 0; /* below content */
+}
+/* ensure section children render above overlay */
+.homeServices > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Light mode keeps your stripe background + overlay + white text */
 .light-mode .homeServices {
-  background: color-mix(in oklab, var(--color-dark) 10%, var(--color-light));
-  color: color-mix(in oklab, var(--color-secondary) 92%, var(--color-dark));
+  padding: 0;
+  color: #fff;
+
+  /* Base color fallback (shows through transparencies) */
+  background-color: var(--color-light);
+
+  /* Your layered background */
   background-image:
-    radial-gradient(1200px 600px at 15% -10%, color-mix(in oklab, var(--color-white) 75%, transparent), transparent 55%),
-    linear-gradient(180deg, color-mix(in oklab, var(--color-white) 22%, transparent), transparent 42%);
+    radial-gradient(circle at center center, transparent, rgb(228,238,240)),
+    repeating-linear-gradient(
+      135deg,
+      rgb(228,238,240) 0px, rgb(228,238,240) 12px,
+      transparent 12px, transparent 19px,
+      rgb(228,238,240) 19px, rgb(228,238,240) 24px,
+      transparent 24px, transparent 28px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgb(7,80,86) 0px, rgb(7,80,86) 7px,
+      transparent 7px, transparent 14px
+    ),
+    /* bottom layer */
+    linear-gradient(90deg, rgb(228,238,240), rgb(228,238,240));
 }
+.light-mode .homeServices::before {
+  background: rgba(0, 0, 0, 0.48);
+}
+
+/* Upgrade the base color where supported */
+@supports (background: color-mix(in oklab, #000 10%, #fff)) {
+  .homeServices {
+    background-color: color-mix(in oklab, var(--color-dark) 10%, var(--color-light));
+  }
+}
+
+/* ==== Dark mode adapted to your palette (#16232a / #ff5b04) ==== */
 .dark-mode .homeServices {
-  background: color-mix(in oklab, var(--color-dark) 94%, black);
-  color: color-mix(in oklab, var(--color-light) 92%, var(--color-white));
+  /* solid base under the pattern */
+  background-color: var(--color-dark);
+  color: #fff;
+  /* same layer order as light mode, recolored */
   background-image:
-    radial-gradient(1200px 600px at 85% -10%, color-mix(in oklab, var(--color-white) 7%, transparent), transparent 55%),
-    linear-gradient(180deg, color-mix(in oklab, var(--color-white) 4%, transparent), transparent 42%);
+    radial-gradient(circle at center center, transparent,
+      /* a soft tint toward the base color */
+      color-mix(in oklab, var(--color-dark) 25%, #0000)
+    ),
+    repeating-linear-gradient(
+      135deg,
+      /* “band” color = the dark base */
+      var(--color-dark) 0px, var(--color-dark) 12px,
+      transparent 12px, transparent 19px,
+      var(--color-dark) 19px, var(--color-dark) 24px,
+      transparent 24px, transparent 28px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      /* accent stripes; slightly transparent so they don’t overpower */
+      color-mix(in oklab, var(--color-accent) 85%, #0000) 0px,
+      color-mix(in oklab, var(--color-accent) 85%, #0000) 7px,
+      transparent 7px, transparent 14px
+    ),
+    /* bottom layer */
+    linear-gradient(90deg, var(--color-dark), var(--color-dark));
 }
 
-.homeServices__inner { max-width: 1440px; margin: 0 auto; padding: 56px 6vw 28px; }
+/* Keep the overlay a touch lighter than light-mode so contrast stays nice */
+.dark-mode .homeServices::before {
+  background: rgba(0, 0, 0, 0.36);
+}
 
-/* ---------- Intro (centered; bottom→top fades) ---------- */
+
+.homeServices__inner {
+  max-width: 1440px; margin: 0 auto; padding: 56px 6vw 28px;
+}
+
+/* ========================== */
+/* Intro (centered; bottom→top fades) */
+/* ========================== */
 .homeServices__header { padding: 0 0 20px; text-align: center; }
+
 .homeServices__title {
   font-family: var(--font-secondary);
   color: currentColor;
-  font-size: clamp(26px, 3.2vw, 40px);
+  font-size: clamp(32px, 3.6vw, 56px); /* bumped up from 26/40 */
+  line-height: 1.15;
   letter-spacing: .2px;
+  text-shadow: 0 2px 6px rgba(0,0,0,.25);
   opacity: 0; transform: translateY(28px);
 }
+
 .homeServices__subtitle {
-  color: color-mix(in oklab, currentColor 85%, var(--color-white));
+  color: color-mix(in oklab, #ffffff 88%, transparent);
+  font-size: clamp(16px, 1.4vw, 22px); /* bumped up */
+  line-height: 1.6;
+  text-shadow: 0 1px 4px rgba(0,0,0,.2);
   opacity: 0; transform: translateY(28px);
   margin: 12px auto 0;
   width: min(70%, 65ch);
 }
+
 .homeServices__header.is-visible .homeServices__title {
   animation: hs-slideUpFade var(--hs-reveal-dur) var(--hs-reveal-ease) forwards;
   animation-delay: 80ms;
@@ -69,7 +163,9 @@
   animation-delay: 260ms;
 }
 
-/* ---------- Grid ---------- */
+/* ========================== */
+/* Grid */
+/* ========================== */
 .homeServices__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -77,8 +173,11 @@
   align-items: stretch;
 }
 
-/* ---------- Card base (taller) ---------- */
+/* ========================== */
+/* Card base (taller) */
+/* ========================== */
 .homeServices__card { isolation: isolate; }
+
 .homeServices__card--glass {
   position: relative;
   border-radius: var(--hs-radius);
@@ -103,7 +202,9 @@
   filter: saturate(1.06) contrast(1.05) brightness(.97);
 }
 
-/* ---------- Glass overlay (shallower, lower band) ---------- */
+/* ========================== */
+/* Glass overlay (shallower, lower band) */
+/* ========================== */
 .homeServices__glass {
   position: absolute;
   left: 0; right: 0; bottom: 0;
@@ -135,16 +236,17 @@
   border: 1px solid color-mix(in oklab, var(--color-white) 25%, transparent);
   border-radius: 999px;
   padding: 6px 10px;
-  font-size: 12px; font-weight: 800;
+  font-size: 13px; /* bumped from 12px */
+  font-weight: 800;
 }
 .homeServices__titleGlass {
   font-family: var(--font-secondary);
-  font-size: clamp(18px, 1.6vw, 22px);
+  font-size: clamp(20px, 1.8vw, 26px); /* bumped */
   color: color-mix(in oklab, var(--color-white) 98%, var(--color-light));
   letter-spacing: .15px;
 }
 .homeServices__desc {
-  font-size: 14px;
+  font-size: 15.5px; /* bumped from 14px */
   color: color-mix(in oklab, var(--color-light) 85%, var(--color-white));
 }
 
@@ -163,7 +265,9 @@
   z-index: 2;
 }
 
-/* ---------- CTA Banner ---------- */
+/* ========================== */
+/* CTA Banner */
+/* ========================== */
 .homeServices__ctaBanner {
   margin-top: 56px;
   text-align: center;
@@ -173,7 +277,8 @@
   background: transparent; box-shadow: none;
 }
 .homeServices__ctaBanner p {
-  font-size: 18px; font-weight: 500; color: currentColor;
+  font-size: 20px; /* was 18px */
+  font-weight: 500; color: currentColor;
   opacity: 0; transform: translateX(34px);
 }
 .homeServices__ctaBanner .cta-button { opacity: 0; transform: translateX(-34px); }
@@ -187,7 +292,9 @@
     hs-bounceY 5.5s ease-in-out 1.2s infinite;
 }
 
-/* ---------- Reveal system ---------- */
+/* ========================== */
+/* Reveal system */
+/* ========================== */
 [data-animate] {
   opacity: 0;
   transform: translateY(26px);
@@ -216,7 +323,9 @@
   transition-delay: calc(var(--stagger, 0) * (var(--hs-card-dur) + var(--hs-card-gap)));
 }
 
-/* ---------- Keyframes ---------- */
+/* ========================== */
+/* Keyframes */
+/* ========================== */
 @keyframes hs-slideUpFade {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -234,7 +343,9 @@
   50%      { transform: translateY(-6px); }
 }
 
-/* ---------- Reduced motion ---------- */
+/* ========================== */
+/* Reduced motion */
+/* ========================== */
 @media (prefers-reduced-motion: reduce) {
   [data-animate],
   .homeServices__title,
@@ -246,7 +357,9 @@
   }
 }
 
-/* ---------- Responsive (taller everywhere, but proportionate) ---------- */
+/* ========================== */
+/* Responsive (taller everywhere, but proportionate) */
+/* ========================== */
 @media (max-width: 1200px) {
   :root { --hs-card-h: 560px; --hs-glass-pct: 36%; }
 }
