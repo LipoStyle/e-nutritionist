@@ -16,11 +16,7 @@ async function withTimeout<T>(p: Promise<T>, ms = 6000): Promise<T | null> {
   ]) as Promise<T | null>
 }
 
-export default async function ContactPage({
-  params,
-}: {
-  params: Promise<{ lang: Lang }>
-}) {
+export default async function ContactPage({ params }: { params: Promise<{ lang: Lang }> }) {
   const { lang } = await params
   const locale = resolveLocale(lang) as Lang
   const t = contactHeroTranslations[locale]

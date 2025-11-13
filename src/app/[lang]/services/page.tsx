@@ -1,41 +1,41 @@
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
-import Link from 'next/link';
-import Hero from '@/app/components/shared/Hero/Hero';
-import { resolveLocale } from '../i18n/utils';
-import { getHeroSettings } from '@/lib/hero';
-import { prisma } from '@/lib/prisma';
-import './PublicPlans.css';
+import Link from 'next/link'
+import Hero from '@/app/components/shared/Hero/Hero'
+import { resolveLocale } from '../i18n/utils'
+import { getHeroSettings } from '@/lib/hero'
+import { prisma } from '@/lib/prisma'
+import './PublicPlans.css'
 
-type Lang = 'en' | 'es' | 'el';
+type Lang = 'en' | 'es' | 'el'
 
 type PublicPlan = {
-  id: string;
-  slug: string;
-  title: string;
-  summary: string | null;
-  priceCents: number;
-  order: number;
-  features: { id: string; name: string; order: number }[];
-};
+  id: string
+  slug: string
+  title: string
+  description: string | null
+  priceCents: number
+  order: number
+  features: { id: string; name: string; order: number }[]
+}
 
 function formatAmount(cents?: number | null) {
-  const whole = Math.round((cents ?? 0) / 100);
-  return `${whole}€`;
+  const whole = Math.round((cents ?? 0) / 100)
+  return `${whole}€`
 }
 
 export default async function ServicesPage({ params }: { params: Promise<{ lang: string }> }) {
-  const { lang } = await params;
-  const locale = resolveLocale(lang) as Lang;
+  const { lang } = await params
+  const locale = resolveLocale(lang) as Lang
 
   // Pull hero copy for "services" (fallbacks if not configured)
-  const hs = await getHeroSettings('services', locale);
-  const bookingHref = hs?.bookHref ?? `/${locale}/contact`;
+  const hs = await getHeroSettings('services', locale)
+  const bookingHref = hs?.bookHref ?? `/${locale}/contact`
 
   // Load active plans for the current language
-  let plans: PublicPlan[] = [];
+  let plans: PublicPlan[] = []
   try {
     plans = await prisma.servicePlan.findMany({
       where: { language: locale, isActive: true },
@@ -44,7 +44,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
         id: true,
         slug: true,
         title: true,
-        summary: true,
+        description: true,
         priceCents: true,
         order: true,
         features: {
@@ -52,9 +52,9 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
           select: { id: true, name: true, order: true },
         },
       },
-    });
+    })
   } catch {
-    plans = [];
+    plans = []
   }
 
   return (
@@ -102,9 +102,12 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
                   </ul>
                 )}
 
-                {p.summary && <p className="service-description">{p.summary}</p>}
+                {p.description && <p className="service-description">{p.description}</p>}
 
-                <Link href={`${bookingHref}?plan=${encodeURIComponent(p.slug)}`} className="cta-button">
+                <Link
+                  href={`${bookingHref}?plan=${encodeURIComponent(p.slug)}`}
+                  className="cta-button"
+                >
                   Book now
                 </Link>
               </article>
@@ -113,5 +116,5 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
         </div>
       </section>
     </>
-  );
+  )
 }

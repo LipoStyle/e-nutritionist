@@ -4,27 +4,81 @@
    ========================= */
 .light-mode .contactMain {
   background-image:
-    radial-gradient(circle at 13% 62%, rgba(172,199,183,0.12) 0%, rgba(172,199,183,0.12) 72%, transparent 72%, transparent 80%, transparent 80%, transparent 100%),
-    radial-gradient(circle at 46% 87%, rgba(172,199,183,0.12) 0%, rgba(172,199,183,0.12) 29%, transparent 29%, transparent 76%, transparent 76%, transparent 100%),
-    radial-gradient(circle at 46% 32%, rgba(172,199,183,0.12) 0%, rgba(172,199,183,0.12) 34%, transparent 34%, transparent 75%, transparent 75%, transparent 100%),
-    radial-gradient(circle at 3% 53%, rgba(172,199,183,0.12) 0%, rgba(172,199,183,0.12) 11%, transparent 11%, transparent 57%, transparent 57%, transparent 100%),
-    radial-gradient(circle at 53% 54%, rgba(172,199,183,0.12) 0%, rgba(172,199,183,0.12) 9%, transparent 9%, transparent 27%, transparent 27%, transparent 100%),
-    linear-gradient(225deg, rgb(7,80,86), rgb(22,35,42));
+    radial-gradient(
+      circle at 13% 62%,
+      rgba(172, 199, 183, 0.12) 0%,
+      rgba(172, 199, 183, 0.12) 72%,
+      transparent 72%,
+      transparent 80%,
+      transparent 80%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 46% 87%,
+      rgba(172, 199, 183, 0.12) 0%,
+      rgba(172, 199, 183, 0.12) 29%,
+      transparent 29%,
+      transparent 76%,
+      transparent 76%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 46% 32%,
+      rgba(172, 199, 183, 0.12) 0%,
+      rgba(172, 199, 183, 0.12) 34%,
+      transparent 34%,
+      transparent 75%,
+      transparent 75%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 3% 53%,
+      rgba(172, 199, 183, 0.12) 0%,
+      rgba(172, 199, 183, 0.12) 11%,
+      transparent 11%,
+      transparent 57%,
+      transparent 57%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 53% 54%,
+      rgba(172, 199, 183, 0.12) 0%,
+      rgba(172, 199, 183, 0.12) 9%,
+      transparent 9%,
+      transparent 27%,
+      transparent 27%,
+      transparent 100%
+    ),
+    linear-gradient(225deg, rgb(7, 80, 86), rgb(22, 35, 42));
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
-.light-mode .introTitle{ color: var(--color-light); }
-.light-mode .introText{ color: var(--color-light); }
-.light-mode .glass{ background: var(--color-light-transparent-glass); }
-.light-mode .panel{ background: var(--color-secondary); }
-.light-mode .panel.infoPanel .h3{ color: var(--color-dark); }
-.light-mode .infoList .label{ color: var(--color-dark); }
-.light-mode .infoList li a{
+.light-mode .introTitle {
+  color: var(--color-light);
+}
+.light-mode .introText {
+  color: var(--color-light);
+}
+.light-mode .glass {
+  background: var(--color-light-transparent-glass);
+}
+.light-mode .panel {
+  background: var(--color-secondary);
+}
+.light-mode .panel.infoPanel .h3 {
+  color: var(--color-dark);
+}
+.light-mode .infoList .label {
+  color: var(--color-dark);
+}
+.light-mode .infoList li a {
   color: var(--color-accent);
   text-decoration: none;
 }
-.light-mode .infoList li a:hover{ color: var(--color-secondary); }
+.light-mode .infoList li a:hover {
+  color: var(--color-secondary);
+}
 
 /* removed old light-mode .socials .chip background override */
 
@@ -33,26 +87,76 @@
    ------------------------- */
 .dark-mode .contactMain {
   background-image:
-    radial-gradient(circle at 13% 62%, rgba(221,167,167,0.12) 0%, rgba(221,167,167,0.12) 72%, transparent 72%, transparent 80%, transparent 80%, transparent 100%),
-    radial-gradient(circle at 46% 87%, rgba(221,167,167,0.12) 0%, rgba(221,167,167,0.12) 29%, transparent 29%, transparent 76%, transparent 76%, transparent 100%),
-    radial-gradient(circle at 46% 32%, rgba(221,167,167,0.12) 0%, rgba(221,167,167,0.12) 34%, transparent 34%, transparent 75%, transparent 75%, transparent 100%),
-    radial-gradient(circle at 3% 53%, rgba(221,167,167,0.12) 0%, rgba(221,167,167,0.12) 11%, transparent 11%, transparent 57%, transparent 57%, transparent 100%),
-    radial-gradient(circle at 53% 54%, rgba(221,167,167,0.12) 0%, rgba(221,167,167,0.12) 9%, transparent 9%, transparent 27%, transparent 27%, transparent 100%),
-    linear-gradient(225deg, rgb(21,27,28), rgb(21,27,28));
+    radial-gradient(
+      circle at 13% 62%,
+      rgba(221, 167, 167, 0.12) 0%,
+      rgba(221, 167, 167, 0.12) 72%,
+      transparent 72%,
+      transparent 80%,
+      transparent 80%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 46% 87%,
+      rgba(221, 167, 167, 0.12) 0%,
+      rgba(221, 167, 167, 0.12) 29%,
+      transparent 29%,
+      transparent 76%,
+      transparent 76%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 46% 32%,
+      rgba(221, 167, 167, 0.12) 0%,
+      rgba(221, 167, 167, 0.12) 34%,
+      transparent 34%,
+      transparent 75%,
+      transparent 75%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 3% 53%,
+      rgba(221, 167, 167, 0.12) 0%,
+      rgba(221, 167, 167, 0.12) 11%,
+      transparent 11%,
+      transparent 57%,
+      transparent 57%,
+      transparent 100%
+    ),
+    radial-gradient(
+      circle at 53% 54%,
+      rgba(221, 167, 167, 0.12) 0%,
+      rgba(221, 167, 167, 0.12) 9%,
+      transparent 9%,
+      transparent 27%,
+      transparent 27%,
+      transparent 100%
+    ),
+    linear-gradient(225deg, rgb(21, 27, 28), rgb(21, 27, 28));
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
-.dark-mode .introTitle{ color: var(--color-light); }
-.dark-mode .introText{ color: var(--color-light); }
-.dark-mode .glass{ background: var(--color-dark-transparent); }
-.dark-mode .panel{ background: color-mix(in oklab, #e4eef0 8%, var(--color-dark)); }
+.dark-mode .introTitle {
+  color: var(--color-light);
+}
+.dark-mode .introText {
+  color: var(--color-light);
+}
+.dark-mode .glass {
+  background: var(--color-dark-transparent);
+}
+.dark-mode .panel {
+  background: color-mix(in oklab, #e4eef0 8%, var(--color-dark));
+}
 
-.dark-mode .infoList li a{
+.dark-mode .infoList li a {
   color: var(--color-success);
   text-decoration: none;
 }
-.dark-mode .infoList li a:hover{ color: var(--color-accent); }
+.dark-mode .infoList li a:hover {
+  color: var(--color-accent);
+}
 
 /* =========================
    1) FULL-WIDTH INTRO (no bg/border)
@@ -92,7 +196,7 @@
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(10px) saturate(140%);
   -webkit-backdrop-filter: blur(10px) saturate(140%);
-  box-shadow: 0 24px 60px rgba(0,0,0,0.18);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
 }
 
 /* Cards (base) */
@@ -100,7 +204,7 @@
   border: 1px solid var(--panel-border);
   border-radius: 16px;
   padding: clamp(1rem, 2.5vw, 1.5rem);
-  box-shadow: var(--panel-shadow, 0 10px 26px rgba(0,0,0,0.10));
+  box-shadow: var(--panel-shadow, 0 10px 26px rgba(0, 0, 0, 0.1));
 }
 
 /* Info column: FLOATING — no bg/border; vertical centering & full height */
@@ -114,7 +218,7 @@
   justify-content: space-evenly;
   align-items: center;
   min-height: 100%;
-  filter: drop-shadow(0 18px 40px rgba(0,0,0,0.18));
+  filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.18));
 }
 
 /* Align info internals to match spacing */
@@ -124,14 +228,21 @@
   padding-left: 0.25rem;
   margin: 0;
 }
-.panel.infoPanel .h3 { margin-bottom: 0.5rem; }
-.panel.infoPanel .infoList { gap: 0.6rem; margin-bottom: 0.9rem; }
-.panel.infoPanel .socials { gap: 0.55rem 0.7rem; }
+.panel.infoPanel .h3 {
+  margin-bottom: 0.5rem;
+}
+.panel.infoPanel .infoList {
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+}
+.panel.infoPanel .socials {
+  gap: 0.55rem 0.7rem;
+}
 
 /* Form column: solid card (uses panel tokens) */
 .panel.formPanel {
   padding: clamp(1rem, 2.5vw, 1.5rem);
-  box-shadow: 0 16px 44px rgba(0,0,0,0.22);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.22);
 }
 
 /* contact info */
@@ -206,33 +317,35 @@
 /* Light mode panel + hover */
 .light-mode .socials {
   background: color-mix(in oklab, var(--color-dark) 10%, var(--color-light));
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 .light-mode .chip:hover,
 .light-mode .chip:focus-visible {
   transform: translateY(-3px);
   background: var(--color-success);
   color: var(--color-white);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
 }
 
 /* Dark mode panel + hover */
 .dark-mode .socials {
   background: color-mix(in oklab, var(--color-light) 8%, var(--color-dark));
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 .dark-mode .chip:hover,
 .dark-mode .chip:focus-visible {
   transform: translateY(-3px);
   background: var(--color-accent);
   color: var(--color-dark);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
 }
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .chip {
-    transition: background 0.2s ease, color 0.2s ease;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
   }
   .chip:hover,
   .chip:focus-visible {
@@ -258,10 +371,21 @@
 /* =========================
    FORM
    ========================= */
-.form { display: grid; gap: 0.85rem; }
-.honeypot { position: absolute; left: -10000px; height: 0; width: 0; overflow: hidden; }
+.form {
+  display: grid;
+  gap: 0.85rem;
+}
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
 
-.form input, .form textarea, .form button {
+.form input,
+.form textarea,
+.form button {
   width: 100%;
   border-radius: 10px;
   outline: none;
@@ -269,9 +393,12 @@
 
 /* ensure actual surface on inputs in the solid card */
 .formPanel .form input,
-.formPanel .form textarea { background: var(--field-bg); }
+.formPanel .form textarea {
+  background: var(--field-bg);
+}
 
-.form input, .form textarea {
+.form input,
+.form textarea {
   padding: 0.85rem 0.95rem;
   border: 1px solid var(--field-border);
   color: var(--text);
@@ -283,18 +410,24 @@
     opacity 450ms ease-out,
     transform 450ms ease-out;
   box-shadow:
-    0 1px 0 rgba(0,0,0,0.04) inset,
-    0 6px 14px rgba(0,0,0,0.08);
+    0 1px 0 rgba(0, 0, 0, 0.04) inset,
+    0 6px 14px rgba(0, 0, 0, 0.08);
 }
-.form input::placeholder, .form textarea::placeholder { color: var(--text-placeholder); }
-.form input:focus, .form textarea:focus {
+.form input::placeholder,
+.form textarea::placeholder {
+  color: var(--text-placeholder);
+}
+.form input:focus,
+.form textarea:focus {
   border-color: var(--accent-strong);
   box-shadow: 0 0 0 3px var(--accent-weak);
   transform: translateY(-1px);
 }
 .fieldError {
-  font-size: 0.85rem; color: var(--error-text);
-  margin-top: -0.25rem; padding-left: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--error-text);
+  margin-top: -0.25rem;
+  padding-left: 0.25rem;
 }
 
 /* submit */
@@ -304,7 +437,8 @@
   border: 1px solid var(--accent-border);
   background: linear-gradient(180deg, var(--accent-bg1), var(--accent-bg2));
   color: var(--text-strong);
-  font-weight: 600; cursor: pointer;
+  font-weight: 600;
+  cursor: pointer;
   transition:
     transform 0.15s ease,
     filter 0.2s ease,
@@ -312,14 +446,29 @@
     border-color 0.25s ease,
     opacity 450ms ease-out,
     transform 450ms ease-out;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
 }
-.form button:hover { transform: translateY(-2px); }
-.form button:active { transform: translateY(0); }
-.form button:disabled { filter: saturate(0.6) opacity(0.8); cursor: progress; }
+.form button:hover {
+  transform: translateY(-2px);
+}
+.form button:active {
+  transform: translateY(0);
+}
+.form button:disabled {
+  filter: saturate(0.6) opacity(0.8);
+  cursor: progress;
+}
 
-.success { margin-top: 0.5rem; color: var(--success-text); font-weight: 600; }
-.error   { margin-top: 0.5rem; color: var(--error-text);   font-weight: 600; }
+.success {
+  margin-top: 0.5rem;
+  color: var(--success-text);
+  font-weight: 600;
+}
+.error {
+  margin-top: 0.5rem;
+  color: var(--error-text);
+  font-weight: 600;
+}
 
 /* responsive split */
 @media (min-width: 900px) {
@@ -328,7 +477,9 @@
     align-items: stretch;
     column-gap: clamp(0.9rem, 2vw, 1.75rem);
   }
-  .glass { padding: clamp(0.75rem, 2vw, 1.25rem); }
+  .glass {
+    padding: clamp(0.75rem, 2vw, 1.25rem);
+  }
   .formPanel {
     position: sticky;
     top: clamp(72px, 6vw, 96px);
@@ -339,50 +490,80 @@
 
 /* optional micro-nudge toward the form on very wide screens */
 @media (min-width: 1100px) {
-  .panel.infoPanel { transform: translateX(4px); }
+  .panel.infoPanel {
+    transform: translateX(4px);
+  }
 }
 
 /* =========================
    REVEAL ANIMATIONS
    ========================= */
-[data-reveal] { opacity: 0; }
-[data-reveal="up"]   { transform: translateY(18px); }
-[data-reveal="left"] { transform: translateX(-22px); }
-[data-reveal="right"]{ transform: translateX(22px); }
+[data-reveal] {
+  opacity: 0;
+}
+[data-reveal='up'] {
+  transform: translateY(18px);
+}
+[data-reveal='left'] {
+  transform: translateX(-22px);
+}
+[data-reveal='right'] {
+  transform: translateX(22px);
+}
 
 [data-reveal].is-visible {
   opacity: 1;
   transform: none;
-  transition: opacity 460ms ease-out, transform 460ms ease-out;
+  transition:
+    opacity 460ms ease-out,
+    transform 460ms ease-out;
   transition-delay: var(--base-delay, 0ms);
 }
 
-.reveal-child { opacity: 0; transform: translateY(12px); }
+.reveal-child {
+  opacity: 0;
+  transform: translateY(12px);
+}
 .child-visible {
-  opacity: 1 !important; transform: translateY(0) !important;
-  transition: opacity 460ms ease-out, transform 460ms ease-out;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition:
+    opacity 460ms ease-out,
+    transform 460ms ease-out;
   transition-delay: calc(var(--base-delay, 0ms) + (var(--i, 0) * 70ms));
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal] { opacity: 1; transform: none; transition: none; }
-  .reveal-child, .child-visible { opacity: 1; transform: none; transition: none; }
-  .formPanel { position: static; }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .reveal-child,
+  .child-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .formPanel {
+    position: static;
+  }
 }
 
 /* =========================
    THEME TOKENS (light/dark)
    ========================= */
-.light-mode, .dark-mode {
+.light-mode,
+.dark-mode {
   --success-text: #b8ffde;
-  --error-text:   #ffc2c2;
+  --error-text: #ffc2c2;
   --chip-border-hover: currentColor;
 
   --accent-strong: color-mix(in oklab, #ff5b04 70%, transparent);
-  --accent-weak:   color-mix(in oklab, #ff5b04 30%, transparent);
+  --accent-weak: color-mix(in oklab, #ff5b04 30%, transparent);
   --accent-border: color-mix(in oklab, #ff5b04 40%, transparent);
-  --accent-bg1:    color-mix(in oklab, #ff5b04 20%, transparent);
-  --accent-bg2:    color-mix(in oklab, #ff5b04 35%, transparent);
+  --accent-bg1: color-mix(in oklab, #ff5b04 20%, transparent);
+  --accent-bg2: color-mix(in oklab, #ff5b04 35%, transparent);
 }
 
 /* Light: translucent teal glass, solid light form */
@@ -392,7 +573,7 @@
 
   --panel-bg: #e4eef0;
   --panel-border: color-mix(in oklab, #16232a 12%, transparent);
-  --panel-shadow: 0 10px 26px rgba(0,0,0,0.10);
+  --panel-shadow: 0 10px 26px rgba(0, 0, 0, 0.1);
 
   --field-bg: #e4eef0;
   --field-border: color-mix(in oklab, #16232a 15%, transparent);
@@ -413,7 +594,7 @@
 
   --panel-bg: #16232a;
   --panel-border: color-mix(in oklab, #e4eef0 14%, transparent);
-  --panel-shadow: 0 14px 40px rgba(0,0,0,0.18);
+  --panel-shadow: 0 14px 40px rgba(0, 0, 0, 0.18);
 
   --field-bg: #16232a;
   --field-border: color-mix(in oklab, #e4eef0 18%, transparent);
