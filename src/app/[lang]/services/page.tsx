@@ -68,7 +68,10 @@ export default async function ServicesPage({ params }: { params: Promise<{ lang:
       />
 
       {/* Pass plans and bookingHref to the client component */}
-      <ServiceCardsClient plans={plans} bookingHref={bookingHref} />
+      <ServiceCardsClient
+        plans={plans.map((p) => ({ ...p, summary: p.summary ?? null }))}
+        bookingHref={bookingHref}
+      />
     </>
   )
 }
