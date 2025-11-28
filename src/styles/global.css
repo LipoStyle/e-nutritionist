@@ -31,6 +31,14 @@
   --font-secondary: 'Winky Sans', sans-serif;
   /* header offset */
   --header-height: 200px;
+
+  --segment-size-w: 120px;
+  --segment-size-h: 48px;
+  --segment-border-size: 4px;
+  --segment-border-color: #ffffff;
+  --segment-bg-color: rgba(255, 255, 255, 0.4);
+  --segment-bg-hover: rgba(255, 255, 255, 0.85);
+  --label-text-color: #333; /* Dark color for labels to ensure readability */
 }
 
 /* 🌐 Base Reset */
@@ -50,14 +58,13 @@ body {
   font-optical-sizing: auto;
   font-style: normal;
   line-height: 1.5;
- 
 }
-.light-mode body{
-      background:color-mix(in oklab, var(--color-dark) 10%, var(--color-light));
+.light-mode body {
+  background: color-mix(in oklab, var(--color-dark) 10%, var(--color-light));
   color: var(--color-dark);
 }
-.dark-mode body{
-      background: color-mix(in oklab, var(--color-light) 8%, var(--color-dark));
+.dark-mode body {
+  background: color-mix(in oklab, var(--color-light) 8%, var(--color-dark));
   color: var(--color-light);
 }
 /* ✍️ Typography */

@@ -53,7 +53,7 @@ export default function Hero({
     (offsetHeader ? ' hero--offset-header' : '') +
     (className ? ` ${className}` : '')
 
-  const headingTag = (`h${headingLevel}` as HeadingTag)
+  const headingTag = `h${headingLevel}` as HeadingTag
   const Heading: React.ElementType = headingTag
   const titleId = title ? 'hero-title' : undefined
   const sectionA11y = title ? { 'aria-labelledby': titleId } : { 'aria-label': ariaLabel }
@@ -83,10 +83,12 @@ export default function Hero({
 
       {/* Content */}
       <div className="hero__center">
-        {title && <Heading id={titleId} className="hero__title anim-fade-up">{title}</Heading>}
-        {description && (
-          <p className="hero__description anim-fade-up-delayed">{description}</p>
+        {title && (
+          <Heading id={titleId} className="hero__title anim-fade-up">
+            {title}
+          </Heading>
         )}
+        {description && <p className="hero__description anim-fade-up-delayed">{description}</p>}
 
         {(message || bookHref) && (
           <div
@@ -94,14 +96,14 @@ export default function Hero({
             {...(bookHref ? { role: 'group', 'aria-label': 'Hero quick action' } : {})}
           >
             {message && <span className="hero__message">{message}</span>}
-            {bookHref && (
-              <CTAButton text={bookText} link={bookHref} ariaLabel={bookText} />
-            )}
+            {bookHref && <CTAButton text={bookText} link={bookHref} ariaLabel={bookText} />}
           </div>
         )}
 
         <div className="hero__scrollCue anim-fade-up-later" aria-hidden="true">
-          <div className="mouse"><div className="wheel" /></div>
+          <div className="mouse">
+            <div className="wheel" />
+          </div>
           <div className="arrow" />
         </div>
       </div>

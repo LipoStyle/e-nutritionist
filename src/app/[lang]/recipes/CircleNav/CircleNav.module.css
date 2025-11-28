@@ -1,10 +1,9 @@
 /* ============================
-   Themed Hero Circle (final++)
-   - Plate center, no outer ring
-   - Nav labels larger + themed fonts
-   - Light → secondary (hover/active), Dark → accent
-   - Responsive + a11y
-   ============================ */
+  Themed Hero Circle (ALL SEGMENTED DESIGN)
+  - All items: Curved Segmented Cells
+  ============================ */
+
+/* ADDED: Variables for the segmented look */
 
 /* ---- Base / layout ---- */
 .heroWrapper {
@@ -22,23 +21,26 @@
   align-items: flex-start;
 
   isolation: isolate;
-  transition: background-image .45s ease, background-color .25s ease;
+  transition:
+    background-image 0.45s ease,
+    background-color 0.25s ease;
 
   /* defaults; overridden by theme blocks */
   --center-bg: #f7f7f7;
   --center-fg: var(--color-dark);
-  --item-fg: var(--color-light);       /* idle color */
-  --item-hover: var(--color-accent);   /* hover/active color */
+  --item-fg: var(--color-light); /* idle color - now used for active border */
+  --item-hover: var(--color-accent); /* hover/active color - now used for active border */
   --tick: color-mix(in oklab, var(--color-light) 95%, transparent);
 }
 
 .overlay {
   position: absolute;
   inset: 0;
-  background: color-mix(in oklab, var(--color-dark) 58%, transparent);
+  /* Light pink overlay from the final design */
+  background: rgba(255, 192, 203, 0.4);
   z-index: 0;
   pointer-events: none;
-  transition: opacity .25s ease;
+  transition: opacity 0.25s ease;
 }
 
 /* ---- Circle stage ---- */
@@ -50,10 +52,17 @@
   padding: clamp(1rem, 2.8vw, 2rem) 1rem;
 }
 
-.ring { position: relative; }
-.circle { display: none; } /* no outer ring */
+.ring {
+  position: relative;
+  /* Add an encompassing white border/glow to simulate the total ring outline */
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+}
+.circle {
+  display: none;
+} /* no outer ring */
 
-/* ---- Center hub: plate ---- */
+/* ---- Center hub: plate (Base Styling) ---- */
 .center {
   position: absolute;
   left: 50%;
@@ -68,19 +77,18 @@
 
   background: var(--center-bg);
   color: var(--center-fg);
-  box-shadow:
-    0 18px 42px rgba(0,0,0,.35),
-    inset 0 0 0 10px #f1f1f1,
-    inset 0 8px 22px rgba(0,0,0,.08);
+  /* Clean white outline for the center image */
+  box-shadow: 0 0 0 6px var(--segment-border-color);
   overflow: hidden;
+  z-index: 3; /* Ensure center hub is above the item segments */
 }
 .center::after {
-  content: "";
+  content: '';
   position: absolute;
-  inset: 6%;
+  inset: 0;
   border-radius: 999px;
-  box-shadow: inset 0 0 20px rgba(255,255,255,.6);
   pointer-events: none;
+  box-shadow: none; /* Remove internal ring shadow */
 }
 
 /* Center image + optional rotate animation */
@@ -96,103 +104,143 @@
   animation: rotateIn 0.45s ease both;
 }
 @keyframes rotateIn {
-  from { transform: rotate(-15deg) scale(0.96); opacity: .85; }
-  to   { transform: rotate(0deg)  scale(1);    opacity: 1; }
+  from {
+    transform: rotate(-15deg) scale(0.96);
+    opacity: 0.85;
+  }
+  to {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
 }
 
 .centerText {
-  font-size: .9rem;
-  letter-spacing: .06em;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  opacity: .92;
+  opacity: 0.92;
 }
 
-/* ---- Items on the ring ---- */
+/* ---------------------------------------------------- */
+/* --- SEGMENTED STYLE FOR ALL ITEMS (DEFAULT) --- */
+/* ---------------------------------------------------- */
 .item {
   position: absolute;
   left: 50%;
   top: 50%;
+  /* Transform is handled by the inner element, this just sets the anchor point */
   transform: translate(calc(-50% + var(--x, 0px)), calc(-50% + var(--y, 0px)));
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
 
-  border: 0;
-  padding: 6px 10px;
+  /* Resetting the base .item styles as it's now just a positioning anchor */
+  display: block;
+  border: none;
+  padding: 0;
   background: transparent;
-  color: var(--item-fg);     /* idle color */
-  border-radius: 999px;
-
-  text-decoration: none;
-  font-weight: 700;
-  letter-spacing: .01em;
+  color: unset; /* Remove inherited text color from item level */
+  gap: 0;
 
   z-index: 2;
   cursor: pointer;
-  transition: color .18s ease, opacity .18s ease, transform .14s ease;
+  transition: none; /* Remove transitions from the anchor element */
 }
 
-/* Label font & size — themed + inherits color */
-.label {
-  white-space: nowrap;;
-  font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+/* Define the visual segment using the .inner span (previously firstCurvedItem .inner) */
+.inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: var(--segment-size-w);
+  height: var(--segment-size-h);
+  border-radius: 50px;
+
+  border: var(--segment-border-size) solid var(--segment-border-color);
+  background-color: var(--segment-bg-color);
+  backdrop-filter: blur(5px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: all 0.25s ease;
+}
+
+/* Ensure the label inside the segment is styled correctly */
+.item .label {
+  white-space: nowrap;
+  font-size: clamp(0.9rem, 2.2vw, 1.1rem);
   line-height: 1.05;
-  letter-spacing: .04em;
-  color: currentColor; /* label follows .item color */
-  transition: color .18s ease, font-family .18s ease, font-weight .18s ease;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  color: var(--label-text-color); /* Use specific dark color for labels */
+  text-transform: uppercase;
+  /* Prevent the label from inheriting or being rotated */
+  transform: none !important;
+  transition: color 0.18s ease;
 }
 
-/* Generic hover/active behaviors driven by --item-hover */
-.item:hover,
-.item:focus-visible { color: var(--item-hover); }
-
-.item:hover .label,
-.item:focus-visible .label,
-.item.active .label {
-  color: var(--item-hover);
+/* Hover/Active states for all segmented items */
+.item:hover .inner,
+.item:focus-visible .inner {
+  background-color: var(--segment-bg-hover);
+  transform: translate(-50%, -50%) scale(1.05); /* Slight grow on hover */
 }
 
-.item:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--item-hover) 50%, white);
-  border-radius: 999px;
+/* Active state: Change border color to --item-hover (accent) */
+.item.active .inner {
+  background-color: var(--segment-bg-hover);
+  border-color: var(--item-hover); /* Use theme's active color for the border */
 }
 
-.item:active {
-  transform: translate(calc(-50% + var(--x, 0px)), calc(-50% + var(--y, 0px))) scale(.96);
-}
-
-/* Optional tiny tick that follows state */
+/* Remove tick from all items (not part of segmented design) */
 .tick {
-  width: 12px;
-  height: 2px;
-  background: var(--tick);
-  transform: rotate(90deg);
-  opacity: .9;
-  transition: background-color .18s ease, opacity .18s ease;
-}
-.item:hover .tick,
-.item:focus-visible .tick,
-.item.active .tick {
-  background: var(--item-hover);
-  opacity: 1;
+  display: none;
 }
 
-/* ---- Responsive ---- */
+/* ---- Responsive & Theme Overrides (kept unchanged) ---- */
 @media (max-width: 720px) {
-  .heroWrapper { padding-top: 160px; }
-  .center { width: clamp(200px, 56%, 360px); }
-  .label { font-size: clamp(1rem, 3.6vw, 1.2rem); }
+  .heroWrapper {
+    padding-top: 160px;
+  }
+  .center {
+    width: clamp(200px, 56%, 360px);
+  }
+  .item .label {
+    font-size: clamp(0.85rem, 3vw, 1rem);
+  }
+  .inner {
+    /* Adjust segment size for smaller screens */
+    width: 100px;
+    height: 40px;
+  }
 }
 @media (max-width: 480px) {
-  .heroWrapper { padding-top: 140px; }
-  .center { width: clamp(170px, 62%, 300px); }
-  .label { font-size: clamp(.98rem, 4vw, 1.1rem); }
+  .heroWrapper {
+    padding-top: 140px;
+  }
+  .center {
+    width: clamp(170px, 62%, 300px);
+  }
+  .item .label {
+    font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+  }
+  .inner {
+    /* Adjust segment size for even smaller screens */
+    width: 90px;
+    height: 35px;
+  }
 }
 
 /* ---- Reduced motion ---- */
 @media (prefers-reduced-motion: reduce) {
-  .heroWrapper, .overlay, .center, .ring, .item, .center img {
+  .heroWrapper,
+  .overlay,
+  .center,
+  .ring,
+  .item,
+  .center img,
+  .inner {
     animation: none !important;
     transition: none !important;
   }
@@ -203,9 +251,8 @@
 :global(.light-mode) .heroWrapper {
   --center-bg: #f8f8f8;
   --center-fg: var(--color-dark);
-  --item-fg: var(--color-white);         /* idle */
-  --item-hover: var(--color-success); /* hover/active */
-  --tick: color-mix(in oklab, var(--color-dark) 90%, transparent);
+  /* --item-fg is now used for active border color in light mode */
+  --item-hover: var(--color-success); /* light mode active border */
 }
 :global(.light-mode) .overlay {
   background: color-mix(in oklab, var(--color-secondary) 50%, transparent);
@@ -215,9 +262,8 @@
 :global(.dark-mode) .heroWrapper {
   --center-bg: #f2f2f2;
   --center-fg: var(--color-dark);
-  --item-fg: var(--color-light);        /* idle */
-  --item-hover: var(--color-accent);    /* hover/active */
-  --tick: color-mix(in oklab, var(--color-light) 95%, transparent);
+  /* --item-fg is now used for active border color in dark mode */
+  --item-hover: var(--color-accent); /* dark mode active border */
 }
 :global(.dark-mode) .overlay {
   background: color-mix(in oklab, var(--color-dark) 60%, transparent);

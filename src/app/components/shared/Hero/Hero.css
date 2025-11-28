@@ -183,6 +183,9 @@
 }
 
 /* In dark mode, overlay slightly lighter so it doesn’t over-crush */
+.light-mode .hero__overlay {
+  background: linear-gradient(180deg, #19292273 0%, #19292273 50%, #19292273 100%);
+}
 .dark-mode .hero__overlay {
   background: linear-gradient(
     180deg,
