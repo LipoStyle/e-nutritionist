@@ -1,42 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap");
+/* 🌍 Root Variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 🌑 Core Palette */
+  --color-dark: #16232a;
+  --color-accent: #ff5b04;
+  --color-secondary: #075056;
+  --color-light: #e4eef0;
+
+  /* 🧊 Transparency Variants */
+  --color-dark-transparent: rgba(22, 35, 42, 0.95);
+  --color-secondary-transparent: rgba(7, 80, 86, 0.85);
+  --color-light-transparent: rgba(228, 238, 240, 0.95);
+  --color-light-transparent-glass: rgba(228, 238, 240, 0.692);
+
+  /* ⚠️ Status / Utility */
+  --color-success: #2ecc71;
+  --color-danger: #ff3b3b;
+
+  /* 🎨 Grayscale & Effects */
+  --color-white: #ffffff;
+  --color-light-gray: #dcdcdc;
+  --color-dark-gray: #999999;
+  --color-soft-white: rgba(255, 255, 255, 0.05);
+  --color-soft-white-hover: rgba(255, 255, 255, 0.2);
+  --color-soft-white-blur: rgba(255, 255, 255, 0.5);
+  --color-overlay: rgba(22, 35, 42, 0.8);
+
+  /* 🔤 Fonts */
+  --font-primary: "Josefin Sans", sans-serif;
+  --font-secondary: "Winky Sans", sans-serif;
+  /* header offset */
+  --header-height: 200px;
+
+  --segment-size-w: 120px;
+  --segment-size-h: 48px;
+  --segment-border-size: 4px;
+  --segment-border-color: #ffffff;
+  --segment-bg-color: rgba(255, 255, 255, 0.4);
+  --segment-bg-hover: rgba(255, 255, 255, 0.85);
+  --label-text-color: #333; /* Dark color for labels to ensure readability */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 🌐 Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* 📄 Page Base */
 html,
 body {
-  max-width: 100vw;
+  width: 100%;
   overflow-x: hidden;
+  overflow-y: auto;
+  font-family: var(--font-primary);
+  font-optical-sizing: auto;
+  font-style: normal;
+  line-height: 1.5;
 }
-
+.light-mode body {
+  background: color-mix(in oklab, var(--color-dark) 10%, var(--color-light));
+  color: var(--color-dark);
+}
+.dark-mode body {
+  background: color-mix(in oklab, var(--color-light) 8%, var(--color-dark));
+  color: var(--color-light);
+}
+/* ✍️ Typography */
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-primary);
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-secondary);
+  color: var(--color-light);
 }
