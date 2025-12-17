@@ -1,10 +1,16 @@
-import { ReactNode } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Menu, X, Sun, Moon, Globe, Phone, Mail, MapPin } from 'lucide-react';
-import { useState } from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { ReactNode } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Menu, X, Sun, Moon, Globe, Phone, Mail, MapPin } from "lucide-react";
+import { useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface LayoutProps {
   children: ReactNode;
@@ -12,34 +18,34 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState("light");
   const { currentLanguage, setLanguage, t } = useLanguage();
   const location = useLocation();
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
+    const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
   };
 
   const languages = [
-    { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'es', name: 'Español', flag: '🇪🇸' },
-    { code: 'gr', name: 'Ελληνικά', flag: '🇬🇷' }
+    { code: "en", name: "English", flag: "🇺🇸" },
+    { code: "es", name: "Español", flag: "🇪🇸" },
+    { code: "gr", name: "Ελληνικά", flag: "🇬🇷" },
   ];
 
   const navigation = [
-    { name: t('nav.home', 'Home'), href: '/' },
-    { name: t('nav.services', 'Services'), href: '/services' },
-    { name: t('nav.blog', 'Blog'), href: '/blogs' },
-    { name: t('nav.recipes', 'Recipes'), href: '/recipes' },
-    { name: t('nav.about', 'About'), href: '/about' },
-    { name: t('nav.contact', 'Contact'), href: '/contact' },
+    { name: t("nav.home", "Home"), href: "/" },
+    { name: t("nav.services", "Services"), href: "/services" },
+    { name: t("nav.blog", "Blog"), href: "/blogs" },
+    { name: t("nav.recipes", "Recipes"), href: "/recipes" },
+    { name: t("nav.about", "About"), href: "/about" },
+    { name: t("nav.contact", "Contact"), href: "/contact" },
   ];
 
   const isActive = (path: string) => {
-    if (path === '/') {
-      return location.pathname === '/';
+    if (path === "/") {
+      return location.pathname === "/";
     }
     return location.pathname.startsWith(path);
   };
@@ -60,13 +66,15 @@ const Layout = ({ children }: LayoutProps) => {
                   className="flex items-center space-x-2 px-3 py-1.5 rounded-lg hover:bg-accent-light/50 transition-colors"
                   title="Toggle theme"
                 >
-                  {theme === 'light' ? (
+                  {theme === "light" ? (
                     <Sun className="h-4 w-4 text-muted-foreground" />
                   ) : (
                     <Moon className="h-4 w-4 text-muted-foreground" />
                   )}
                   <span className="text-sm text-muted-foreground hidden sm:block">
-                    {theme === 'light' ? t('theme.light', 'Light') : t('theme.dark', 'Dark')}
+                    {theme === "light"
+                      ? t("theme.light", "Light")
+                      : t("theme.dark", "Dark")}
                   </span>
                 </button>
 
@@ -99,8 +107,8 @@ const Layout = ({ children }: LayoutProps) => {
                     to={item.href}
                     className={`text-sm font-medium font-body transition-colors hover:text-secondary ${
                       isActive(item.href)
-                        ? 'text-secondary border-b-2 border-secondary pb-1'
-                        : 'text-foreground'
+                        ? "text-secondary border-b-2 border-secondary pb-1"
+                        : "text-foreground"
                     }`}
                   >
                     {item.name}
@@ -111,15 +119,19 @@ const Layout = ({ children }: LayoutProps) => {
               {/* Right: Booking Button */}
               <div className="flex items-center space-x-4">
                 <Button className="gradient-accent text-white btn-modern shadow-medium hidden sm:flex">
-                  {t('button.book_consultation', 'Book Consultation')}
+                  {t("button.book_consultation", "Book Consultation")}
                 </Button>
-                
+
                 {/* Mobile menu button */}
                 <button
                   className="lg:hidden p-2 hover:bg-accent-light/50 rounded-lg transition-colors"
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
-                  {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                  {isMenuOpen ? (
+                    <X className="h-5 w-5" />
+                  ) : (
+                    <Menu className="h-5 w-5" />
+                  )}
                 </button>
               </div>
             </div>
@@ -130,12 +142,21 @@ const Layout = ({ children }: LayoutProps) => {
         <div className="bg-background/95 backdrop-blur-sm">
           <div className="w-fit mx-auto px-6 py-4">
             <Link to="/" className="flex items-center space-x-4">
-              <div className="w-14 h-14 gradient-primary rounded-2xl flex items-center justify-center shadow-medium">
-                <span className="text-white font-bold text-2xl font-heading">eN</span>
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-medium bg-background">
+                <img
+                  src="/images/header/logo.svg"
+                  alt="e-Nutritionist logo"
+                  className="w-10 h-10 object-contain"
+                />
               </div>
+
               <div className="text-center">
-                <h1 className="text-2xl font-bold text-primary font-heading leading-tight">e-Nutritionist</h1>
-                <p className="text-sm text-muted-foreground font-body">Professional Sports Nutrition & Wellness</p>
+                <h1 className="text-2xl font-bold text-primary font-heading leading-tight">
+                  e-Nutritionist
+                </h1>
+                <p className="text-sm text-muted-foreground font-body">
+                  Professional Sports Nutrition & Wellness
+                </p>
               </div>
             </Link>
           </div>
@@ -151,7 +172,7 @@ const Layout = ({ children }: LayoutProps) => {
                     key={item.name}
                     to={item.href}
                     className={`block text-sm font-medium font-body transition-colors hover:text-secondary ${
-                      isActive(item.href) ? 'text-secondary' : 'text-foreground'
+                      isActive(item.href) ? "text-secondary" : "text-foreground"
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -160,7 +181,7 @@ const Layout = ({ children }: LayoutProps) => {
                 ))}
                 <div className="pt-4">
                   <Button className="w-full gradient-accent text-white btn-modern">
-                    {t('button.book_consultation', 'Book Consultation')}
+                    {t("button.book_consultation", "Book Consultation")}
                   </Button>
                 </div>
               </nav>
@@ -185,8 +206,8 @@ const Layout = ({ children }: LayoutProps) => {
                 <span className="text-lg font-bold">e-Nutritionist</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Professional nutrition consulting specializing in athletic performance, 
-                weight management, and healthy lifestyle coaching.
+                Professional nutrition consulting specializing in athletic
+                performance, weight management, and healthy lifestyle coaching.
               </p>
             </div>
 
@@ -196,8 +217,8 @@ const Layout = ({ children }: LayoutProps) => {
               <ul className="space-y-2 text-sm">
                 {navigation.map((item) => (
                   <li key={item.name}>
-                    <Link 
-                      to={item.href} 
+                    <Link
+                      to={item.href}
                       className="text-muted-foreground hover:text-primary transition-colors"
                     >
                       {item.name}
@@ -241,7 +262,10 @@ const Layout = ({ children }: LayoutProps) => {
           </div>
 
           <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; 2024 e-Nutritionist. All rights reserved. Professional nutrition consulting services.</p>
+            <p>
+              &copy; 2024 e-Nutritionist. All rights reserved. Professional
+              nutrition consulting services.
+            </p>
           </div>
         </div>
       </footer>
