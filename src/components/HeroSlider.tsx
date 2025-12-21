@@ -129,10 +129,10 @@ const HeroSlider = () => {
               key={slide.id}
               className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
                 isActive
-                  ? "opacity-100 translate-x-0"
+                  ? "opacity-100 translate-x-0 pointer-events-auto"
                   : index < currentSlide
-                  ? "opacity-0 -translate-x-full"
-                  : "opacity-0 translate-x-full"
+                  ? "opacity-0 -translate-x-full pointer-events-none"
+                  : "opacity-0 translate-x-full pointer-events-none"
               }`}
               role="group"
               aria-roledescription="slide"
@@ -175,13 +175,13 @@ const HeroSlider = () => {
 
                       <div className="flex flex-col sm:flex-row gap-4 pt-4">
                         {(() => {
-                          const primaryUrl = getSafeUrl(
-                            slide.translation?.primary_button_url
-                          );
+                          const primaryUrl =
+                            getSafeUrl(slide.translation?.primary_button_url) ||
+                            "/contact";
                           const primaryText =
                             slide.translation?.primary_button_text ||
                             "Get Started";
-                          return primaryUrl ? (
+                          return (
                             <Button
                               size="lg"
                               className="bg-white text-primary hover:bg-white/90 btn-modern shadow-medium text-lg px-8 py-4"
@@ -194,24 +194,16 @@ const HeroSlider = () => {
                                 {primaryText}
                               </Link>
                             </Button>
-                          ) : (
-                            <Button
-                              size="lg"
-                              className="bg-white text-primary hover:bg-white/90 btn-modern shadow-medium text-lg px-8 py-4"
-                              disabled
-                            >
-                              {primaryText}
-                            </Button>
                           );
                         })()}
                         {(() => {
-                          const secondaryUrl = getSafeUrl(
-                            slide.translation?.secondary_button_url
-                          );
+                          const secondaryUrl =
+                            getSafeUrl(slide.translation?.secondary_button_url) ||
+                            "/services";
                           const secondaryText =
                             slide.translation?.secondary_button_text ||
                             "Learn More";
-                          return secondaryUrl ? (
+                          return (
                             <Button
                               size="lg"
                               variant="outline"
@@ -224,15 +216,6 @@ const HeroSlider = () => {
                               >
                                 {secondaryText}
                               </Link>
-                            </Button>
-                          ) : (
-                            <Button
-                              size="lg"
-                              variant="outline"
-                              className="border-white text-white hover:bg-white hover:text-primary btn-modern text-lg px-8 py-4"
-                              disabled
-                            >
-                              {secondaryText}
                             </Button>
                           );
                         })()}
