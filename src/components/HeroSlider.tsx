@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, ArrowDown } from 'lucide-react';
@@ -31,6 +31,7 @@ const HeroSlider = () => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [slides, setSlides] = useState<Slide[]>([]);
   const [loading, setLoading] = useState(true);
+  const resumeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { currentLanguage } = useLanguage();
 
   // Fetch slides from database
@@ -143,30 +144,65 @@ const HeroSlider = () => {
     fetchSlides();
   }, [currentLanguage]);
 
+  useEffect(() => {
+    if (slides.length === 0) {
+      setCurrentSlide(0);
+      return;
+    }
+    setCurrentSlide((prev) => Math.min(prev, slides.length - 1));
+  }, [slides.length]);
+
+  useEffect(() => {
+    return () => {
+      if (resumeTimeoutRef.current) {
+        clearTimeout(resumeTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const scheduleAutoplayResume = () => {
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+    }
+    resumeTimeoutRef.current = setTimeout(() => {
+      setIsAutoPlaying(true);
+      resumeTimeoutRef.current = null;
+    }, 8000);
+  };
+
+  const pauseAutoplayTemporarily = () => {
+    if (slides.length <= 1) return;
+    setIsAutoPlaying(false);
+    scheduleAutoplayResume();
+  };
+
   // Auto-play functionality
   useEffect(() => {
-    if (!isAutoPlaying || slides.length === 0) return;
-    
+    if (!isAutoPlaying || slides.length <= 1) return;
+
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000); // Change slide every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [isAutoPlaying, slides.length]);
 
   const nextSlide = () => {
+    if (slides.length === 0) return;
     setCurrentSlide((prev) => (prev + 1) % slides.length);
-    setIsAutoPlaying(false);
+    pauseAutoplayTemporarily();
   };
 
   const prevSlide = () => {
+    if (slides.length === 0) return;
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-    setIsAutoPlaying(false);
+    pauseAutoplayTemporarily();
   };
 
   const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-    setIsAutoPlaying(false);
+    if (slides.length === 0) return;
+    setCurrentSlide(Math.max(0, Math.min(index, slides.length - 1)));
+    pauseAutoplayTemporarily();
   };
 
   const scrollToContent = () => {
