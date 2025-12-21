@@ -175,24 +175,45 @@ const HeroSlider = () => {
 
                       <div className="flex flex-col sm:flex-row gap-4 pt-4">
                         {(() => {
-                          const primaryUrl =
-                            getSafeUrl(slide.translation?.primary_button_url) ||
-                            "/contact";
+                          const configuredPrimaryUrl =
+                            slide.translation?.primary_button_url?.trim() || "";
+                          const fallbackPrimaryUrl = "/contact";
                           const primaryText =
                             slide.translation?.primary_button_text ||
                             "Get Started";
+
+                          const renderPrimaryLink = () => {
+                            if (configuredPrimaryUrl.startsWith("http://") || configuredPrimaryUrl.startsWith("https://")) {
+                              return (
+                                <a
+                                  href={configuredPrimaryUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  tabIndex={isActive ? 0 : -1}
+                                >
+                                  {primaryText}
+                                </a>
+                              );
+                            }
+
+                            const internalUrl =
+                              getSafeUrl(configuredPrimaryUrl) ||
+                              fallbackPrimaryUrl;
+
+                            return (
+                              <Link to={internalUrl} tabIndex={isActive ? 0 : -1}>
+                                {primaryText}
+                              </Link>
+                            );
+                          };
+
                           return (
                             <Button
                               size="lg"
                               className="bg-white text-primary hover:bg-white/90 btn-modern shadow-medium text-lg px-8 py-4"
                               asChild
                             >
-                              <Link
-                                to={primaryUrl}
-                                tabIndex={isActive ? 0 : -1}
-                              >
-                                {primaryText}
-                              </Link>
+                              {renderPrimaryLink()}
                             </Button>
                           );
                         })()}
