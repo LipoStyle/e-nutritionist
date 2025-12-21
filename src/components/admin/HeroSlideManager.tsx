@@ -63,6 +63,24 @@ const HeroSlideManager: React.FC = () => {
     is_active: true
   };
 
+  const handleEditImageUpload = async (file: File) => {
+    try {
+      const publicUrl = await uploadSlideImage(file);
+      setEditSlideForm(prev => (prev ? { ...prev, background_image_url: publicUrl } : prev));
+
+      toast({
+        title: 'Success',
+        description: 'Image uploaded successfully'
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Upload Failed',
+        description: error.message || 'Failed to upload image. Please try again.',
+        variant: 'destructive'
+      });
+    }
+  };
+
   const initialTranslationForm = {
     h1_title: 'Sample Title',
     paragraph: 'Sample description for the slide content.',
@@ -74,6 +92,12 @@ const HeroSlideManager: React.FC = () => {
 
   const [slideForm, setSlideForm] = useState(initialSlideForm);
   const [translationForms, setTranslationForms] = useState<Record<string, typeof initialTranslationForm>>({
+    en: { ...initialTranslationForm },
+    es: { ...initialTranslationForm },
+    gr: { ...initialTranslationForm }
+  });
+  const [editSlideForm, setEditSlideForm] = useState<HeroSlide | null>(null);
+  const [editTranslationForms, setEditTranslationForms] = useState<Record<string, typeof initialTranslationForm>>({
     en: { ...initialTranslationForm },
     es: { ...initialTranslationForm },
     gr: { ...initialTranslationForm }
@@ -126,8 +150,7 @@ const HeroSlideManager: React.FC = () => {
     fetchSlides();
   }, []);
 
-  // Handle image upload
-  const handleImageUpload = async (file: File) => {
+  const uploadSlideImage = async (file: File) => {
     try {
       // Validate file type
       const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -165,6 +188,17 @@ const HeroSlideManager: React.FC = () => {
 
       console.log('Public URL:', publicUrl);
 
+      return publicUrl;
+    } catch (error: any) {
+      console.error('Error uploading image:', error);
+      throw error;
+    }
+  };
+
+  // Handle image upload
+  const handleImageUpload = async (file: File) => {
+    try {
+      const publicUrl = await uploadSlideImage(file);
       setSlideForm(prev => ({ ...prev, background_image_url: publicUrl }));
       
       toast({
@@ -172,7 +206,6 @@ const HeroSlideManager: React.FC = () => {
         description: 'Image uploaded successfully'
       });
     } catch (error: any) {
-      console.error('Error uploading image:', error);
       toast({
         title: 'Upload Failed',
         description: error.message || 'Failed to upload image. Please try again.',
@@ -304,6 +337,96 @@ const HeroSlideManager: React.FC = () => {
       toast({
         title: 'Error',
         description: 'Failed to delete slide',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const startEditingSlide = (slide: HeroSlide) => {
+    if (editingSlide === slide.id) {
+      cancelEdit();
+      return;
+    }
+
+    const translationData = translations[slide.id] || [];
+    const forms = languages.reduce((acc, lang) => {
+      const translation = translationData.find(t => t.language_code === lang.code);
+      acc[lang.code] = {
+        h1_title: translation?.h1_title || '',
+        paragraph: translation?.paragraph || '',
+        primary_button_text: translation?.primary_button_text || '',
+        primary_button_url: translation?.primary_button_url || '',
+        secondary_button_text: translation?.secondary_button_text || '',
+        secondary_button_url: translation?.secondary_button_url || ''
+      };
+      return acc;
+    }, {} as Record<string, typeof initialTranslationForm>);
+
+    setEditSlideForm({ ...slide });
+    setEditTranslationForms(forms);
+    setEditingSlide(slide.id);
+  };
+
+  const cancelEdit = () => {
+    setEditingSlide(null);
+    setEditSlideForm(null);
+    setEditTranslationForms({
+      en: { ...initialTranslationForm },
+      es: { ...initialTranslationForm },
+      gr: { ...initialTranslationForm }
+    });
+  };
+
+  const saveSlideChanges = async () => {
+    if (!editingSlide || !editSlideForm) return;
+
+    try {
+      const slideUpdateData = {
+        order_index: editSlideForm.order_index,
+        background_image_url: editSlideForm.background_image_url,
+        layer_opacity: editSlideForm.layer_opacity,
+        layer_type: editSlideForm.layer_type,
+        layer_direction: editSlideForm.layer_direction,
+        layer_color_1: editSlideForm.layer_color_1,
+        layer_color_2: editSlideForm.layer_color_2,
+        layer_color_3: editSlideForm.layer_color_3,
+        is_active: editSlideForm.is_active
+      };
+
+      const { error: slideError } = await supabase
+        .from('hero_slides_2025_12_11_15_30')
+        .update(slideUpdateData)
+        .eq('id', editingSlide);
+
+      if (slideError) throw slideError;
+
+      const translationsToUpsert = languages.map(lang => {
+        const translationForm = editTranslationForms[lang.code] || initialTranslationForm;
+        return {
+          slide_id: editingSlide,
+          language_code: lang.code,
+          ...translationForm
+        };
+      });
+
+      const { error: translationsError } = await supabase
+        .from('slide_translations_2025_12_11_15_30')
+        .upsert(translationsToUpsert, { onConflict: 'slide_id,language_code' });
+
+      if (translationsError) throw translationsError;
+
+      toast({
+        title: 'Success',
+        description: 'Slide updated successfully'
+      });
+
+      cancelEdit();
+      fetchSlides();
+    } catch (error: any) {
+      console.error('Error updating slide:', error);
+      toast({
+        title: 'Update Failed',
+        description: error.message || 'Failed to update slide. Please try again.',
         variant: 'destructive'
       });
     }
@@ -638,7 +761,7 @@ const HeroSlideManager: React.FC = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setEditingSlide(editingSlide === slide.id ? null : slide.id)}
+                    onClick={() => startEditingSlide(slide)}
                   >
                     <Edit className="h-4 w-4" />
                   </Button>
@@ -687,6 +810,302 @@ const HeroSlideManager: React.FC = () => {
                   </div>
                 </div>
               </div>
+              {editingSlide === slide.id && editSlideForm && (
+                <div className="mt-6 border-t pt-6 space-y-6">
+                  <Tabs defaultValue="design" className="w-full">
+                    <TabsList className="grid w-full grid-cols-2">
+                      <TabsTrigger value="design">Design & Layout</TabsTrigger>
+                      <TabsTrigger value="content">Content & Translations</TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="design" className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Background Image</Label>
+                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                          {editSlideForm.background_image_url ? (
+                            <div className="space-y-2">
+                              <img
+                                src={editSlideForm.background_image_url}
+                                alt="Background preview"
+                                className="max-h-32 mx-auto rounded"
+                              />
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() =>
+                                  setEditSlideForm(prev =>
+                                    prev ? { ...prev, background_image_url: '' } : prev
+                                  )
+                                }
+                              >
+                                Remove Image
+                              </Button>
+                            </div>
+                          ) : (
+                            <div className="space-y-2">
+                              <ImageIcon className="h-12 w-12 mx-auto text-gray-400" />
+                              <div>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) handleEditImageUpload(file);
+                                  }}
+                                  className="hidden"
+                                  id={`edit-image-upload-${slide.id}`}
+                                />
+                                <Label htmlFor={`edit-image-upload-${slide.id}`} className="cursor-pointer">
+                                  <Button variant="outline" asChild>
+                                    <span>
+                                      <Upload className="h-4 w-4 mr-2" />
+                                      Upload Image
+                                    </span>
+                                  </Button>
+                                </Label>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label>Layer Type</Label>
+                          <Select
+                            value={editSlideForm.layer_type}
+                            onValueChange={(value) =>
+                              setEditSlideForm(prev => (prev ? { ...prev, layer_type: value } : prev))
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="single">Single Color</SelectItem>
+                              <SelectItem value="gradient_2">2 Color Gradient</SelectItem>
+                              <SelectItem value="gradient_3">3 Color Gradient</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>Layer Direction</Label>
+                          <Select
+                            value={editSlideForm.layer_direction}
+                            onValueChange={(value) =>
+                              setEditSlideForm(prev => (prev ? { ...prev, layer_direction: value } : prev))
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="horizontal">Horizontal</SelectItem>
+                              <SelectItem value="vertical">Vertical</SelectItem>
+                              <SelectItem value="radial">Radial</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-4">
+                        <div className="space-y-2">
+                          <Label>Color 1</Label>
+                          <Input
+                            type="color"
+                            value={editSlideForm.layer_color_1}
+                            onChange={(e) =>
+                              setEditSlideForm(prev => (prev ? { ...prev, layer_color_1: e.target.value } : prev))
+                            }
+                          />
+                        </div>
+                        {editSlideForm.layer_type !== 'single' && (
+                          <div className="space-y-2">
+                            <Label>Color 2</Label>
+                            <Input
+                              type="color"
+                              value={editSlideForm.layer_color_2 || '#ff5b04'}
+                              onChange={(e) =>
+                                setEditSlideForm(prev => (prev ? { ...prev, layer_color_2: e.target.value } : prev))
+                              }
+                            />
+                          </div>
+                        )}
+                        {editSlideForm.layer_type === 'gradient_3' && (
+                          <div className="space-y-2">
+                            <Label>Color 3</Label>
+                            <Input
+                              type="color"
+                              value={editSlideForm.layer_color_3 || '#e4eef0'}
+                              onChange={(e) =>
+                                setEditSlideForm(prev => (prev ? { ...prev, layer_color_3: e.target.value } : prev))
+                              }
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Layer Opacity: {editSlideForm.layer_opacity}</Label>
+                        <Input
+                          type="range"
+                          min="0"
+                          max="1"
+                          step="0.1"
+                          value={editSlideForm.layer_opacity}
+                          onChange={(e) =>
+                            setEditSlideForm(prev =>
+                              prev ? { ...prev, layer_opacity: parseFloat(e.target.value) } : prev
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Layer Preview</Label>
+                        <div
+                          className="h-20 rounded border"
+                          style={generateGradientCSS(editSlideForm)}
+                        />
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="content" className="space-y-4">
+                      <Tabs defaultValue="en" className="w-full">
+                        <TabsList className="grid w-full grid-cols-3">
+                          {languages.map(lang => (
+                            <TabsTrigger key={lang.code} value={lang.code}>
+                              {lang.flag} {lang.name}
+                            </TabsTrigger>
+                          ))}
+                        </TabsList>
+
+                        {languages.map(lang => (
+                          <TabsContent key={lang.code} value={lang.code} className="space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                <Label>H1 Title</Label>
+                                <Input
+                                  value={editTranslationForms[lang.code]?.h1_title || ''}
+                                  onChange={(e) =>
+                                    setEditTranslationForms(prev => ({
+                                      ...prev,
+                                      [lang.code]: {
+                                        ...(prev[lang.code] || initialTranslationForm),
+                                        h1_title: e.target.value
+                                      }
+                                    }))
+                                  }
+                                  placeholder="Main title"
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Paragraph</Label>
+                                <Textarea
+                                  value={editTranslationForms[lang.code]?.paragraph || ''}
+                                  onChange={(e) =>
+                                    setEditTranslationForms(prev => ({
+                                      ...prev,
+                                      [lang.code]: {
+                                        ...(prev[lang.code] || initialTranslationForm),
+                                        paragraph: e.target.value
+                                      }
+                                    }))
+                                  }
+                                  placeholder="Description text"
+                                  rows={3}
+                                />
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                <Label>Primary Button Text</Label>
+                                <Input
+                                  value={editTranslationForms[lang.code]?.primary_button_text || ''}
+                                  onChange={(e) =>
+                                    setEditTranslationForms(prev => ({
+                                      ...prev,
+                                      [lang.code]: {
+                                        ...(prev[lang.code] || initialTranslationForm),
+                                        primary_button_text: e.target.value
+                                      }
+                                    }))
+                                  }
+                                  placeholder="Button text"
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Primary Button URL</Label>
+                                <Input
+                                  value={editTranslationForms[lang.code]?.primary_button_url || ''}
+                                  onChange={(e) =>
+                                    setEditTranslationForms(prev => ({
+                                      ...prev,
+                                      [lang.code]: {
+                                        ...(prev[lang.code] || initialTranslationForm),
+                                        primary_button_url: e.target.value
+                                      }
+                                    }))
+                                  }
+                                  placeholder="/contact"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                <Label>Secondary Button Text</Label>
+                                <Input
+                                  value={editTranslationForms[lang.code]?.secondary_button_text || ''}
+                                  onChange={(e) =>
+                                    setEditTranslationForms(prev => ({
+                                      ...prev,
+                                      [lang.code]: {
+                                        ...(prev[lang.code] || initialTranslationForm),
+                                        secondary_button_text: e.target.value
+                                      }
+                                    }))
+                                  }
+                                  placeholder="Button text"
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Secondary Button URL</Label>
+                                <Input
+                                  value={editTranslationForms[lang.code]?.secondary_button_url || ''}
+                                  onChange={(e) =>
+                                    setEditTranslationForms(prev => ({
+                                      ...prev,
+                                      [lang.code]: {
+                                        ...(prev[lang.code] || initialTranslationForm),
+                                        secondary_button_url: e.target.value
+                                      }
+                                    }))
+                                  }
+                                  placeholder="/services"
+                                />
+                              </div>
+                            </div>
+                          </TabsContent>
+                        ))}
+                      </Tabs>
+                    </TabsContent>
+                  </Tabs>
+
+                  <div className="flex justify-end space-x-2">
+                    <Button variant="outline" onClick={cancelEdit}>
+                      <X className="h-4 w-4 mr-2" />
+                      Cancel
+                    </Button>
+                    <Button onClick={saveSlideChanges} className="gradient-accent text-white">
+                      <Save className="h-4 w-4 mr-2" />
+                      Save Changes
+                    </Button>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         ))}
