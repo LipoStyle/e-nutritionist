@@ -118,11 +118,17 @@ const Layout = ({ children }: LayoutProps) => {
 
               {/* Right: Booking Button */}
               <div className="flex items-center space-x-4">
-                <Button className="gradient-accent text-white btn-modern shadow-medium hidden sm:flex">
-                  {t(
-                    "https://calendar.google.com/calendar/u/0/appointments/AcZssZ1ZKA4hOGC52fSzMnzNNlrgcMYEppqRLbXwhVA=",
-                    "Book Consultation"
-                  )}
+                <Button
+                  asChild
+                  className="gradient-accent text-white btn-modern shadow-medium hidden sm:flex"
+                >
+                  <a
+                    href="https://calendar.google.com/calendar/u/0/appointments/AcZssZ1ZKA4hOGC52fSzMnzNNlrgcMYEppqRLbXwhVA="
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {t("button.book_consultation", "Book Consultation")}
+                  </a>
                 </Button>
 
                 {/* Mobile menu button */}
