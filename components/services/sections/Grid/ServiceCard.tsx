@@ -1,4 +1,4 @@
-// components/services/sections/Grid/ServiceCard.tsx
+// app/[lang]/(public)/services/components/Grid/ServiceCard.tsx
 "use client";
 
 import Link from "next/link";
@@ -33,7 +33,6 @@ export default function ServiceCard({ card }: { card: ServiceCardModel }) {
   return (
     <article className="service-card" aria-label={card.title}>
       <div className="service-card__media">
-        {/* OK to keep <img> here; you can migrate to next/image later */}
         <img className="service-card__img" src={imageSrc} alt={card.title} />
 
         <div className="service-card__price-pill" aria-label={priceLabel[lang]}>
