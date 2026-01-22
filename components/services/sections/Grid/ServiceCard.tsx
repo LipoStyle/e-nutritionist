@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import "@/styles/services/card.css";
 
 import type { ServiceCardModel } from "@/app/[lang]/(public)/services/services.queries";
-import { normalizeLang } from "@/lib/i18n/locale";
+import { normalizeLang, buildLocaleHref } from "@/lib/i18n/locale";
 import { servicesGridUiData } from "@/app/[lang]/(public)/services/data";
 
 function formatPriceEUR(value: number) {
@@ -15,22 +15,28 @@ function formatPriceEUR(value: number) {
   return `€${rounded}`;
 }
 
+const priceLabel = {
+  en: "Price",
+  es: "Precio",
+  el: "Τιμή",
+} as const;
+
 export default function ServiceCard({ card }: { card: ServiceCardModel }) {
   const params = useParams<{ lang?: string }>();
   const lang = normalizeLang(params?.lang);
 
   const ui = servicesGridUiData[lang];
 
-  const href = `/${lang}/services/${card.slug}`;
+  const href = buildLocaleHref(lang, `/services/${card.slug}`);
   const imageSrc = card.image_url ?? "/images/services/placeholder.jpg";
 
   return (
     <article className="service-card" aria-label={card.title}>
       <div className="service-card__media">
-        {/* Can be swapped to next/image later */}
+        {/* OK to keep <img> here; you can migrate to next/image later */}
         <img className="service-card__img" src={imageSrc} alt={card.title} />
 
-        <div className="service-card__price-pill" aria-label="Price">
+        <div className="service-card__price-pill" aria-label={priceLabel[lang]}>
           {formatPriceEUR(card.price)}
         </div>
       </div>

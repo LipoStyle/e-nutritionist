@@ -3,8 +3,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import "@/styles/services/grid.css";
-import type { ServiceCardModel } from "@/app/[lang]/(public)/services/services.queries";
 
+import type { ServiceCardModel } from "@/app/[lang]/(public)/services/services.queries";
 import ServiceCard from "./ServiceCard";
 
 export default function ServicesGrid({ cards }: { cards: ServiceCardModel[] }) {
@@ -16,7 +16,7 @@ export default function ServicesGrid({ cards }: { cards: ServiceCardModel[] }) {
     if (!el) return;
 
     const prefersReduced = window.matchMedia?.(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     )?.matches;
 
     if (prefersReduced) {
@@ -24,15 +24,20 @@ export default function ServicesGrid({ cards }: { cards: ServiceCardModel[] }) {
       return;
     }
 
+    // Make sure we only ever trigger once, even under StrictMode re-mounts.
+    let didTrigger = false;
+
     const io = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
-        if (entry?.isIntersecting) {
-          setVisible(true);
-          io.disconnect(); // animate once
-        }
+        if (!entry?.isIntersecting) return;
+        if (didTrigger) return;
+
+        didTrigger = true;
+        setVisible(true);
+        io.disconnect();
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
 
     io.observe(el);
