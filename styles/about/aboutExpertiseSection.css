@@ -1,0 +1,205 @@
+/* Section shell */
+.about-expertise {
+  width: 100%;
+  padding: 70px 0;
+}
+
+.about-expertise__container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.about-expertise__header {
+  margin: 0 0 36px;
+}
+
+.about-expertise__title {
+  margin: 0 0 12px;
+  font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-family: var(--font-secondary);
+}
+
+.about-expertise__subtitle {
+  margin: 0 auto;
+  max-width: 72ch;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  opacity: 0.85;
+  font-family: var(--font-primary);
+}
+
+/* Grid layout */
+.about-expertise__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 26px;
+}
+
+/* Card */
+.about-expertise__card {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
+  align-items: center;
+  text-align: left;
+  padding: 22px 22px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  transition: transform 220ms ease, box-shadow 220ms ease,
+    border-color 220ms ease, background 220ms ease;
+}
+
+.about-expertise__text {
+  display: grid;
+  gap: 8px;
+}
+
+.about-expertise__card-title {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 900;
+  font-family: var(--font-secondary);
+}
+
+.about-expertise__card-desc {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  opacity: 0.82;
+  font-family: var(--font-primary);
+}
+
+/* Icon badge */
+.about-expertise__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.about-expertise__icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* Reveal animation (per element) */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 520ms ease, transform 520ms ease;
+  will-change: opacity, transform;
+}
+.reveal.reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.reveal--visible {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* Light mode (matches your look) */
+html.light-mode .about-expertise__title {
+  color: var(--color-dark);
+}
+
+html.light-mode .about-expertise__subtitle {
+  color: color-mix(in oklab, var(--color-dark) 70%, var(--color-light));
+}
+
+html.light-mode .about-expertise__card {
+  background: var(--color-white);
+  box-shadow: 0 14px 30px rgba(22, 35, 42, 0.08);
+  border-color: rgba(22, 35, 42, 0.06);
+}
+
+html.light-mode .about-expertise__card-title {
+  color: var(--color-dark);
+}
+
+html.light-mode .about-expertise__card-desc {
+  color: color-mix(in oklab, var(--color-dark) 65%, var(--color-light));
+}
+
+html.light-mode .about-expertise__icon {
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+/* Hover (light) */
+html.light-mode .about-expertise__card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(7, 80, 86, 0.25);
+  box-shadow: 0 18px 40px rgba(22, 35, 42, 0.12);
+}
+
+/* Dark mode (as in screenshot: darker card + gradient icon) */
+html.dark-mode .about-expertise__title {
+  color: var(--color-light);
+}
+
+html.dark-mode .about-expertise__subtitle {
+  color: color-mix(in oklab, var(--color-light) 78%, var(--color-dark));
+}
+
+html.dark-mode .about-expertise__card {
+  background: color-mix(in oklab, var(--color-dark) 86%, var(--color-light));
+  border-color: rgba(228, 238, 240, 0.06);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.25);
+}
+
+html.dark-mode .about-expertise__card-title {
+  color: var(--color-light);
+}
+
+html.dark-mode .about-expertise__card-desc {
+  color: color-mix(in oklab, var(--color-light) 70%, var(--color-dark));
+}
+
+html.dark-mode .about-expertise__icon {
+  background: linear-gradient(
+    135deg,
+    var(--color-accent),
+    var(--color-secondary)
+  );
+  color: var(--color-white);
+}
+
+/* Hover (dark) */
+html.dark-mode .about-expertise__card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 91, 4, 0.22);
+  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.32);
+}
+
+/* Tablet / Mobile */
+@media (max-width: 1024px) {
+  .about-expertise__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-expertise {
+    padding: 54px 0;
+  }
+
+  .about-expertise__card {
+    padding: 18px 16px;
+    grid-template-columns: 52px 1fr;
+    gap: 14px;
+  }
+}

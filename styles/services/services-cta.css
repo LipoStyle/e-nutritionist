@@ -1,0 +1,175 @@
+/* styles/services/services-cta.css */
+
+.services-cta {
+  width: 100%;
+  padding: clamp(64px, 8vh, 96px) 0;
+  background: var(--services-cta-bg);
+}
+
+/* Centered content container only (no card background) */
+.services-cta__container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.services-cta__title {
+  margin: 0;
+  font-size: clamp(26px, 3.2vw, 44px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--services-cta-title);
+}
+
+.services-cta__subtitle {
+  margin: 14px auto 0;
+  max-width: 78ch;
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--services-cta-subtitle);
+}
+
+.services-cta__actions {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Match About Hero buttons sizing rhythm */
+.services-cta__primary,
+.services-cta__secondary {
+  height: 46px;
+  min-width: 240px;
+  justify-content: center;
+}
+
+/* We keep primary as your standard .cta-button.
+   Secondary: same class as about hero, but tune it for a banner */
+.services-cta__secondary.cta-button--secondary {
+  border-color: var(--services-cta-secondary-border);
+  color: var(--services-cta-secondary-text);
+  background: var(--services-cta-secondary-bg);
+}
+
+.services-cta__secondary.cta-button--secondary:hover {
+  background: var(--services-cta-secondary-bg-hover);
+}
+
+/* =========================
+   Theme tokens
+   ========================= */
+
+/* Light mode: “secondary surface” style */
+html.light-mode .services-cta {
+  /* soft section background like your services surfaces */
+  --services-cta-bg: var(--color-secondary);
+
+  --services-cta-title: var(--color-light-transparent);
+  --services-cta-subtitle: var(--color-light-transparent-glass);
+
+  /* Secondary button styling on light surface */
+  --services-cta-secondary-border: rgba(12, 18, 22, 0.22);
+  --services-cta-secondary-text: var(--color-light-transparent);
+  --services-cta-secondary-bg: transparent;
+  --services-cta-secondary-bg-hover: rgba(53, 179, 63, 0.493);
+}
+
+/* Dark mode: “accent / hero” style (stronger section) */
+html.dark-mode .services-cta {
+  /* richer banner background */
+  --services-cta-bg: rgba(12, 16, 22, 0.92);
+
+  --services-cta-title: rgba(245, 248, 250, 0.94);
+  --services-cta-subtitle: rgba(245, 248, 250, 0.72);
+
+  /* Secondary button styling on dark banner */
+  --services-cta-secondary-border: rgba(245, 248, 250, 0.38);
+  --services-cta-secondary-text: rgba(245, 248, 250, 0.94);
+  --services-cta-secondary-bg: transparent;
+  --services-cta-secondary-bg-hover: rgba(175, 106, 74, 0.692);
+}
+
+/* fallback safety */
+.services-cta {
+  --services-cta-bg: #eef5f7;
+  --services-cta-title: rgba(12, 18, 22, 0.92);
+  --services-cta-subtitle: rgba(22, 28, 33, 0.6);
+  --services-cta-secondary-border: rgba(12, 18, 22, 0.22);
+  --services-cta-secondary-text: rgba(12, 18, 22, 0.9);
+  --services-cta-secondary-bg: transparent;
+  --services-cta-secondary-bg-hover: rgba(12, 18, 22, 0.06);
+}
+
+/* =========================
+   Scroll animation
+   ========================= */
+
+.services-cta__title,
+.services-cta__subtitle,
+.services-cta__actions {
+  opacity: 1;
+  transform: none;
+}
+
+.services-cta:not(.is-visible) .services-cta__title {
+  opacity: 0;
+  transform: translateY(-14px);
+}
+
+.services-cta:not(.is-visible) .services-cta__subtitle {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.services-cta:not(.is-visible) .services-cta__actions {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.services-cta.is-visible .services-cta__title {
+  animation: servicesCtaIn 650ms ease-out both;
+}
+
+.services-cta.is-visible .services-cta__subtitle {
+  animation: servicesCtaIn 650ms ease-out both;
+  animation-delay: 120ms;
+}
+
+.services-cta.is-visible .services-cta__actions {
+  animation: servicesCtaIn 650ms ease-out both;
+  animation-delay: 220ms;
+}
+
+@keyframes servicesCtaIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-cta__title,
+  .services-cta__subtitle,
+  .services-cta__actions {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Responsive */
+@media (max-width: 560px) {
+  .services-cta__primary,
+  .services-cta__secondary {
+    width: 100%;
+    min-width: unset;
+  }
+}

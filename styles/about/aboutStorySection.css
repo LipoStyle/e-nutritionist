@@ -1,0 +1,116 @@
+.about-story {
+  width: 100%;
+  padding: 70px 0;
+}
+
+.about-story__container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.about-story__header {
+  margin: 0 0 36px;
+}
+
+.about-story__title {
+  margin: 0 0 12px;
+  font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-family: var(--font-secondary);
+}
+
+.about-story__subtitle {
+  margin: 0 auto;
+  max-width: 72ch;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  opacity: 0.8;
+  font-family: var(--font-primary);
+}
+
+/* 80% width and centered */
+.about-story__content {
+  width: min(80%, 860px);
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+  text-align: left;
+}
+
+.about-story__paragraph {
+  margin: 0;
+  font-size: 1.22rem;
+  line-height: 1.85;
+  opacity: 0.9;
+  text-align: center;
+  font-family: var(--font-primary);
+}
+
+/* Reveal animation (per element) */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 520ms ease, transform 520ms ease;
+  will-change: opacity, transform;
+}
+
+.reveal.reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Light mode (match achievements) */
+html.light-mode .about-story__title {
+  color: var(--color-dark);
+}
+
+html.light-mode .about-story__subtitle {
+  color: color-mix(in oklab, var(--color-dark) 70%, var(--color-light));
+}
+
+html.light-mode .about-story__paragraph {
+  color: color-mix(in oklab, var(--color-dark) 78%, var(--color-light));
+}
+
+/* Dark mode (match achievements) */
+html.dark-mode .about-story__title {
+  color: var(--color-light);
+}
+
+html.dark-mode .about-story__subtitle {
+  color: color-mix(in oklab, var(--color-light) 80%, var(--color-dark));
+}
+
+html.dark-mode .about-story__paragraph {
+  color: color-mix(in oklab, var(--color-light) 82%, var(--color-dark));
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.reveal--visible {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .about-story {
+    padding: 54px 0;
+  }
+
+  .about-story__content {
+    width: 100%;
+    gap: 14px;
+  }
+
+  .about-story__paragraph {
+    line-height: 1.8;
+  }
+}

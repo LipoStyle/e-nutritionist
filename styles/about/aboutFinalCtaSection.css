@@ -1,0 +1,136 @@
+.about-final-cta {
+  width: 100%;
+  padding: 80px 0;
+  margin: 0;
+}
+
+/* Full-bleed background with centered content */
+.about-final-cta__container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.about-final-cta__content {
+  text-align: center;
+  max-width: 80ch;
+  margin: 0 auto;
+}
+
+.about-final-cta__title {
+  margin: 0 0 12px;
+  font-size: clamp(1.9rem, 2.8vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-family: var(--font-secondary);
+}
+
+.about-final-cta__description {
+  margin: 0 auto 26px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  font-family: var(--font-primary);
+  opacity: 0.92;
+}
+
+.about-final-cta__actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Optional: ensure the buttons look like the screenshot in this banner */
+.about-final-cta__actions .cta-button {
+  min-width: 240px;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.about-final-cta__note {
+  margin: 18px 0 0;
+  font-size: 0.98rem;
+  font-family: var(--font-primary);
+  opacity: 0.85;
+}
+
+/* LIGHT MODE (dark background as requested) */
+html.light-mode .about-final-cta {
+  background: var(--color-dark);
+}
+
+html.light-mode .about-final-cta__title {
+  color: var(--color-white);
+}
+
+html.light-mode .about-final-cta__description,
+html.light-mode .about-final-cta__note {
+  color: color-mix(in oklab, var(--color-white) 88%, var(--color-secondary));
+}
+
+/* Force primary to be white pill inside this banner */
+html.light-mode .about-final-cta__primary {
+  background: var(--color-white);
+  color: var(--color-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Secondary outlined look */
+html.light-mode .about-final-cta__secondary {
+  border-color: rgba(255, 255, 255, 0.7);
+  color: var(--color-white);
+}
+
+/* DARK MODE (gradient like screenshot) */
+html.dark-mode .about-final-cta {
+  background: linear-gradient(
+    90deg,
+    var(--color-accent),
+    var(--color-secondary)
+  );
+}
+
+html.dark-mode .about-final-cta__title {
+  color: var(--color-white);
+}
+
+html.dark-mode .about-final-cta__description,
+html.dark-mode .about-final-cta__note {
+  color: color-mix(in oklab, var(--color-white) 88%, var(--color-dark));
+}
+
+/* Primary on gradient: white pill */
+html.dark-mode .about-final-cta__primary {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-dark);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+}
+
+/* Secondary on gradient: outlined */
+html.dark-mode .about-final-cta__secondary {
+  border-color: rgba(255, 255, 255, 0.65);
+  color: var(--color-white);
+}
+
+/* Hover (keep subtle) */
+.about-final-cta__actions .cta-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.02);
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .about-final-cta {
+    padding: 64px 0;
+  }
+
+  .about-final-cta__actions {
+    gap: 12px;
+  }
+
+  .about-final-cta__actions .cta-button {
+    width: 100%;
+    min-width: 0;
+  }
+}

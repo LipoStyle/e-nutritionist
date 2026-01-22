@@ -1,0 +1,249 @@
+.contact-info {
+  display: grid;
+  gap: 18px;
+}
+
+/* =========================
+   Contact Information Card
+   ========================= */
+
+.contact-info__card {
+  border-radius: 16px;
+  padding: 22px;
+  border: 1px solid transparent;
+}
+
+.contact-info__title {
+  margin: 0 0 14px;
+  font-size: 1.25rem;
+  font-weight: 900;
+  font-family: var(--font-secondary);
+}
+
+.contact-info__list {
+  display: grid;
+  gap: 16px;
+}
+
+.contact-info__item {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.contact-info__icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+}
+
+.contact-info__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.contact-info__text {
+  display: grid;
+  gap: 2px;
+}
+
+.contact-info__label {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 900;
+  font-family: var(--font-secondary);
+}
+
+.contact-info__value {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 800;
+  font-family: var(--font-primary);
+}
+
+.contact-info__helper {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  font-family: var(--font-primary);
+  opacity: 0.75;
+}
+
+/* =========================
+   Book Directly Card
+   ========================= */
+
+.contact-book {
+  border-radius: 16px;
+  padding: 26px 22px;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+.contact-book__icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  margin: 0 auto 14px;
+  display: grid;
+  place-items: center;
+}
+
+.contact-book__icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.contact-book__title {
+  margin: 0 0 10px;
+  font-size: 1.25rem;
+  font-weight: 900;
+  font-family: var(--font-secondary);
+}
+
+.contact-book__description {
+  margin: 0 auto 16px;
+  max-width: 52ch;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-family: var(--font-primary);
+  opacity: 0.92;
+}
+
+.contact-book__button {
+  width: 100%;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+/* =========================
+   LIGHT MODE
+   ========================= */
+
+html.light-mode .contact-info__card {
+  background: var(--color-white);
+  border-color: rgba(22, 35, 42, 0.06);
+  box-shadow: 0 16px 38px rgba(22, 35, 42, 0.1);
+}
+
+html.light-mode .contact-info__title {
+  color: var(--color-dark);
+}
+
+html.light-mode .contact-info__label {
+  color: var(--color-dark);
+}
+
+html.light-mode .contact-info__value {
+  color: var(--color-dark);
+}
+
+html.light-mode .contact-info__helper {
+  color: color-mix(in oklab, var(--color-dark) 65%, var(--color-light));
+}
+
+html.light-mode .contact-info__icon {
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+/* Book card in light: teal background like screenshot */
+html.light-mode .contact-book {
+  background: var(--color-secondary);
+  color: var(--color-white);
+  box-shadow: 0 16px 38px rgba(22, 35, 42, 0.1);
+}
+
+html.light-mode .contact-book__title {
+  color: var(--color-dark);
+}
+
+html.light-mode .contact-book__description {
+  color: color-mix(in oklab, var(--color-white) 90%, var(--color-secondary));
+}
+
+html.light-mode .contact-book__icon {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--color-white);
+}
+
+html.light-mode .contact-book__button {
+  background: var(--color-white);
+  color: var(--color-secondary);
+}
+
+/* =========================
+   DARK MODE
+   ========================= */
+
+html.dark-mode .contact-info__card {
+  background: color-mix(in oklab, var(--color-dark) 86%, var(--color-light));
+  border-color: rgba(228, 238, 240, 0.06);
+  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.32);
+}
+
+html.dark-mode .contact-info__title {
+  color: var(--color-light);
+}
+
+html.dark-mode .contact-info__label {
+  color: var(--color-light);
+}
+
+html.dark-mode .contact-info__value {
+  color: var(--color-light);
+}
+
+html.dark-mode .contact-info__helper {
+  color: color-mix(in oklab, var(--color-light) 72%, var(--color-dark));
+}
+
+html.dark-mode .contact-info__icon {
+  background: linear-gradient(
+    135deg,
+    var(--color-accent),
+    var(--color-secondary)
+  );
+  color: var(--color-white);
+}
+
+/* Book card in dark: orange background like screenshot */
+html.dark-mode .contact-book {
+  background: var(--color-accent);
+  color: var(--color-white);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.32);
+}
+
+html.dark-mode .contact-book__title {
+  color: var(--color-white);
+}
+
+html.dark-mode .contact-book__description {
+  color: color-mix(in oklab, var(--color-white) 92%, var(--color-accent));
+}
+
+html.dark-mode .contact-book__icon {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--color-white);
+}
+
+html.dark-mode .contact-book__button {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-dark);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .contact-info__card,
+  .contact-book {
+    padding: 20px 16px;
+  }
+
+  .contact-info__item {
+    grid-template-columns: 48px 1fr;
+  }
+}

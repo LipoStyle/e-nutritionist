@@ -1,0 +1,132 @@
+.about-achievements {
+  width: 100%;
+  padding: 70px 0;
+}
+
+.about-achievements__container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.about-achievements__header {
+  margin: 0 0 36px;
+}
+
+.about-achievements__title {
+  margin: 0 0 12px;
+  font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-family: var(--font-secondary);
+}
+
+.about-achievements__subtitle {
+  margin: 0 auto;
+  max-width: 72ch;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  opacity: 0.8;
+  font-family: var(--font-primary);
+}
+
+/* Stats row */
+.about-achievements__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
+/* Each stat */
+.about-achievements__stat {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 14px 10px;
+}
+
+/* Icon circle */
+.about-achievements__icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+}
+
+/* Value + label */
+.about-achievements__value {
+  font-family: var(--font-secondary, "Winky Sans", sans-serif);
+  font-size: clamp(1.7rem, 2.4vw, 2.3rem);
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.about-achievements__label {
+  font-size: 0.98rem;
+  font-weight: 700;
+  opacity: 0.75;
+  font-family: var(--font-primary);
+}
+
+/* Light mode styling (like your hero conventions) */
+html.light-mode .about-achievements__title {
+  color: var(--color-dark);
+}
+html.light-mode .about-achievements__subtitle {
+  color: color-mix(in oklab, var(--color-dark) 70%, var(--color-light));
+}
+html.light-mode .about-achievements__value {
+  color: var(--color-secondary);
+}
+html.light-mode .about-achievements__label {
+  color: color-mix(in oklab, var(--color-dark) 65%, var(--color-light));
+}
+html.light-mode .about-achievements__icon {
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+/* Dark mode styling */
+html.dark-mode .about-achievements__title {
+  color: var(--color-light);
+}
+html.dark-mode .about-achievements__subtitle {
+  color: color-mix(in oklab, var(--color-light) 80%, var(--color-dark));
+}
+html.dark-mode .about-achievements__value {
+  color: var(--color-accent);
+}
+html.dark-mode .about-achievements__label {
+  color: color-mix(in oklab, var(--color-light) 75%, var(--color-dark));
+}
+html.dark-mode .about-achievements__icon {
+  background: var(--color-accent);
+  color: var(--color-dark);
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .about-achievements__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .about-achievements {
+    padding: 54px 0;
+  }
+
+  .about-achievements__stats {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .about-achievements__stat {
+    padding: 12px 10px;
+  }
+}

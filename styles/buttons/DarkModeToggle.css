@@ -1,0 +1,63 @@
+/* 🌟 GENERAL CONTAINER STYLING */
+.dark-mode-toggle {
+  width: 50px;
+  height: 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  position: relative;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* 🌟 TOGGLE CIRCLE BUTTON */
+.toggle-bar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 2px; /* Fine-tune centering vertically */
+  left: 2px;
+  transition: transform 0.4s ease-in-out, background-color 0.3s ease;
+}
+
+/* 🌟 ICON INSIDE THE TOGGLE */
+.toggle-icon {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.4s ease-in-out;
+}
+
+/* 🌟 LIGHT MODE COLORS */
+.light-mode .dark-mode-toggle {
+  background-color: var(--color-dark-gray);
+}
+
+.light-mode .toggle-bar {
+  background-color: var(--color-white);
+}
+
+/* 🌟 DARK MODE COLORS */
+.dark-mode .dark-mode-toggle {
+  background-color: var(--color-light-gray);
+}
+
+.dark-mode .toggle-bar {
+  background-color: var(--color-dark);
+}
+
+/* 🌟 POSITION + ROLL ANIMATION */
+
+/* Toggle slides right in DARK mode */
+.toggle-bar.dark {
+  transform: translateX(26px) rotate(360deg);
+}
+
+/* Toggle stays left in LIGHT mode */
+.toggle-bar.light {
+  transform: translateX(0) rotate(0deg);
+}

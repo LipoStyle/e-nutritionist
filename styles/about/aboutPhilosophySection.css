@@ -1,0 +1,211 @@
+.about-philosophy {
+  width: 100%;
+  padding: 70px 0;
+}
+
+.about-philosophy__container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.about-philosophy__header {
+  margin: 0 0 34px;
+}
+
+.about-philosophy__title {
+  margin: 0;
+  font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-family: var(--font-secondary);
+}
+
+/* 3 columns */
+.about-philosophy__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 34px;
+  align-items: start;
+  justify-items: center;
+  margin-top: 26px;
+}
+
+.about-philosophy__item {
+  width: 100%;
+  max-width: 320px;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+/* Icon circle */
+.about-philosophy__icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  transition: transform 220ms ease, filter 220ms ease;
+}
+
+.about-philosophy__icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.about-philosophy__item-title {
+  margin: 4px 0 0 0;
+  font-size: 1.08rem;
+  font-weight: 900;
+  font-family: var(--font-secondary);
+}
+
+.about-philosophy__item-desc {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  opacity: 0.82;
+  font-family: var(--font-primary);
+  max-width: 34ch;
+}
+
+/* Quote */
+.about-philosophy__quote {
+  margin: 42px auto 0;
+  width: min(880px, 92%);
+}
+
+.about-philosophy__quote-text {
+  margin: 0;
+  font-size: clamp(1.1rem, 1.35vw, 1.35rem);
+  line-height: 1.75;
+  font-style: italic;
+  letter-spacing: 0.2px;
+  font-family: var(--font-secondary);
+}
+
+.about-philosophy__quote-author {
+  margin-top: 14px;
+  font-size: 0.98rem;
+  opacity: 0.75;
+  font-family: var(--font-primary);
+}
+
+/* Hover (subtle) */
+.about-philosophy__item:hover .about-philosophy__icon {
+  transform: translateY(-2px);
+  filter: brightness(1.02);
+}
+
+/* Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 520ms ease, transform 520ms ease;
+  will-change: opacity, transform;
+}
+.reveal.reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.reveal--visible {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* Light mode (matches screenshot: light background, teal icons) */
+html.light-mode .about-philosophy {
+  background: color-mix(in oklab, var(--color-dark) 8%, var(--color-light));
+}
+
+html.light-mode .about-philosophy__title {
+  color: var(--color-dark);
+}
+
+html.light-mode .about-philosophy__item-title {
+  color: var(--color-dark);
+}
+
+html.light-mode .about-philosophy__item-desc {
+  color: color-mix(in oklab, var(--color-dark) 65%, var(--color-light));
+}
+
+html.light-mode .about-philosophy__icon {
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+html.light-mode .about-philosophy__quote-text {
+  color: var(--color-dark);
+}
+
+html.light-mode .about-philosophy__quote-author {
+  color: color-mix(in oklab, var(--color-dark) 60%, var(--color-light));
+}
+
+/* Dark mode (matches screenshot: dark background + gradient icons) */
+html.dark-mode .about-philosophy {
+  background: color-mix(in oklab, var(--color-dark) 92%, var(--color-light));
+}
+
+html.dark-mode .about-philosophy__title {
+  color: var(--color-light);
+}
+
+html.dark-mode .about-philosophy__item-title {
+  color: var(--color-light);
+}
+
+html.dark-mode .about-philosophy__item-desc {
+  color: color-mix(in oklab, var(--color-light) 72%, var(--color-dark));
+}
+
+html.dark-mode .about-philosophy__icon {
+  background: linear-gradient(
+    135deg,
+    var(--color-accent),
+    var(--color-secondary)
+  );
+  color: var(--color-white);
+}
+
+html.dark-mode .about-philosophy__quote-text {
+  color: var(--color-light);
+}
+
+html.dark-mode .about-philosophy__quote-author {
+  color: color-mix(in oklab, var(--color-light) 70%, var(--color-dark));
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .about-philosophy__grid {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .about-philosophy__item {
+    max-width: 520px;
+  }
+
+  .about-philosophy__item-desc {
+    max-width: 52ch;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-philosophy {
+    padding: 54px 0;
+  }
+
+  .about-philosophy__quote {
+    margin-top: 34px;
+  }
+}

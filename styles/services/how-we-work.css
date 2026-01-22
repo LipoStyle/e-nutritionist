@@ -1,0 +1,224 @@
+/* styles/services/how-we-work.css */
+
+.how-we-work {
+  width: 100%;
+  padding: clamp(80px, 10vh, 120px) 0;
+  background: var(--how-we-work-bg);
+}
+
+.how-we-work__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.how-we-work__header {
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.how-we-work__title {
+  margin: 0;
+  font-size: clamp(30px, 3.6vw, 48px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--how-we-work-title);
+}
+
+.how-we-work__subtitle {
+  margin: 14px auto 0;
+  max-width: 72ch;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--how-we-work-subtitle);
+}
+
+/* Steps layout: floating items (no cards) */
+.how-we-work__steps {
+  margin: clamp(34px, 5vh, 56px) auto 0;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 34px);
+
+  align-items: start;
+}
+
+.how-we-work__step {
+  text-align: center;
+
+  /* remove card look */
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.how-we-work__badge {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+
+  border-radius: 999px;
+  background: var(--how-we-work-badge-bg);
+  color: var(--how-we-work-badge-text);
+
+  display: grid;
+  place-items: center;
+
+  font-weight: 900;
+  font-size: 18px;
+
+  box-shadow: var(--how-we-work-badge-shadow);
+}
+
+.how-we-work__step-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.25;
+  color: var(--how-we-work-step-title);
+}
+
+.how-we-work__step-desc {
+  margin: 12px auto 0;
+  max-width: 32ch;
+
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--how-we-work-step-desc);
+}
+
+/* =========================
+   Theme tokens
+   ========================= */
+
+html.light-mode .how-we-work {
+  /* matches your screenshot section surface */
+  --how-we-work-bg: #eef5f7;
+
+  --how-we-work-title: rgba(12, 18, 22, 0.92);
+  --how-we-work-subtitle: rgba(22, 28, 33, 0.55);
+
+  /* badge = secondary */
+  --how-we-work-badge-bg: var(--color-secondary, rgba(0, 86, 82, 0.95));
+  --how-we-work-badge-text: var(
+    --color-on-secondary,
+    rgba(255, 255, 255, 0.95)
+  );
+  --how-we-work-badge-shadow: 0 16px 30px rgba(12, 32, 38, 0.12);
+
+  --how-we-work-step-title: rgba(12, 18, 22, 0.92);
+  --how-we-work-step-desc: rgba(22, 28, 33, 0.55);
+}
+
+html.dark-mode .how-we-work {
+  --how-we-work-bg: rgba(12, 16, 22, 0.85);
+
+  --how-we-work-title: rgba(245, 248, 250, 0.92);
+  --how-we-work-subtitle: rgba(245, 248, 250, 0.68);
+
+  /* badge = accent */
+  --how-we-work-badge-bg: var(--color-accent, rgba(255, 90, 31, 0.95));
+  --how-we-work-badge-text: var(--color-on-accent, rgba(255, 255, 255, 0.95));
+  --how-we-work-badge-shadow: 0 16px 30px rgba(0, 0, 0, 0.38);
+
+  --how-we-work-step-title: rgba(245, 248, 250, 0.92);
+  --how-we-work-step-desc: rgba(245, 248, 250, 0.7);
+}
+
+/* fallback safety */
+.how-we-work {
+  --how-we-work-bg: #eef5f7;
+  --how-we-work-title: rgba(12, 18, 22, 0.92);
+  --how-we-work-subtitle: rgba(22, 28, 33, 0.55);
+  --how-we-work-badge-bg: rgba(0, 86, 82, 0.95);
+  --how-we-work-badge-text: rgba(255, 255, 255, 0.95);
+  --how-we-work-badge-shadow: 0 16px 30px rgba(12, 32, 38, 0.12);
+  --how-we-work-step-title: rgba(12, 18, 22, 0.92);
+  --how-we-work-step-desc: rgba(22, 28, 33, 0.55);
+}
+
+/* =========================
+   Scroll animation (stagger)
+   ========================= */
+
+/* default visible */
+.how-we-work__title,
+.how-we-work__subtitle,
+.how-we-work__step {
+  opacity: 1;
+  transform: none;
+}
+
+/* hidden before visible */
+.how-we-work:not(.is-visible) .how-we-work__title,
+.how-we-work:not(.is-visible) .how-we-work__subtitle,
+.how-we-work:not(.is-visible) .how-we-work__step {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.how-we-work.is-visible .how-we-work__title {
+  animation: howWeWorkIn 650ms ease-out both;
+}
+
+.how-we-work.is-visible .how-we-work__subtitle {
+  animation: howWeWorkIn 650ms ease-out both;
+  animation-delay: 120ms;
+}
+
+.how-we-work.is-visible .how-we-work__step {
+  animation: howWeWorkIn 650ms ease-out both;
+  animation-delay: var(--stagger, 0ms);
+}
+
+@keyframes howWeWorkIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .how-we-work__title,
+  .how-we-work__subtitle,
+  .how-we-work__step {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* =========================
+   Responsive
+   ========================= */
+
+@media (max-width: 1000px) {
+  .how-we-work__steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .how-we-work__step-desc {
+    max-width: 42ch;
+  }
+}
+
+@media (max-width: 620px) {
+  .how-we-work__steps {
+    grid-template-columns: 1fr;
+  }
+
+  .how-we-work__badge {
+    width: 58px;
+    height: 58px;
+  }
+}

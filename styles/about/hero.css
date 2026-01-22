@@ -1,0 +1,257 @@
+.about-hero {
+  width: 100%;
+}
+
+/* light-mode coloring */
+html.light-mode .about-hero {
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary) 0%,
+    var(--color-accent) 100%
+  );
+}
+
+/* dark-mode coloring */
+html.dark-mode .about-hero {
+  background: linear-gradient(
+    135deg,
+    var(--color-accent) 0%,
+    var(--color-secondary) 100%
+  );
+}
+
+.about-hero__container {
+  width: 100%;
+  max-width: 1400px; /* centers the composition like the reference */
+  margin: 0 auto;
+  padding: 166px 16px 32px;
+}
+
+.about-hero__grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr; /* content wider (65/35 feel) */
+  align-items: center;
+  gap: 28px; /* tighter coupling between text and image */
+}
+
+.about-hero__content {
+  color: var(--color-white);
+}
+
+/* =========================
+   Hero entrance animations
+   ========================= */
+
+/* Start hidden then animate in */
+.about-hero__eyebrow,
+.about-hero__title,
+.about-hero__description,
+.about-hero__actions .cta-button,
+.about-hero__image-wrap {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Eyebrow: right -> left */
+.about-hero__eyebrow {
+  transform: translateX(18px);
+  animation: heroFadeInRight 1200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 180ms;
+
+  margin: 0 0 10px;
+  font-family: var(--font-secondary, "Josefin Sans", sans-serif);
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  opacity: 0.9; /* will be overridden to 1 by animation end */
+  font-family: var(--font-primary);
+}
+
+/* Headline: left -> right */
+.about-hero__title {
+  transform: translateX(-18px);
+  animation: heroFadeInLeft 1400ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 260ms;
+
+  margin: 0 0 14px;
+  line-height: 1.05;
+  font-size: clamp(2.1rem, 3.3vw, 3.2rem);
+  font-weight: 800;
+  font-family: var(--font-secondary);
+}
+
+.about-hero__title-main {
+  opacity: 0.95;
+}
+
+.about-hero__title-accent {
+  color: var(--color-light, #ffffff);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* Description: bottom -> top */
+.about-hero__description {
+  transform: translateY(14px);
+  animation: heroFadeInUp 1300ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 420ms;
+
+  margin: 0 0 22px;
+  max-width: 52ch;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  opacity: 0.92; /* will be overridden to 1 by animation end */
+  font-family: var(--font-primary);
+}
+
+.about-hero__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Buttons: base */
+.about-hero__actions .cta-button {
+  animation-duration: 1200ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: forwards;
+  animation-delay: 620ms;
+}
+
+/* Primary: left -> right */
+.about-hero__actions .cta-button:first-child {
+  transform: translateX(-18px);
+  animation-name: heroFadeInLeft;
+}
+
+/* Secondary: right -> left */
+.about-hero__actions .cta-button:nth-child(2) {
+  transform: translateX(18px);
+  animation-name: heroFadeInRight;
+  animation-delay: 420ms; /* slight stagger */
+}
+
+/* Secondary CTA variant (no new component) */
+.cta-button--secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Disable sliding background effect for secondary */
+.cta-button--secondary::before {
+  display: none;
+}
+
+.cta-button--secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 1);
+}
+
+/* Media */
+.about-hero__media {
+  display: flex;
+  justify-content: flex-start; /* keeps image close to content */
+}
+
+/* Image: left -> right */
+.about-hero__image-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 4 / 5;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+
+  transform: translateX(-28px);
+  animation: heroFadeInLeft 1600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 320ms;
+}
+
+.about-hero__image {
+  object-fit: cover;
+}
+
+/* Keyframes */
+@keyframes heroFadeInLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes heroFadeInRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes heroFadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Accessibility: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .about-hero__eyebrow,
+  .about-hero__title,
+  .about-hero__description,
+  .about-hero__actions .cta-button,
+  .about-hero__image-wrap {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .about-hero__container {
+    padding: 72px 16px 56px;
+  }
+
+  .about-hero__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .about-hero__image-wrap {
+    max-width: 460px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .about-hero__container {
+    padding: 56px 16px 48px;
+  }
+
+  .about-hero__grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .about-hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .about-hero__actions .cta-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .about-hero__media {
+    justify-content: flex-start;
+  }
+
+  .about-hero__image-wrap {
+    max-width: 520px;
+    aspect-ratio: 16 / 10;
+    /* slightly smaller slide distance on mobile */
+    transform: translateX(-18px);
+  }
+}

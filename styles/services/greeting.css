@@ -1,0 +1,121 @@
+/* styles/services/greeting.css */
+
+/* =========================
+   Base layout (no colors)
+   ========================= */
+
+.services-greeting {
+  width: 100%;
+  padding: 56px 0;
+
+  background: var(--services-greeting-bg);
+}
+
+.services-greeting__inner {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  text-align: center;
+}
+
+.services-greeting__title {
+  margin: 0 0 12px;
+  font-size: clamp(26px, 3vw, 40px);
+  line-height: 1.15;
+  font-weight: 800;
+
+  color: var(--services-greeting-title);
+}
+
+.services-greeting__subtitle {
+  margin: 0 auto;
+  max-width: 78ch;
+  font-size: 16px;
+  line-height: 1.75;
+
+  color: var(--services-greeting-subtitle);
+}
+
+/* =========================
+   Theme tokens
+   ========================= */
+
+html.light-mode .services-greeting {
+  /* screenshot-like soft blue/gray */
+  --services-greeting-bg: #eef5f7;
+
+  /* strong dark title */
+  --services-greeting-title: rgba(12, 18, 22, 0.92);
+
+  /* muted gray subtitle */
+  --services-greeting-subtitle: rgba(22, 28, 33, 0.55);
+}
+
+html.dark-mode .services-greeting {
+  /* deep slate (not pure black) */
+  --services-greeting-bg: rgba(12, 16, 22, 0.85);
+
+  --services-greeting-title: rgba(245, 248, 250, 0.92);
+  --services-greeting-subtitle: rgba(245, 248, 250, 0.65);
+}
+
+/* Safety fallback */
+.services-greeting {
+  --services-greeting-bg: #eef5f7;
+  --services-greeting-title: rgba(12, 18, 22, 0.92);
+  --services-greeting-subtitle: rgba(22, 28, 33, 0.55);
+}
+
+/* =========================
+   Animation (your observer version)
+   ========================= */
+
+/* Default: visible */
+.services-greeting__title,
+.services-greeting__subtitle {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hidden only before intersect triggers */
+.services-greeting:not(.is-visible) .services-greeting__title,
+.services-greeting:not(.is-visible) .services-greeting__subtitle {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.services-greeting.is-visible .services-greeting__title {
+  animation: servicesGreetingIn 650ms ease-out forwards;
+}
+
+.services-greeting.is-visible .services-greeting__subtitle {
+  animation: servicesGreetingIn 650ms ease-out forwards;
+  animation-delay: 120ms;
+}
+
+@keyframes servicesGreetingIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-greeting__title,
+  .services-greeting__subtitle {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .services-greeting {
+    padding: 44px 0;
+  }
+}

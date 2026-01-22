@@ -1,0 +1,124 @@
+/* styles/services/grid.css */
+
+.services-grid {
+  width: 100%;
+  padding: 8px 0 72px;
+
+  background: var(--services-grid-bg);
+}
+
+.services-grid__inner {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.services-grid__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+/* Theme tokens */
+html.light-mode .services-grid {
+  /* blend with Greeting background from screenshot */
+  --services-grid-bg: #eef5f7;
+}
+
+html.dark-mode .services-grid {
+  --services-grid-bg: rgba(12, 16, 22, 0.85);
+}
+
+/* fallback */
+.services-grid {
+  --services-grid-bg: #eef5f7;
+}
+
+/* styles/services/grid.css */
+
+.services-grid {
+  width: 100%;
+  padding: 8px 0 72px;
+  background: var(--services-grid-bg);
+}
+
+.services-grid__inner {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.services-grid__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+/* Theme tokens */
+html.light-mode .services-grid {
+  --services-grid-bg: #eef5f7;
+}
+
+html.dark-mode .services-grid {
+  --services-grid-bg: rgba(12, 16, 22, 0.85);
+}
+
+/* fallback */
+.services-grid {
+  --services-grid-bg: #eef5f7;
+}
+
+/* =========================
+   Staggered scroll animation
+   ========================= */
+
+/* Default: visible (prevents "stuck invisible") */
+.services-grid__item {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hidden only before visible */
+.services-grid:not(.is-visible) .services-grid__item {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+/* Animate in when section becomes visible */
+.services-grid.is-visible .services-grid__item {
+  animation: servicesGridItemIn 650ms ease-out both;
+  animation-delay: var(--stagger, 0ms);
+}
+
+@keyframes servicesGridItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-grid__item {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 980px) {
+  .services-grid__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .services-grid__grid {
+    grid-template-columns: 1fr;
+  }
+}

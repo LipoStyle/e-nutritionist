@@ -1,0 +1,85 @@
+.contact-hero {
+  width: 100%;
+  /* More breathing room so content is visible and feels like a real hero */
+  padding: 186px 0 30px;
+}
+
+/* Centered content like screenshot */
+.contact-hero__container {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.contact-hero__title {
+  margin: 0 0 16px;
+  font-size: clamp(2.1rem, 3.2vw, 3.1rem);
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  font-family: var(--font-secondary);
+}
+
+.contact-hero__description {
+  margin: 0 auto;
+  max-width: 70ch;
+  font-size: 1.08rem;
+  line-height: 1.75;
+  font-family: var(--font-primary);
+}
+
+/* =========================
+   LIGHT MODE
+   - Title white
+   - Gradient secondary -> accent
+   ========================= */
+
+html.light-mode .contact-hero {
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary) 0%,
+    var(--color-accent) 100%
+  );
+}
+
+html.light-mode .contact-hero__title {
+  color: var(--color-white);
+}
+
+html.light-mode .contact-hero__description {
+  color: color-mix(in oklab, var(--color-white) 88%, var(--color-secondary));
+}
+
+/* =========================
+   DARK MODE
+   - Swap gradient colors (accent -> secondary)
+   - Title dark
+   ========================= */
+
+html.dark-mode .contact-hero {
+  background: linear-gradient(
+    135deg,
+    var(--color-accent),
+    var(--color-secondary)
+  );
+}
+
+html.dark-mode .contact-hero__title {
+  color: var(--color-dark);
+}
+
+html.dark-mode .contact-hero__description {
+  color: color-mix(in oklab, var(--color-light-gray) 82%, var(--color-light));
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .contact-hero {
+    padding: 96px 0 70px;
+  }
+
+  .contact-hero__description {
+    font-size: 1.03rem;
+  }
+}

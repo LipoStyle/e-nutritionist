@@ -1,0 +1,51 @@
+.contact-main {
+  width: 100%;
+  padding: 60px 0 30px;
+}
+
+.contact-main__container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 9px;
+}
+
+/* Desktop grid: form left, info right */
+.contact-main__grid {
+  display: grid;
+  grid-template-columns: 1.9fr 1fr; /* ~65% / 35% */
+  gap: 26px;
+  align-items: start;
+}
+
+.contact-main__left,
+.contact-main__right {
+  display: block;
+}
+
+/* Right column cards stack with spacing */
+.contact-main__right {
+  display: grid;
+  gap: 18px;
+}
+
+/* Light/Dark section background: keep neutral and let cards pop */
+html.light-mode .contact-main {
+  background: color-mix(in oklab, var(--color-dark) 8%, var(--color-light));
+}
+
+html.dark-mode .contact-main {
+  background: color-mix(in oklab, var(--color-light) 6%, var(--color-dark));
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .contact-main__grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .contact-main {
+    padding: 46px 0 24px;
+  }
+}

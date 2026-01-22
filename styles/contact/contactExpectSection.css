@@ -1,0 +1,125 @@
+.contact-expect {
+  border-radius: 16px;
+  padding: 22px;
+  border: 1px solid transparent;
+}
+
+.contact-expect__title {
+  margin: 0 0 14px;
+  font-size: 1.2rem;
+  font-weight: 900;
+  font-family: var(--font-secondary);
+}
+
+.contact-expect__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.contact-expect__item {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.contact-expect__icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+}
+
+.contact-expect__icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.contact-expect__text {
+  display: grid;
+  gap: 2px;
+}
+
+.contact-expect__item-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 900;
+  font-family: var(--font-secondary);
+}
+
+.contact-expect__item-desc {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  font-family: var(--font-primary);
+  opacity: 0.8;
+}
+
+/* =========================
+   LIGHT MODE
+   ========================= */
+
+html.light-mode .contact-expect {
+  background: var(--color-white);
+  border-color: rgba(22, 35, 42, 0.06);
+  box-shadow: 0 14px 34px rgba(22, 35, 42, 0.08);
+}
+
+html.light-mode .contact-expect__title {
+  color: var(--color-dark);
+}
+
+html.light-mode .contact-expect__icon {
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+html.light-mode .contact-expect__item-title {
+  color: var(--color-dark);
+}
+
+html.light-mode .contact-expect__item-desc {
+  color: color-mix(in oklab, var(--color-dark) 65%, var(--color-light));
+}
+
+/* =========================
+   DARK MODE
+   ========================= */
+
+html.dark-mode .contact-expect {
+  background: color-mix(in oklab, var(--color-dark) 86%, var(--color-light));
+  border-color: rgba(228, 238, 240, 0.06);
+  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.32);
+}
+
+html.dark-mode .contact-expect__title {
+  color: var(--color-light);
+}
+
+html.dark-mode .contact-expect__icon {
+  background: linear-gradient(
+    135deg,
+    var(--color-accent),
+    var(--color-secondary)
+  );
+  color: var(--color-white);
+}
+
+html.dark-mode .contact-expect__item-title {
+  color: var(--color-light);
+}
+
+html.dark-mode .contact-expect__item-desc {
+  color: color-mix(in oklab, var(--color-light) 72%, var(--color-dark));
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .contact-expect {
+    padding: 20px 16px;
+  }
+}

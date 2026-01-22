@@ -1,0 +1,262 @@
+.contact-form {
+  width: 100%;
+}
+
+.contact-form__card {
+  border-radius: 16px;
+  padding: 26px;
+  border: 1px solid transparent;
+}
+
+.contact-form__header {
+  margin-bottom: 18px;
+}
+
+.contact-form__title {
+  margin: 0 0 8px;
+  font-size: 1.45rem;
+  font-weight: 900;
+  font-family: var(--font-secondary);
+}
+
+.contact-form__subtitle {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  font-family: var(--font-primary);
+  opacity: 0.85;
+}
+
+.contact-form__form {
+  display: grid;
+  gap: 14px;
+}
+
+.contact-form__grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.contact-form__field {
+  display: grid;
+  gap: 8px;
+}
+
+.contact-form__field--full {
+  grid-column: 1 / -1;
+}
+
+.contact-form__label {
+  font-size: 0.92rem;
+  font-weight: 800;
+  font-family: var(--font-secondary);
+}
+
+.contact-form__req {
+  opacity: 0.9;
+}
+
+.contact-form__input,
+.contact-form__textarea,
+.contact-form__select {
+  width: 100%;
+  border-radius: 12px;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+  outline: none;
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  transition: border-color 180ms ease, box-shadow 180ms ease,
+    background 180ms ease;
+}
+
+.contact-form__textarea {
+  resize: vertical;
+  min-height: 160px;
+}
+
+.contact-form__select-wrap {
+  position: relative;
+}
+
+.contact-form__select {
+  appearance: none;
+  padding-right: 38px;
+}
+
+.contact-form__select-wrap::after {
+  content: "▾";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Submit button */
+.contact-form__submit {
+  margin-top: 6px;
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: var(--font-secondary);
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  transition: transform 200ms ease, filter 200ms ease, box-shadow 200ms ease;
+}
+
+.contact-form__submit:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+}
+
+.contact-form__submit-icon {
+  font-size: 1rem;
+}
+
+/* Error state */
+.contact-form__input--error {
+  border-color: color-mix(in oklab, var(--color-danger) 70%, transparent);
+}
+
+/* Success */
+.contact-form__success {
+  text-align: center;
+  padding: 18px 10px;
+}
+
+.contact-form__success-title {
+  margin: 0 0 10px;
+  font-family: var(--font-secondary);
+  font-weight: 900;
+  font-size: 1.35rem;
+}
+
+.contact-form__success-text {
+  margin: 0 0 18px;
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+.contact-form__success-btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-family: var(--font-secondary);
+  font-weight: 900;
+}
+
+/* Light mode */
+html.light-mode .contact-form__card {
+  background: var(--color-white);
+  border-color: rgba(22, 35, 42, 0.06);
+  box-shadow: 0 16px 38px rgba(22, 35, 42, 0.1);
+}
+
+html.light-mode .contact-form__title {
+  color: var(--color-dark);
+}
+
+html.light-mode .contact-form__subtitle {
+  color: color-mix(in oklab, var(--color-dark) 65%, var(--color-light));
+}
+
+html.light-mode .contact-form__label {
+  color: var(--color-dark);
+}
+
+html.light-mode .contact-form__input,
+html.light-mode .contact-form__textarea,
+html.light-mode .contact-form__select {
+  background: color-mix(in oklab, var(--color-dark) 8%, var(--color-light));
+  color: var(--color-dark);
+  border-color: rgba(22, 35, 42, 0.08);
+}
+
+html.light-mode .contact-form__input:focus,
+html.light-mode .contact-form__textarea:focus,
+html.light-mode .contact-form__select:focus {
+  border-color: rgba(7, 80, 86, 0.35);
+  box-shadow: 0 0 0 4px rgba(7, 80, 86, 0.12);
+}
+
+html.light-mode .contact-form__submit {
+  background: var(--color-accent);
+  color: var(--color-white);
+  box-shadow: 0 16px 34px rgba(255, 91, 4, 0.28);
+}
+
+html.light-mode .contact-form__success-btn {
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+/* Dark mode */
+html.dark-mode .contact-form__card {
+  background: color-mix(in oklab, var(--color-dark) 86%, var(--color-light));
+  border-color: rgba(228, 238, 240, 0.06);
+  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.32);
+}
+
+html.dark-mode .contact-form__title {
+  color: var(--color-light);
+}
+
+html.dark-mode .contact-form__subtitle {
+  color: color-mix(in oklab, var(--color-light) 78%, var(--color-dark));
+}
+
+html.dark-mode .contact-form__label {
+  color: var(--color-light);
+}
+
+html.dark-mode .contact-form__input,
+html.dark-mode .contact-form__textarea,
+html.dark-mode .contact-form__select {
+  background: color-mix(in oklab, var(--color-dark) 92%, var(--color-light));
+  color: var(--color-light);
+  border-color: rgba(228, 238, 240, 0.08);
+}
+
+html.dark-mode .contact-form__input:focus,
+html.dark-mode .contact-form__textarea:focus,
+html.dark-mode .contact-form__select:focus {
+  border-color: rgba(255, 91, 4, 0.35);
+  box-shadow: 0 0 0 4px rgba(255, 91, 4, 0.14);
+}
+
+html.dark-mode .contact-form__submit {
+  background: linear-gradient(
+    90deg,
+    var(--color-secondary),
+    var(--color-accent)
+  );
+  color: var(--color-white);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+}
+
+html.dark-mode .contact-form__success-btn {
+  background: var(--color-accent);
+  color: var(--color-dark);
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .contact-form__grid2 {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form__card {
+    padding: 22px 18px;
+  }
+}

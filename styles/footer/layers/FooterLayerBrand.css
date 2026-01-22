@@ -1,0 +1,33 @@
+.footerBrandInner {
+  display: grid;
+  gap: 12px;
+}
+
+.footerBrandLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.footerBrandHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footerBrandName {
+  font-family: var(--font-secondary);
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.footerBrandTagline {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.footerBrandDesc {
+  max-width: 760px;
+  font-size: 14px;
+  line-height: 1.7;
+  opacity: 0.92;
+}

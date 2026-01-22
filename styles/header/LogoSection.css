@@ -1,0 +1,97 @@
+/* 🌟 GENERAL STYLING */
+.homepg-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.logo-pack {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.logo-img {
+  width: 52px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.logo-link:hover .logo-img {
+  transform: rotate(-5deg) scale(1.05);
+}
+
+.logo-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+
+/* ✍️ TEXT STYLES */
+.author-name {
+  font-family: var(--font-secondary);
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.author-job {
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+/* 🌞 LIGHT MODE OVERRIDES */
+.light-mode .author-name {
+  color: var(--color-light); /* Dark teal */
+}
+
+.light-mode .author-job {
+  color: var(--color-success); /* Primary dark */
+}
+
+/* 🌚 DARK MODE OVERRIDES */
+.dark-mode .author-name {
+  color: var(--color-accent); /* Orange stands out on dark */
+}
+
+.dark-mode .author-job {
+  color: var(--color-light); /* Keep soft white for text */
+}
+
+/* 📱 RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .logo-pack {
+    gap: 0.6rem;
+  }
+
+  .logo-img {
+    width: 42px;
+  }
+
+  .author-name {
+    font-size: 1rem;
+  }
+
+  .author-job {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .homepg-logo {
+    padding: 0.3rem 0.5rem;
+  }
+
+  .logo-text {
+    align-items: center;
+  }
+}

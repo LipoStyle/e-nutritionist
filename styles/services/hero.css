@@ -1,0 +1,182 @@
+/* styles/services/hero.css */
+
+/* ======================================================
+   Base layout (structure only — no colors here)
+   ====================================================== */
+
+.services-hero {
+  width: 100%;
+  position: relative;
+
+  /* Big vertical spacing so hero sits in the middle visually */
+  padding-top: clamp(140px, 20vh, 210px);
+  padding-bottom: clamp(90px, 14vh, 160px);
+
+  background: var(--services-hero-bg);
+}
+
+.services-hero__container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  display: flex;
+  justify-content: center;
+}
+
+.services-hero__content {
+  width: 100%;
+  max-width: 900px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.services-hero__title {
+  margin: 0;
+  font-size: clamp(34px, 4vw, 56px);
+  line-height: 1.08;
+  font-weight: 800;
+
+  color: var(--services-hero-title);
+}
+
+.services-hero__description {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.7;
+  max-width: 70ch;
+
+  color: var(--services-hero-text);
+}
+
+.services-hero__actions {
+  margin-top: 10px;
+}
+
+.services-hero__cta {
+  display: inline-flex;
+}
+
+/* ======================================================
+   Theme coloring (ONLY via html.light-mode / dark-mode)
+   ====================================================== */
+
+/* Light mode — vivid gradient, dark title, light paragraph */
+html.light-mode .services-hero {
+  --services-hero-bg: linear-gradient(
+    90deg,
+    rgba(45, 85, 75, 1) 0%,
+    rgba(136, 80, 51, 1) 50%,
+    rgba(223, 75, 35, 1) 100%
+  );
+
+  --services-hero-title: rgba(12, 18, 22, 0.92);
+  --services-hero-text: rgba(255, 255, 255, 0.92);
+}
+
+/* Dark mode — deeper tones, light readable text */
+html.dark-mode .services-hero {
+  --services-hero-bg: linear-gradient(
+    90deg,
+    rgba(18, 58, 52, 1) 0%,
+    rgba(86, 44, 26, 1) 50%,
+    rgba(170, 52, 22, 1) 100%
+  );
+
+  --services-hero-title: rgba(245, 248, 250, 0.92);
+  --services-hero-text: rgba(255, 255, 255, 0.88);
+}
+
+/* Fallback (safety) */
+.services-hero {
+  --services-hero-bg: linear-gradient(
+    90deg,
+    rgba(45, 85, 75, 1) 0%,
+    rgba(136, 80, 51, 1) 50%,
+    rgba(223, 75, 35, 1) 100%
+  );
+  --services-hero-title: rgba(12, 18, 22, 0.92);
+  --services-hero-text: rgba(255, 255, 255, 0.92);
+}
+
+/* ======================================================
+   About-style load animation (CSS only, no observer)
+   ====================================================== */
+
+.services-hero__title {
+  animation: servicesHeroTitleIn 700ms ease-out both;
+}
+
+.services-hero__description {
+  animation: servicesHeroDescIn 700ms ease-out both;
+  animation-delay: 120ms;
+}
+
+.services-hero__cta {
+  animation: servicesHeroCtaIn 700ms ease-out both;
+  animation-delay: 240ms;
+}
+
+@keyframes servicesHeroTitleIn {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes servicesHeroDescIn {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes servicesHeroCtaIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .services-hero__title,
+  .services-hero__description,
+  .services-hero__cta {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ======================================================
+   Responsive
+   ====================================================== */
+
+@media (max-width: 768px) {
+  .services-hero {
+    padding-top: 110px;
+    padding-bottom: 80px;
+  }
+
+  .services-hero__description {
+    font-size: 16px;
+  }
+}

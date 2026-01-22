@@ -1,0 +1,166 @@
+/* styles/services/card.css */
+
+.service-card {
+  border-radius: 14px;
+  overflow: hidden;
+
+  background: var(--service-card-bg);
+  border: 1px solid var(--service-card-border);
+  box-shadow: var(--service-card-shadow);
+
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+
+.service-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--service-card-shadow-hover);
+}
+
+.service-card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: var(--service-card-media-bg);
+}
+
+.service-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.service-card__price-pill {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  height: 30px;
+  padding: 0 12px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+  background: var(--service-card-pill-bg);
+  color: var(--service-card-pill-text);
+
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+}
+
+.service-card__body {
+  padding: 14px 14px 16px;
+}
+
+.service-card__title {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.25;
+  font-weight: 800;
+  color: var(--service-card-title);
+}
+
+.service-card__summary {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--service-card-summary);
+
+  /* keeps alignment between cards */
+  min-height: 44px;
+}
+
+.service-card__meta {
+  margin-top: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  font-size: 12px;
+  color: var(--service-card-meta);
+}
+
+.service-card__duration {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.service-card__duration--empty {
+  opacity: 0;
+}
+
+.service-card__price-inline {
+  font-weight: 900;
+  color: var(--service-card-price);
+  font-size: 18px;
+}
+
+.service-card__cta {
+  margin-top: 14px;
+  width: 100%;
+  justify-content: center;
+}
+
+/* =========================
+   Theme tokens
+   ========================= */
+
+html.light-mode .service-card {
+  --service-card-bg: #ffffff;
+  --service-card-border: rgba(12, 32, 38, 0.08);
+  --service-card-shadow: 0 10px 26px rgba(12, 32, 38, 0.08);
+  --service-card-shadow-hover: 0 14px 34px rgba(12, 32, 38, 0.12);
+
+  --service-card-media-bg: #e7eef1;
+
+  --service-card-title: rgba(12, 18, 22, 0.92);
+  --service-card-summary: rgba(22, 28, 33, 0.62);
+  --service-card-meta: rgba(22, 28, 33, 0.55);
+  --service-card-price: rgba(12, 18, 22, 0.92);
+
+  /* Price pill: SECONDARY (fallback to teal) */
+  --service-card-pill-bg: var(--color-secondary, rgba(0, 86, 82, 0.95));
+  --service-card-pill-text: var(
+    --color-on-secondary,
+    rgba(255, 255, 255, 0.95)
+  );
+}
+
+html.dark-mode .service-card {
+  --service-card-bg: rgba(15, 22, 28, 0.9);
+  --service-card-border: rgba(233, 242, 244, 0.1);
+  --service-card-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+  --service-card-shadow-hover: 0 16px 36px rgba(0, 0, 0, 0.45);
+
+  --service-card-media-bg: rgba(18, 36, 42, 0.85);
+
+  --service-card-title: rgba(245, 248, 250, 0.92);
+  --service-card-summary: rgba(245, 248, 250, 0.7);
+  --service-card-meta: rgba(245, 248, 250, 0.62);
+  --service-card-price: rgba(245, 248, 250, 0.92);
+
+  /* Price pill: ACCENT (fallback to teal) */
+  --service-card-pill-bg: var(--color-accent, rgba(0, 110, 104, 0.95));
+  --service-card-pill-text: var(--color-on-accent, rgba(255, 255, 255, 0.95));
+}
+
+/* fallback safety */
+.service-card {
+  --service-card-bg: #ffffff;
+  --service-card-border: rgba(12, 32, 38, 0.08);
+  --service-card-shadow: 0 10px 26px rgba(12, 32, 38, 0.08);
+  --service-card-shadow-hover: 0 14px 34px rgba(12, 32, 38, 0.12);
+  --service-card-media-bg: #e7eef1;
+  --service-card-title: rgba(12, 18, 22, 0.92);
+  --service-card-summary: rgba(22, 28, 33, 0.62);
+  --service-card-meta: rgba(22, 28, 33, 0.55);
+  --service-card-price: rgba(12, 18, 22, 0.92);
+  --service-card-pill-bg: rgba(0, 86, 82, 0.95);
+  --service-card-pill-text: rgba(255, 255, 255, 0.95);
+}

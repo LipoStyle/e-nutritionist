@@ -1,0 +1,13 @@
+.footer {
+  width: 100%;
+}
+
+html.light-mode .footer {
+  background: var(--color-secondary-transparent);
+  color: var(--color-light);
+}
+
+html.dark-mode .footer {
+  background: var(--color-dark-transparent);
+  color: var(--color-light);
+}
