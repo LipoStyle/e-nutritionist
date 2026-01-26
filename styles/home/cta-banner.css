@@ -1,0 +1,179 @@
+/* styles/home/cta-banner.css */
+
+.home-cta {
+  width: 100%;
+  padding: 58px 20px;
+  background: var(--hcta-bg);
+}
+
+.home-cta__inner {
+  max-width: 980px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.home-cta__title {
+  margin: 0;
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--hcta-title);
+}
+
+.home-cta__subtitle {
+  margin: 14px auto 0;
+  max-width: 80ch;
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--hcta-subtitle);
+}
+
+.home-cta__actions {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Make shared cta-button fit the banner design */
+.home-cta .home-cta__btn {
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  min-width: 240px;
+  justify-content: center;
+}
+
+.home-cta .home-cta__btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Banner-specific tweak:
+   Keep primary as-is, but make secondary slightly different (cleaner outline). */
+.home-cta .cta-button--secondary {
+  background: transparent;
+  border: 1px solid var(--hcta-secondary-border);
+  color: var(--hcta-secondary-fg);
+  box-shadow: none;
+}
+
+.home-cta .cta-button--secondary:hover {
+  background: var(--hcta-secondary-hover);
+}
+
+/* Mobile */
+@media (max-width: 520px) {
+  .home-cta .home-cta__btn {
+    width: 100%;
+    min-width: unset;
+    max-width: 340px;
+  }
+}
+
+/* =========================
+   Theme tokens
+   Supports BOTH conventions:
+   - html.light-mode / html.dark-mode
+   - html.light / html.dark
+   ========================= */
+
+/* LIGHT */
+html.light-mode .home-cta,
+html.light .home-cta {
+  --hcta-bg: #075056;
+
+  /* your screenshot: dark title on teal */
+  --hcta-title: rgba(12, 18, 22, 0.88);
+  --hcta-subtitle: rgba(255, 255, 255, 0.92);
+
+  --hcta-secondary-fg: rgba(255, 255, 255, 0.92);
+  --hcta-secondary-border: rgba(255, 255, 255, 0.55);
+  --hcta-secondary-hover: rgba(255, 255, 255, 0.1);
+}
+
+/* DARK */
+html.dark-mode .home-cta,
+html.dark .home-cta {
+  --hcta-bg: rgba(7, 62, 66, 0.98);
+
+  --hcta-title: rgba(245, 248, 250, 0.92);
+  --hcta-subtitle: rgba(245, 248, 250, 0.82);
+
+  --hcta-secondary-fg: rgba(245, 248, 250, 0.92);
+  --hcta-secondary-border: rgba(245, 248, 250, 0.4);
+  --hcta-secondary-hover: rgba(245, 248, 250, 0.1);
+}
+
+/* Fallback safety */
+.home-cta {
+  --hcta-bg: #075056;
+  --hcta-title: rgba(12, 18, 22, 0.88);
+  --hcta-subtitle: rgba(255, 255, 255, 0.92);
+
+  --hcta-secondary-fg: rgba(255, 255, 255, 0.92);
+  --hcta-secondary-border: rgba(255, 255, 255, 0.55);
+  --hcta-secondary-hover: rgba(255, 255, 255, 0.1);
+}
+/* =========================
+   Scroll reveal animation
+   ========================= */
+
+/* Base hidden state (before in-view) */
+.home-cta .home-cta__reveal-up,
+.home-cta .home-cta__reveal-left,
+.home-cta .home-cta__reveal-right {
+  opacity: 0;
+  will-change: opacity, transform;
+  transition:
+    opacity 700ms ease,
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Bottom -> top */
+.home-cta .home-cta__reveal-up {
+  transform: translateY(18px);
+}
+
+/* Left -> right (primary button) */
+.home-cta .home-cta__reveal-left {
+  transform: translateX(-18px);
+}
+
+/* Right -> left (secondary button) */
+.home-cta .home-cta__reveal-right {
+  transform: translateX(18px);
+}
+
+/* Optional stagger delay for subtitle */
+.home-cta .home-cta__reveal-up--delay {
+  transition-delay: 120ms;
+}
+
+/* When section is in view, reveal everything */
+.home-cta.is-inview .home-cta__reveal-up,
+.home-cta.is-inview .home-cta__reveal-left,
+.home-cta.is-inview .home-cta__reveal-right {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}
+
+/* Small stagger for buttons */
+.home-cta.is-inview .home-cta__reveal-left {
+  transition-delay: 200ms;
+}
+
+.home-cta.is-inview .home-cta__reveal-right {
+  transition-delay: 260ms;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .home-cta .home-cta__reveal-up,
+  .home-cta .home-cta__reveal-left,
+  .home-cta .home-cta__reveal-right {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -188,6 +188,7 @@ export type ConsultationMethodsContent = {
   title: string;
   methods: ConsultationMethodItem[];
   imageAlt: string;
+  imageSrc: string;
 };
 
 export const consultationMethodsData: Record<Lang, ConsultationMethodsContent> =
@@ -195,6 +196,7 @@ export const consultationMethodsData: Record<Lang, ConsultationMethodsContent> =
     en: {
       title: "Consultation Methods",
       imageAlt: "Consultation",
+      imageSrc: "/images/nutrition-education_20251211_133603.png",
       methods: [
         {
           title: "In-Person Consultations",
@@ -214,6 +216,7 @@ export const consultationMethodsData: Record<Lang, ConsultationMethodsContent> =
     es: {
       title: "Modalidades de Consulta",
       imageAlt: "Consulta",
+      imageSrc: "/images/nutrition-education_20251211_133603.png",
       methods: [
         {
           title: "Consultas Presenciales",
@@ -233,6 +236,7 @@ export const consultationMethodsData: Record<Lang, ConsultationMethodsContent> =
     el: {
       title: "Τρόποι Συνεδρίας",
       imageAlt: "Συνεδρία",
+      imageSrc: "/images/nutrition-education_20251211_133603.png",
       methods: [
         {
           title: "Δια ζώσης Συνεδρίες",

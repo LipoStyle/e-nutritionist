@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import HomeHeroSlider from "@/components/home/sections/Hero/HomeHeroSlider";
 import ServicesPreview from "@/components/home/sections/ServicesPreview/ServicesPreview";
 import HomeAboutBanner from "@/components/home/sections/AboutBanner/HomeAboutBanner";
+import HomeCtaBanner from "@/components/home/sections/CtaBanner/HomeCtaBanner";
 
 import type { Lang } from "@/lib/i18n/locale";
 import { fetchHeroSlides } from "./home/home.queries"; // your existing slides query
@@ -55,6 +56,7 @@ export default async function HomePage({ params }: Props) {
       <HomeHeroSlider slides={slides} />
       <ServicesPreview cards={top3} />
       <HomeAboutBanner />
+      <HomeCtaBanner />
     </>
   );
 }

@@ -23,7 +23,7 @@ export default function ConsultationMethods() {
     if (!el) return;
 
     const prefersReduced = window.matchMedia?.(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     )?.matches;
 
     if (prefersReduced) {
@@ -39,7 +39,7 @@ export default function ConsultationMethods() {
           io.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
 
     io.observe(el);
@@ -92,7 +92,7 @@ export default function ConsultationMethods() {
           <div className="consultation-methods__right" aria-hidden="true">
             <img
               className="consultation-methods__image"
-              src="/images/services/consultation.jpg"
+              src={content.imageSrc}
               alt={content.imageAlt}
             />
           </div>
