@@ -1,13 +1,11 @@
-export default function AdminLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div>
-      <aside>{/* Admin Sidebar */}</aside>
-
-      <section>{children}</section>
-    </div>
+    <html lang="en">
+      <body>{children}</body>
+    </html>
   );
 }

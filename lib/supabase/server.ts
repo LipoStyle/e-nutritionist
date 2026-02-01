@@ -8,6 +8,7 @@ function getEnv(name: string) {
 }
 
 export async function createSupabaseServerClient() {
+  // ✅ Next 16: cookies() is async
   const cookieStore = await cookies();
 
   return createServerClient(
@@ -20,14 +21,15 @@ export async function createSupabaseServerClient() {
         },
         setAll(cookiesToSet) {
           try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            );
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options);
+            });
           } catch {
-            // If called from a Server Component, setAll can fail; safe to ignore for read-only pages.
+            // In some Server Component render paths, cookie writes can fail.
+            // Safe to ignore here.
           }
         },
       },
-    }
+    },
   );
 }

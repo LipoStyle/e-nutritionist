@@ -15,8 +15,17 @@ function getCookieLocale(req: NextRequest) {
     : null;
 }
 
+function isAdminPath(pathname: string) {
+  return pathname === "/admin" || pathname.startsWith("/admin/");
+}
+
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  // ✅ Exclude admin routes from locale prefixing
+  if (isAdminPath(pathname)) {
+    return NextResponse.next();
+  }
 
   // ignore Next internals, api, and files
   if (
