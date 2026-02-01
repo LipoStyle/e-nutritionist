@@ -253,7 +253,7 @@ export const contactInfoData: ContactInfoData = {
       {
         icon: "phone",
         label: "Phone",
-        value: "+1 (555) 123-4567",
+        value: "+34 613497305",
         helper: "Call for immediate assistance",
       },
       {
@@ -261,12 +261,6 @@ export const contactInfoData: ContactInfoData = {
         label: "Email",
         value: "info@e-nutritionist.com",
         helper: "Send us a detailed message",
-      },
-      {
-        icon: "office",
-        label: "Office",
-        value: "123 Health St, Wellness City",
-        helper: "In-person consultations available",
       },
       {
         icon: "hours",
@@ -291,7 +285,7 @@ export const contactInfoData: ContactInfoData = {
       {
         icon: "phone",
         label: "Teléfono",
-        value: "+34 600 000 000",
+        value: "+34 613497305",
         helper: "Llama para asistencia inmediata",
       },
       {
@@ -299,12 +293,6 @@ export const contactInfoData: ContactInfoData = {
         label: "Email",
         value: "info@e-nutritionist.com",
         helper: "Envíanos un mensaje detallado",
-      },
-      {
-        icon: "office",
-        label: "Oficina",
-        value: "123 Health St, Wellness City",
-        helper: "Consultas presenciales disponibles",
       },
       {
         icon: "hours",
@@ -329,7 +317,7 @@ export const contactInfoData: ContactInfoData = {
       {
         icon: "phone",
         label: "Τηλέφωνο",
-        value: "+30 690 000 0000",
+        value: "+34 613497305",
         helper: "Κάλεσε για άμεση εξυπηρέτηση",
       },
       {
@@ -337,12 +325,6 @@ export const contactInfoData: ContactInfoData = {
         label: "Email",
         value: "info@e-nutritionist.com",
         helper: "Στείλε μας ένα αναλυτικό μήνυμα",
-      },
-      {
-        icon: "office",
-        label: "Γραφείο",
-        value: "123 Health St, Wellness City",
-        helper: "Διαθέσιμες δια ζώσης συνεδρίες",
       },
       {
         icon: "hours",

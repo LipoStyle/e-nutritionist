@@ -1,0 +1,332 @@
+/* styles/coming-soon.css */
+
+/* Page wrapper */
+.coming {
+  position: relative;
+  width: 100%;
+  min-height: clamp(520px, 78vh, 820px);
+  display: grid;
+  place-items: center;
+  padding: 64px 18px;
+  overflow: hidden;
+
+  /* Match your site backgrounds (same idea as body background mixing) */
+  background: color-mix(in oklab, var(--color-dark) 10%, var(--color-light));
+}
+
+.dark-mode .coming {
+  background: color-mix(in oklab, var(--color-light) 8%, var(--color-dark));
+}
+
+/* Background layer */
+.coming__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Subtle grid overlay using your palette */
+.coming__grid {
+  position: absolute;
+  inset: -2px;
+  opacity: 0.55;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--color-secondary) 25%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-secondary) 25%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 52px 52px;
+  mask-image: radial-gradient(circle at 50% 45%, black 25%, transparent 70%);
+}
+
+/* Animated blobs (accent + secondary) */
+.coming__blob {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 999px;
+  filter: blur(32px);
+  opacity: 0.7;
+  transform: translate3d(0, 0, 0);
+  animation: comingFloat 12s ease-in-out infinite;
+}
+
+.coming__blob--a {
+  left: -140px;
+  top: -160px;
+  background: radial-gradient(
+    circle at 30% 30%,
+    color-mix(in oklab, var(--color-accent) 65%, transparent),
+    transparent 62%
+  );
+}
+
+.coming__blob--b {
+  right: -180px;
+  bottom: -220px;
+  background: radial-gradient(
+    circle at 40% 40%,
+    color-mix(in oklab, var(--color-secondary) 70%, transparent),
+    transparent 62%
+  );
+  animation-delay: -4s;
+}
+
+@keyframes comingFloat {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(18px, -14px, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+/* Layout container */
+.coming__wrap {
+  position: relative;
+  width: 100%;
+  max-width: 980px;
+  display: grid;
+  place-items: center;
+}
+
+/* Glass card matching your glass token */
+.coming__card {
+  width: min(760px, 100%);
+  padding: 30px 26px;
+  border-radius: 22px;
+
+  background: var(--color-light-transparent-glass);
+  border: 1px solid color-mix(in oklab, var(--color-secondary) 30%, transparent);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(12px);
+
+  animation: comingIn 650ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.dark-mode .coming__card {
+  background: color-mix(in oklab, var(--color-dark) 82%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-light) 18%, transparent);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.35);
+}
+
+@keyframes comingIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Badge */
+.coming__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 999px;
+
+  background: color-mix(in oklab, var(--color-accent) 16%, transparent);
+  color: color-mix(in oklab, var(--color-accent) 90%, var(--color-dark));
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dark-mode .coming__badge {
+  color: color-mix(in oklab, var(--color-accent) 88%, var(--color-light));
+}
+
+/* Title + subtitle
+   NOTE: your global h1..h6 already uses --font-secondary,
+   so we only set color to match each theme */
+.coming__title {
+  margin: 14px 0 0;
+  font-size: clamp(30px, 3.6vw, 44px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-weight: 950;
+
+  color: var(--color-dark);
+}
+
+.dark-mode .coming__title {
+  color: var(--color-light);
+}
+
+.coming__subtitle {
+  margin: 12px 0 0;
+  font-size: 15px;
+  line-height: 1.85;
+  max-width: 70ch;
+
+  color: color-mix(in oklab, var(--color-dark) 72%, transparent);
+}
+
+.dark-mode .coming__subtitle {
+  color: color-mix(in oklab, var(--color-light) 78%, transparent);
+}
+
+/* Note box */
+.coming__note {
+  margin-top: 18px;
+  padding: 14px 14px;
+  border-radius: 16px;
+
+  background: color-mix(in oklab, var(--color-secondary) 10%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-secondary) 22%, transparent);
+}
+
+.dark-mode .coming__note {
+  background: color-mix(in oklab, var(--color-light) 7%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-light) 14%, transparent);
+}
+
+.coming__noteTitle {
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+
+  color: var(--color-dark);
+}
+
+.dark-mode .coming__noteTitle {
+  color: var(--color-light);
+}
+
+.coming__noteBody {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.8;
+
+  color: color-mix(in oklab, var(--color-dark) 70%, transparent);
+}
+
+.dark-mode .coming__noteBody {
+  color: color-mix(in oklab, var(--color-light) 76%, transparent);
+}
+
+/* CTAs */
+.coming__actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.coming__btn {
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 900;
+  font-size: 13px;
+  text-decoration: none;
+
+  transition:
+    transform 160ms ease,
+    opacity 160ms ease,
+    background 160ms ease;
+  will-change: transform;
+}
+
+.coming__btn:active {
+  transform: translateY(1px);
+}
+
+.coming__btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Primary: accent button */
+.coming__btn--primary {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.coming__btn--primary:hover {
+  opacity: 0.92;
+}
+
+/* Ghost: light/dark friendly using your soft whites */
+.coming__btn--ghost {
+  background: color-mix(in oklab, var(--color-dark) 7%, transparent);
+  color: var(--color-dark);
+}
+
+.dark-mode .coming__btn--ghost {
+  background: var(--color-soft-white);
+  color: var(--color-light);
+}
+
+.coming__btn--ghost:hover {
+  background: color-mix(in oklab, var(--color-dark) 12%, transparent);
+}
+
+.dark-mode .coming__btn--ghost:hover {
+  background: var(--color-soft-white-hover);
+}
+
+/* Small meta row */
+.coming__meta {
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+
+  color: color-mix(in oklab, var(--color-dark) 65%, transparent);
+}
+
+.dark-mode .coming__meta {
+  color: color-mix(in oklab, var(--color-light) 70%, transparent);
+}
+
+.coming__pulse {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.7;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.95;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .coming__card,
+  .coming__blob,
+  .coming__pulse {
+    animation: none !important;
+  }
+  .coming__btn {
+    transition: none !important;
+  }
+}
