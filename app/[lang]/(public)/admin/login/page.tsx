@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import "@/styles/admin-login.css";
 import { adminSignIn } from "./actions";
 import { adminLoginUI } from "./admin-login.data";
+import { isAdminUser } from "@/lib/auth/admin";
 import { buildLocaleHref } from "@/lib/i18n/locale";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 type Lang = "en" | "es" | "el";
 
@@ -15,6 +18,16 @@ export default async function AdminLoginPage({ params, searchParams }: Props) {
   const { lang } = await params;
   const sp = await searchParams;
   const ui = adminLoginUI[lang];
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase.auth.getUser();
+
+  if (isAdminUser(data.user)) {
+    redirect("/admin");
+  }
+
+  if (data.user) {
+    await supabase.auth.signOut();
+  }
 
   return (
     <section className="admin-login">

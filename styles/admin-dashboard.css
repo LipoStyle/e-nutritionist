@@ -1,0 +1,136 @@
+/* app/admin/admin-dashboard.css */
+
+:root {
+  --bg-main: #f8fafc;
+  --card-bg: #ffffff;
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --accent-color: #94a3b8;
+}
+
+.admin-page-container {
+  min-height: 100vh;
+  background-color: var(--bg-main);
+  padding: 4rem 2rem;
+  font-family: sans-serif;
+}
+
+.admin-header {
+  max-width: 1200px;
+  margin: 0 auto 3rem auto;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 2rem;
+}
+
+.admin-header h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: -0.05em;
+}
+
+.admin-header p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+/* 4x4 Responsive Grid using Plain CSS */
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile */
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .admin-grid {
+    grid-template-columns: repeat(2, 1fr); /* Tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-grid {
+    grid-template-columns: repeat(4, 1fr); /* Desktop 4x4 */
+  }
+}
+
+/* The Nav Card Box */
+.nav-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.nav-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--text-dark);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.icon-wrapper {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  background: #f1f5f9;
+}
+
+.nav-card h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.nav-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0.5rem 0 2rem 0;
+  line-height: 1.4;
+}
+
+.card-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-color);
+}
+
+.nav-card:hover .card-footer {
+  color: var(--text-dark);
+}
+
+/* Add to admin-dashboard.css */
+.admin-content-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 1.5rem;
+  padding: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--text-muted);
+  font-style: italic;
+}
