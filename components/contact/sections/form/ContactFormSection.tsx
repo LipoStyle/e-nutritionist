@@ -3,8 +3,9 @@
 import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import "@/styles/contact/contactFormSection.css";
-
 import { contactFormData } from "@/app/[lang]/(public)/contact/data";
+// Import your browser client creator
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 type Lang = "en" | "es" | "el";
 const SUPPORTED: Lang[] = ["en", "es", "el"];
@@ -41,11 +42,15 @@ function isValidEmail(email: string) {
 }
 
 export default function ContactFormSection() {
+  // Initialize Supabase Client
+  const supabase = createSupabaseBrowserClient();
+
   const params = useParams<{ lang?: string }>();
   const lang = normalizeLang(params?.lang);
   const content = useMemo(() => contactFormData[lang], [lang]);
 
   const [form, setForm] = useState<FormState>(INITIAL);
+  const [isSending, setIsSending] = useState(false);
   const [touched, setTouched] = useState<Record<keyof FormState, boolean>>({
     fullName: false,
     email: false,
@@ -75,7 +80,7 @@ export default function ContactFormSection() {
     setTouched((prev) => ({ ...prev, [key]: true }));
   }
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     setTouched({
@@ -89,7 +94,28 @@ export default function ContactFormSection() {
 
     if (Object.keys(errors).length > 0) return;
 
-    // Front-end success state (no backend yet)
+    setIsSending(true);
+
+    // --- SUPABASE INTEGRATION ---
+    const { error } = await supabase.from("contact_messages").insert([
+      {
+        full_name: form.fullName,
+        email: form.email,
+        phone: form.phone,
+        service: form.service,
+        subject: form.subject,
+        message: form.message,
+      },
+    ]);
+
+    setIsSending(false);
+
+    if (error) {
+      console.error("Submission error:", error.message);
+      alert("Failed to send message. Please try again later.");
+      return;
+    }
+
     setIsSubmitted(true);
     setForm(INITIAL);
   }
@@ -117,6 +143,7 @@ export default function ContactFormSection() {
                   </label>
                   <input
                     id="fullName"
+                    disabled={isSending}
                     className={`contact-form__input ${
                       touched.fullName && errors.fullName
                         ? "contact-form__input--error"
@@ -139,6 +166,7 @@ export default function ContactFormSection() {
                   </label>
                   <input
                     id="email"
+                    disabled={isSending}
                     className={`contact-form__input ${
                       touched.email && errors.email
                         ? "contact-form__input--error"
@@ -158,6 +186,7 @@ export default function ContactFormSection() {
                   </label>
                   <input
                     id="phone"
+                    disabled={isSending}
                     className="contact-form__input"
                     placeholder={content.fields.phone.placeholder}
                     value={form.phone}
@@ -174,6 +203,7 @@ export default function ContactFormSection() {
                   <div className="contact-form__select-wrap">
                     <select
                       id="service"
+                      disabled={isSending}
                       className="contact-form__select"
                       value={form.service}
                       onChange={(ev) => onChange("service", ev.target.value)}
@@ -198,6 +228,7 @@ export default function ContactFormSection() {
                 </label>
                 <input
                   id="subject"
+                  disabled={isSending}
                   className="contact-form__input"
                   placeholder={content.fields.subject.placeholder}
                   value={form.subject}
@@ -215,6 +246,7 @@ export default function ContactFormSection() {
                 </label>
                 <textarea
                   id="message"
+                  disabled={isSending}
                   className={`contact-form__textarea ${
                     touched.message && errors.message
                       ? "contact-form__input--error"
@@ -228,11 +260,15 @@ export default function ContactFormSection() {
                 />
               </div>
 
-              <button type="submit" className="contact-form__submit">
+              <button
+                type="submit"
+                className="contact-form__submit"
+                disabled={isSending}
+              >
                 <span className="contact-form__submit-icon" aria-hidden="true">
-                  ✈
+                  {isSending ? "⌛" : "✈"}
                 </span>
-                {content.submitLabel}
+                {isSending ? "Sending..." : content.submitLabel}
               </button>
             </form>
           </>

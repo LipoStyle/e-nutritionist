@@ -1,4 +1,4 @@
-/* app/admin/admin-dashboard.css */
+/* app/admin/admin-dashboard.css - Master Merged Version */
 
 :root {
   --bg-main: #f8fafc;
@@ -7,24 +7,97 @@
   --text-muted: #64748b;
   --border-color: #e2e8f0;
   --accent-color: #94a3b8;
+  --danger: #ef4444;
+  --header-height: 64px;
 }
 
+/* 1. Base Layout & Reset */
 .admin-page-container {
   min-height: 100vh;
   background-color: var(--bg-main);
-  padding: 4rem 2rem;
-  font-family: sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-.admin-header {
+.admin-main-wrapper {
   max-width: 1200px;
-  margin: 0 auto 3rem auto;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* 2. Persistent Navigation Header */
+.admin-nav-header {
+  background: white;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+}
+
+.admin-nav-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-nav-left,
+.admin-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.admin-nav-title {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+
+.nav-icon-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-icon-link:hover {
+  color: var(--text-dark);
+}
+
+.logout-btn:hover {
+  color: var(--danger);
+}
+
+/* 3. Page Headers & Content */
+.admin-header {
+  margin-bottom: 3rem;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 2rem;
 }
 
 .admin-header h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 900;
   color: var(--text-dark);
   text-transform: uppercase;
@@ -38,28 +111,24 @@
   margin-top: 0.5rem;
 }
 
-/* 4x4 Responsive Grid using Plain CSS */
+/* 4. Grid & Navigation Cards */
 .admin-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Mobile */
+  grid-template-columns: 1fr;
   gap: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 @media (min-width: 640px) {
   .admin-grid {
-    grid-template-columns: repeat(2, 1fr); /* Tablet */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
-
 @media (min-width: 1024px) {
   .admin-grid {
-    grid-template-columns: repeat(4, 1fr); /* Desktop 4x4 */
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
-/* The Nav Card Box */
 .nav-card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -103,6 +172,30 @@
   line-height: 1.4;
 }
 
+/* 5. Utility Classes & Buttons */
+.admin-content-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 1.5rem;
+  padding: 2rem;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.back-btn:hover {
+  color: var(--text-dark);
+}
+
 .card-footer {
   margin-top: auto;
   display: flex;
@@ -119,18 +212,23 @@
   color: var(--text-dark);
 }
 
-/* Add to admin-dashboard.css */
-.admin-content-card {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: 1.5rem;
-  padding: 3rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
+/* Tables */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
 }
 
-.text-muted {
+.admin-table th {
+  padding: 1rem;
+  border-bottom: 2px solid var(--border-color);
   color: var(--text-muted);
-  font-style: italic;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.admin-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--bg-main);
+  font-size: 0.95rem;
 }

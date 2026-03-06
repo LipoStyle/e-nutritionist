@@ -80,7 +80,7 @@ const FOOTER_T: Record<Lang, FooterTranslations> = {
     },
 
     contact: {
-      phone: "+1 (555) 123-4567",
+      phone: "+34 613497305",
       email: "info@e-nutritionist.com",
       address: "123 Health St, Wellness City",
     },

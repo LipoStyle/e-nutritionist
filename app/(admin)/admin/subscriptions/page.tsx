@@ -1,6 +1,8 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server"; // Adjust path to your server file
 import { Trash2 } from "lucide-react";
 import { revalidatePath } from "next/cache";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export default async function SubscriptionsAdmin() {
   const supabase = await createSupabaseServerClient();
@@ -23,6 +25,9 @@ export default async function SubscriptionsAdmin() {
 
   return (
     <div className="admin-page-container">
+      <Link href="/admin" className="back-btn">
+        <ArrowLeft size={16} /> Back to Dashboard
+      </Link>
       <header className="admin-header">
         <h1>Newsletter Subscriptions</h1>
         <p>Total active subscribers: {emails?.length || 0}</p>
