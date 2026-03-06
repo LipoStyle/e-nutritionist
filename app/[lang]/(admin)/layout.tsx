@@ -6,20 +6,23 @@ import { Home, LogOut, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import "@/styles/admin-dashboard.css";
 
+// 1. Define the updated interface where params is a Promise
+interface AdminLayoutProps {
+  children: React.ReactNode;
+  params: Promise<{ lang: string }>;
+}
+
 export default async function AdminLayout({
   children,
   params,
-}: {
-  children: React.ReactNode;
-  params: { lang: string };
-}) {
-  // 1. Get lang directly from params (cleaner than cookies)
+}: AdminLayoutProps) {
+  // 2. Await the params before use
   const { lang } = await params;
 
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.getUser();
 
-  // 2. Auth & Admin Protection
+  // 3. Auth & Admin Protection
   if (error || !data.user) redirect(`/${lang}/admin/login`);
 
   if (!isAdminUser(data.user)) {
@@ -27,10 +30,8 @@ export default async function AdminLayout({
     redirect(`/${lang}/admin/login?error=Unauthorized`);
   }
 
-  // 3. Render ONLY the dashboard wrapper (no <html> or <body>)
   return (
     <div className="admin-page-container">
-      {/* Persistent Admin Header */}
       <nav className="admin-nav-header">
         <div className="admin-nav-content">
           <div className="admin-nav-left">
