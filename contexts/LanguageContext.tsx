@@ -1,5 +1,14 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+"use client";
+
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+// Import the client creator we made earlier
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 interface LanguageContextType {
   currentLanguage: string;
@@ -9,14 +18,21 @@ interface LanguageContextType {
   loading: boolean;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(
+  undefined,
+);
 
 interface LanguageProviderProps {
   children: ReactNode;
 }
 
-export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  const [currentLanguage, setCurrentLanguage] = useState<string>('en');
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({
+  children,
+}) => {
+  // Initialize the browser client
+  const supabase = createSupabaseBrowserClient();
+
+  const [currentLanguage, setCurrentLanguage] = useState<string>("en");
   const [translations, setTranslations] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
 
@@ -24,10 +40,11 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const loadTranslations = async (language: string) => {
     try {
       setLoading(true);
+      // Ensure the table name matches your actual Supabase table
       const { data, error } = await supabase
-        .from('website_translations_2025_12_11_15_30')
-        .select('translation_key, translation_value')
-        .eq('language_code', language);
+        .from("website_translations_2025_12_11_15_30")
+        .select("translation_key, translation_value")
+        .eq("language_code", language);
 
       if (error) throw error;
 
@@ -38,7 +55,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
       setTranslations(translationMap);
     } catch (error) {
-      console.error('Error loading translations:', error);
+      console.error("Error loading translations:", error);
     } finally {
       setLoading(false);
     }
@@ -46,7 +63,11 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   // Initialize language from localStorage or default to 'en'
   useEffect(() => {
-    const savedLanguage = localStorage.getItem('preferred-language') || 'en';
+    const savedLanguage =
+      typeof window !== "undefined"
+        ? localStorage.getItem("preferred-language") || "en"
+        : "en";
+
     setCurrentLanguage(savedLanguage);
     loadTranslations(savedLanguage);
   }, []);
@@ -54,7 +75,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   // Set language and save to localStorage
   const setLanguage = (lang: string) => {
     setCurrentLanguage(lang);
-    localStorage.setItem('preferred-language', lang);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("preferred-language", lang);
+    }
     loadTranslations(lang);
   };
 
@@ -68,7 +91,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     setLanguage,
     t,
     translations,
-    loading
+    loading,
   };
 
   return (
@@ -81,7 +104,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 export const useLanguage = (): LanguageContextType => {
   const context = useContext(LanguageContext);
   if (context === undefined) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
+    throw new Error("useLanguage must be used within a LanguageProvider");
   }
   return context;
 };
