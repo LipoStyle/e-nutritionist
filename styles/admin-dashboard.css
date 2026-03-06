@@ -1,4 +1,4 @@
-/* app/admin/admin-dashboard.css - Master Merged Version */
+/* app/admin/admin-dashboard.css - Pure Layout & Navigation Shell */
 
 :root {
   --bg-main: #f8fafc;
@@ -89,7 +89,7 @@
   color: var(--danger);
 }
 
-/* 3. Page Headers & Content */
+/* 3. Page Headers */
 .admin-header {
   margin-bottom: 3rem;
   border-bottom: 1px solid var(--border-color);
@@ -111,7 +111,7 @@
   margin-top: 0.5rem;
 }
 
-/* 4. Grid & Navigation Cards */
+/* 4. Main Dashboard Grid & Navigation Cards */
 .admin-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -172,7 +172,7 @@
   line-height: 1.4;
 }
 
-/* 5. Utility Classes & Buttons */
+/* 5. Generic Utility Classes */
 .admin-content-card {
   background: white;
   border: 1px solid var(--border-color);
@@ -212,23 +212,17 @@
   color: var(--text-dark);
 }
 
-/* Tables */
-.admin-table {
+/* Basic Table Shell (Generic) */
+.admin-table-base {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
 }
 
-.admin-table th {
+.admin-table-base th {
   padding: 1rem;
   border-bottom: 2px solid var(--border-color);
   color: var(--text-muted);
   font-size: 0.85rem;
   text-transform: uppercase;
-}
-
-.admin-table td {
-  padding: 1rem;
-  border-bottom: 1px solid var(--bg-main);
-  font-size: 0.95rem;
 }

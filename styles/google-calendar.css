@@ -1,0 +1,323 @@
+/* ============================================================
+   1. PAGE WRAPPER & MAIN CONTAINER
+   ============================================================ */
+.google-cal-page-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  margin-top: 200px; /* Offset for fixed header */
+  background-color: var(--color-light);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.google-cal-container.full-width {
+  background: var(--color-white);
+  width: 100%;
+  max-width: 1400px; /* Expansive high-fidelity width */
+  border: 1px solid var(--color-light-gray);
+  border-radius: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================================
+   2. THEMED HEADER & SERVICE SELECTOR
+   ============================================================ */
+.google-cal-header {
+  padding: 30px;
+  background: var(--color-dark); /* #16232a */
+  color: var(--color-white);
+  border-bottom: 1px solid var(--color-secondary);
+}
+
+.brand-text h1 {
+  font-family: var(--font-secondary);
+  font-size: 26px;
+  margin-top: 10px;
+}
+
+.service-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.service-select {
+  appearance: none;
+  background: var(--color-secondary); /* #075056 */
+  color: white;
+  padding: 10px 40px 10px 15px;
+  border-radius: 8px;
+  border: 1px solid var(--color-soft-white-blur);
+  font-family: var(--font-primary);
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.select-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  color: var(--color-light-gray);
+  font-size: 14px;
+  margin-top: 15px;
+}
+
+/* ============================================================
+   3. CALENDAR BODY & SIDEBAR
+   ============================================================ */
+.google-cal-body {
+  display: flex;
+  flex: 1;
+}
+
+.mini-calendar-side {
+  width: 280px;
+  padding: 30px;
+  background: var(--color-light-transparent-glass);
+  border-right: 1px solid var(--color-light-gray);
+  flex-shrink: 0;
+}
+
+/* Hide mini calendar on smaller screens to prioritize the grid */
+@media (max-width: 1024px) {
+  .mini-calendar-side {
+    display: none;
+  }
+}
+
+/* ============================================================
+   4. THE RESPONSIVE WEEK GRID (7-COLUMN FIX)
+   ============================================================ */
+.week-grid-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.responsive-grid {
+  display: grid;
+  width: 100%;
+  /* Default Desktop: Force 7 columns for the week */
+  grid-template-columns: repeat(7, 1fr);
+}
+
+@media (max-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: repeat(3, 1fr); /* Show 3 days on tablet */
+  }
+}
+
+@media (max-width: 640px) {
+  .responsive-grid {
+    grid-template-columns: repeat(1, 1fr); /* Stack single day on mobile */
+  }
+}
+
+.day-label {
+  padding: 15px 5px;
+  text-align: center;
+  border-bottom: 1px solid var(--color-light-gray);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.day-label .dow {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-dark-gray);
+}
+
+.day-label.today .dom {
+  background: var(--color-secondary); /* #075056 */
+  color: white;
+  padding: 4px 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   5. TIME SLOTS & SCROLLING
+   ============================================================ */
+.week-slots-scroll {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 600px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.slot-column {
+  border-right: 1px solid var(--color-light-gray);
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 100px; /* Prevent squashing on mobile swipe */
+}
+
+.slot-btn {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--color-secondary);
+  background: white;
+  color: var(--color-secondary);
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-primary);
+}
+
+.slot-btn:hover:not(:disabled) {
+  background: #eff6ff;
+  border-color: var(--color-accent);
+}
+
+.slot-btn.selected {
+  background: var(--color-accent); /* #ff5b04 */
+  color: white;
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 12px rgba(255, 91, 4, 0.3);
+}
+
+.slot-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: var(--color-light-gray);
+}
+
+.slot-btn.booked {
+  visibility: hidden; /* Google Calendar "Gap" style */
+}
+
+/* ============================================================
+   6. CONTROLS & FOOTER
+   ============================================================ */
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+}
+
+.nav-today-btn {
+  padding: 6px 16px;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 4px;
+  background: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.floating-footer {
+  padding: 20px;
+  background: white;
+  border-top: 1px solid var(--color-light-gray);
+  text-align: right;
+}
+
+.confirm-btn {
+  background: var(--color-accent);
+  color: white;
+  padding: 14px 40px;
+  border-radius: 50px;
+  border: none;
+  font-family: var(--font-secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 91, 4, 0.4);
+  transition: transform 0.2s;
+}
+
+.confirm-btn:hover {
+  transform: translateY(-2px);
+}
+.week-grid-container {
+  flex: 1; /* This forces the grid to take all remaining space */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* Force 7 equal columns */
+  width: 100%;
+  border-left: 1px solid var(--color-light-gray);
+}
+
+.slot-column {
+  width: 100%; /* Ensure each day column fills its 1/7th share */
+  border-right: 1px solid var(--color-light-gray);
+  min-height: 500px;
+}
+.details-form-container {
+  flex: 1;
+  padding: 40px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--color-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-dark);
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 12px;
+  border: 1px solid var(--color-light-gray);
+  border-radius: 8px;
+  font-family: var(--font-primary);
+}
+
+.full-width-btn {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.cal-success-full {
+  text-align: center;
+  padding: 100px 20px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}

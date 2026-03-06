@@ -1,0 +1,112 @@
+/* styles/booking-page.css */
+
+.booking-container {
+  max-width: 800px;
+  margin: 4rem auto;
+  padding: 2.5rem;
+  background: #ffffff;
+  border-radius: 2rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+  font-family: "Inter", sans-serif;
+}
+
+.booking-step h2 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.025em;
+}
+
+/* Form Inputs */
+.booking-step input,
+.booking-step select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.booking-step input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  ring: 2px solid #dbeafe;
+}
+
+/* Time Grid Logic */
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  margin: 1.5rem 0;
+}
+
+.time-btn {
+  padding: 12px;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #334155;
+}
+
+.time-btn:hover:not(:disabled) {
+  border-color: #0f172a;
+  background: #f8fafc;
+}
+
+.time-btn.selected {
+  background: #0f172a;
+  color: white;
+  border-color: #0f172a;
+}
+
+/* Booked/Disabled State */
+.time-btn-booked {
+  background: #f1f5f9;
+  color: #94a3b8;
+  border: 1px solid #e2e8f0;
+  cursor: not-allowed;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+/* Navigation Buttons */
+.booking-container button:not(.time-btn) {
+  width: 100%;
+  padding: 1rem;
+  background: #0f172a;
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: opacity 0.2s;
+}
+
+.booking-container button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* Success Message */
+.booking-container h2.success {
+  color: #16a34a;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+/* Loading state */
+.loading-overlay {
+  text-align: center;
+  color: #64748b;
+  padding: 1rem;
+  font-style: italic;
+}

@@ -1,3 +1,4 @@
+import LanguageProvider from "@/contexts/LanguageContext";
 import "./globals.css";
 
 export const metadata = {
@@ -11,8 +12,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html className="light-mode">
-      <body>{children}</body>
-    </html>
+    <LanguageProvider>
+      <html className="light-mode">
+        <body>{children}</body>
+      </html>
+    </LanguageProvider>
   );
 }

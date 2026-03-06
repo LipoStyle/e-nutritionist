@@ -52,8 +52,8 @@ export default function Header() {
     lang === "es"
       ? "Reserva una consulta"
       : lang === "el"
-      ? "Κλείσε ραντεβού"
-      : "Book a Consultation";
+        ? "Κλείσε ραντεβού"
+        : "Book a Consultation";
 
   return (
     <header className={`header ${scrolling ? "hidden" : ""}`}>
