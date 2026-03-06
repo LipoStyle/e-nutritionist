@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import {
@@ -38,6 +40,9 @@ export default async function AdminBookingsPage() {
 
   return (
     <div className="admin-page-container">
+      <Link href="/admin" className="back-btn">
+        <ArrowLeft size={16} /> Back to Dashboard
+      </Link>
       <header className="admin-header">
         <h1>Appointment Calendar</h1>
       </header>

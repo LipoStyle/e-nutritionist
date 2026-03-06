@@ -1,0 +1,566 @@
+/* ==========================================================================
+   1. GLOBAL & LAYOUT
+   ========================================================================== */
+.services-admin-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: inherit;
+}
+
+.services-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.header-title-area h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+.flex-header-sub {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #6b7280;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* --- Language Selector --- */
+.lang-select-wrapper {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.lang-icon {
+  color: #3b82f6;
+  margin-right: 6px;
+}
+
+.lang-dropdown {
+  background: transparent;
+  border: none;
+  font-weight: 700;
+  color: #111827;
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  appearance: none;
+}
+
+/* ==========================================================================
+   2. INVENTORY GRID & CARDS
+   ========================================================================== */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.service-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #f3f4f6;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.card-image {
+  height: 200px;
+  position: relative;
+  background: #f9fafb;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.status-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 5px 12px;
+  border-radius: 99px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+  color: white;
+}
+.status-badge.active {
+  background: rgba(22, 163, 74, 0.9);
+}
+.status-badge.draft {
+  background: rgba(107, 114, 128, 0.9);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* --- Card Actions --- */
+.card-actions {
+  display: flex;
+  gap: 0.75rem;
+  border-top: 1px solid #f3f4f6;
+  padding-top: 1.25rem;
+}
+
+.action-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.action-btn.view {
+  background: #f9fafb;
+  color: #6b7280;
+}
+.action-btn.edit {
+  background: #eff6ff;
+  color: #2563eb;
+  font-weight: 600;
+}
+.action-btn.delete {
+  background: #fef2f2;
+  color: #dc2626;
+  flex: 0 0 40px;
+}
+
+/* ==========================================================================
+   3. FORM & TABS LAYOUT
+   ========================================================================== */
+.form-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.form-sticky-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid #eee;
+}
+
+.card-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #eef2f6;
+  margin-bottom: 1.5rem;
+}
+
+/* --- Image Picker & Preview --- */
+.image-picker-container {
+  width: 100%;
+}
+
+.image-preview-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btn-remove-preview {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #ef4444;
+  border: none;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-pulse {
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 1rem;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+  }
+}
+
+.image-upload-zone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.image-upload-zone:hover {
+  border-color: #2563eb;
+  background: #f8fafc;
+}
+
+/* --- Tabs Styling --- */
+.tab-header {
+  display: flex;
+  gap: 1rem;
+  background: #f8fafc;
+  padding: 0.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.tab-header button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #64748b;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.tab-header button.active {
+  background: white;
+  color: #2563eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.tab-pane.hide {
+  display: none;
+}
+.tab-pane.show {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   4. FEATURE MANAGER (DYNAMIC LIST)
+   ========================================================================== */
+.feature-manager-container {
+  margin-top: 2rem;
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.feature-input-wrapper {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.feature-input-wrapper input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+.btn-add-feature {
+  background: #1e293b;
+  color: white;
+  padding: 0 1.2rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.feature-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.feature-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.drag-icon {
+  color: #94a3b8;
+}
+.feature-content .index {
+  font-weight: 800;
+  color: #64748b;
+  font-size: 0.8rem;
+}
+.feature-content .text {
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.btn-delete-feature {
+  color: #ef4444;
+  background: #fef2f2;
+  border: none;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   5. COMMON INPUTS & BUTTONS
+   ========================================================================== */
+.input-group {
+  margin-bottom: 1.25rem;
+}
+.input-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+.input-group input,
+.input-group textarea,
+.input-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.btn-primary,
+.btn-save-main {
+  background: #2563eb;
+  color: white;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  min-width: 180px;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-save-main.is-loading {
+  background: #3b82f6;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Simulated progress bar on button bottom */
+.btn-save-main.is-loading::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: #ffffff;
+  width: 0%;
+  animation: fakeProgress 2s ease-in-out forwards;
+}
+
+@keyframes fakeProgress {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 70%;
+  }
+  100% {
+    width: 90%;
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.btn-save-main:disabled {
+  background: #64748b;
+  pointer-events: none;
+}
+/* ==========================================================================
+   6. MOBILE RESPONSIVENESS
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .form-layout {
+    grid-template-columns: 1fr; /* Stack sidebar on top of content */
+    gap: 1.5rem;
+  }
+
+  .form-sidebar {
+    order: 2; /* Move settings/media below the main content if preferred */
+  }
+
+  .form-content {
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .services-admin-container {
+    padding: 1rem;
+  }
+
+  .services-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .form-sticky-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem;
+    position: relative; /* Unstick on small screens to save space if needed */
+  }
+
+  .header-left {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .btn-save-main {
+    width: 100%; /* Full width button on mobile for easier tapping */
+  }
+
+  .tab-header {
+    overflow-x: auto; /* Allow horizontal swipe for language tabs */
+    white-space: nowrap;
+    display: flex;
+    padding: 0.5rem;
+  }
+
+  .tab-label {
+    display: none; /* Hide "Languages" text to save space on mobile */
+  }
+
+  .input-row {
+    grid-template-columns: 1fr; /* Stack price and status */
+  }
+
+  .feature-input-wrapper {
+    flex-direction: column;
+  }
+
+  .btn-add-feature {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr; /* Single column for service cards */
+  }
+}
+
+/* Touch-friendly adjustments */
+@media (pointer: coarse) {
+  .action-btn,
+  .btn-delete-feature,
+  .tab-header button {
+    min-height: 44px; /* Minimum touch target size */
+  }
+}
+.action-btn.delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #fee2e2;
+}
+
+/* Ensure the spinner is centered */
+.action-btn.delete .animate-spin {
+  margin: 0 auto;
+}

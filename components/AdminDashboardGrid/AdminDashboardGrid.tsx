@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+
 import { motion } from "framer-motion";
 import {
   Utensils,
@@ -11,6 +12,7 @@ import {
   Calendar,
   MessageSquare,
   ChevronRight,
+  Briefcase,
 } from "lucide-react";
 
 const categories = [
@@ -20,6 +22,7 @@ const categories = [
   { name: "Subscriptions", slug: "subscriptions", icon: <Users /> },
   { name: "Bookings", slug: "bookings", icon: <Calendar /> },
   { name: "Messages", slug: "messages", icon: <MessageSquare /> },
+  { name: "Services", slug: "services", icon: <Briefcase size={20} /> },
 ];
 
 export default function AdminDashboardGrid() {

@@ -4,11 +4,17 @@ import { NextRequest, NextResponse } from "next/server";
 const SUPPORTED = ["en", "es", "el"] as const;
 const DEFAULT = "en";
 
+/**
+ * Checks if the URL starts with a supported locale prefix.
+ */
 function hasLocalePrefix(pathname: string) {
   const seg = pathname.split("/")[1];
   return SUPPORTED.includes(seg as any);
 }
 
+/**
+ * Retrieves the locale from the user's cookies.
+ */
 function getCookieLocale(req: NextRequest) {
   const v = req.cookies.get("locale")?.value;
   return SUPPORTED.includes(v as any)
@@ -16,8 +22,13 @@ function getCookieLocale(req: NextRequest) {
     : null;
 }
 
+/**
+ * Detects if a path is an admin path, even if prefixed with a locale.
+ * Matches: /admin, /admin/services, /en/admin, /el/admin/recipes, etc.
+ */
 function isAdminPath(pathname: string) {
-  return pathname === "/admin" || pathname.startsWith("/admin/");
+  const adminRegex = /^\/([a-z]{2}\/)?admin(\/.*)?$/;
+  return adminRegex.test(pathname);
 }
 
 export async function middleware(req: NextRequest) {
@@ -29,8 +40,6 @@ export async function middleware(req: NextRequest) {
   });
 
   // 2. Initialize Supabase Client
-  // This logic ensures that if Supabase refreshes a token, the new cookie
-  // is passed both to the current request and the final response.
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -54,17 +63,10 @@ export async function middleware(req: NextRequest) {
     },
   );
 
-  // 3. Refresh the session
-  // Using getUser() is the recommended way to handle session refreshes
-  // safely in Next.js middleware.
+  // 3. Refresh the session (Recommended for Auth security)
   await supabase.auth.getUser();
 
-  // 4. Your existing Admin Check
-  if (isAdminPath(pathname)) {
-    return response;
-  }
-
-  // 5. Your existing internal/file filter
+  // 4. Ignore static files and internal Next.js routes
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
@@ -74,15 +76,22 @@ export async function middleware(req: NextRequest) {
     return response;
   }
 
-  // 6. Your existing Locale logic
-  if (hasLocalePrefix(pathname)) return response;
+  // 5. Admin & Locale Logic
+  // If it's already localized (e.g., /en/admin), we just let it through.
+  if (hasLocalePrefix(pathname)) {
+    return response;
+  }
 
+  // If it's NOT localized (e.g., /admin or /services), redirect to /[locale]/path
   const locale = getCookieLocale(req) ?? DEFAULT;
   const url = req.nextUrl.clone();
   url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
 
-  // Create a redirect response but keep the Supabase cookies!
+  // Create the redirect response
   const redirectResponse = NextResponse.redirect(url);
+
+  // CRITICAL: Copy Supabase auth cookies to the redirect response
+  // so the user stays logged in after the redirect.
   response.cookies.getAll().forEach((cookie) => {
     redirectResponse.cookies.set(cookie.name, cookie.value);
   });
@@ -91,8 +100,8 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // Updated matcher to be slightly more inclusive for auth routes
   matcher: [
+    // Optimized matcher to exclude static assets
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
