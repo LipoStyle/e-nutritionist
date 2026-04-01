@@ -1,0 +1,129 @@
+/* Blog hero (public) — match other heroes */
+
+.blog-hero {
+  width: 100%;
+  position: relative;
+
+  padding-top: clamp(140px, 20vh, 210px);
+  padding-bottom: clamp(90px, 14vh, 160px);
+
+  background: var(--blog-hero-bg);
+}
+
+.blog-hero__container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  display: flex;
+  justify-content: center;
+}
+
+.blog-hero__container > * {
+  max-width: 900px;
+}
+
+.blog-hero__title {
+  margin: 0;
+  font-size: clamp(34px, 4vw, 56px);
+  line-height: 1.08;
+  font-weight: 800;
+  font-family: var(--font-secondary);
+
+  color: var(--blog-hero-title);
+  text-align: center;
+  animation: blogHeroTitleIn 700ms ease-out both;
+}
+
+.blog-hero__description {
+  margin: 16px auto 0;
+  font-size: 18px;
+  line-height: 1.7;
+  max-width: 70ch;
+  text-align: center;
+  font-family: var(--font-primary);
+
+  color: var(--blog-hero-text);
+  animation: blogHeroDescIn 700ms ease-out both;
+  animation-delay: 120ms;
+}
+
+/* Light mode */
+html.light-mode .blog-hero {
+  --blog-hero-bg: linear-gradient(
+    90deg,
+    rgba(45, 85, 75, 1) 0%,
+    rgba(136, 80, 51, 1) 50%,
+    rgba(223, 75, 35, 1) 100%
+  );
+  --blog-hero-title: rgba(12, 18, 22, 0.92);
+  --blog-hero-text: rgba(255, 255, 255, 0.92);
+}
+
+/* Dark mode */
+html.dark-mode .blog-hero {
+  --blog-hero-bg: linear-gradient(
+    90deg,
+    rgba(18, 58, 52, 1) 0%,
+    rgba(86, 44, 26, 1) 50%,
+    rgba(170, 52, 22, 1) 100%
+  );
+  --blog-hero-title: rgba(245, 248, 250, 0.92);
+  --blog-hero-text: rgba(255, 255, 255, 0.88);
+}
+
+/* Fallback */
+.blog-hero {
+  --blog-hero-bg: linear-gradient(
+    90deg,
+    rgba(45, 85, 75, 1) 0%,
+    rgba(136, 80, 51, 1) 50%,
+    rgba(223, 75, 35, 1) 100%
+  );
+  --blog-hero-title: rgba(12, 18, 22, 0.92);
+  --blog-hero-text: rgba(255, 255, 255, 0.92);
+}
+
+@keyframes blogHeroTitleIn {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blogHeroDescIn {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-hero__title,
+  .blog-hero__description {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .blog-hero {
+    padding-top: 110px;
+    padding-bottom: 80px;
+  }
+
+  .blog-hero__description {
+    font-size: 16px;
+  }
+}
+

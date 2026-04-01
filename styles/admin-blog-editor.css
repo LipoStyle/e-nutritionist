@@ -1,0 +1,414 @@
+/* Admin Blog Editor (new) - uses global palette + admin shell tokens */
+
+.BlogNew {
+  --blog-surface: var(--card-bg);
+  --blog-border: var(--border-color);
+  --blog-text: var(--text-dark);
+  --blog-muted: var(--text-muted);
+}
+
+.BlogNew--fullBleed {
+  /* Break out of `.admin-main-wrapper { padding: 2rem; }` without using 100vw */
+  width: calc(100% + 4rem);
+  margin-left: -2rem;
+  margin-right: -2rem;
+  border-radius: 0;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.BlogNew--fullBleed .BlogNew__sections {
+  max-width: none;
+}
+
+.BlogNew__sections {
+  display: grid;
+  gap: 16px;
+}
+
+.BlogNew__bodySection {
+  /* This makes the body "workspace" stick while you edit */
+  position: sticky;
+  top: 12px;
+}
+
+.BlogNew__bodyCard {
+  /* Full-height workspace; internal editor will scroll */
+  height: calc(100vh - 92px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.BlogNew__sectionTitle {
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blog-muted);
+  margin: 0 0 10px;
+}
+
+.BlogNew__card {
+  background: var(--blog-surface);
+  border: 1px solid var(--blog-border);
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.BlogNew__langTabs {
+  display: inline-flex;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 14px;
+  border: 1px solid var(--blog-border);
+  background: color-mix(in oklab, var(--blog-surface) 82%, transparent);
+}
+
+.BlogNew__langTab {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--blog-muted);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.BlogNew__langTab.is-active {
+  background: color-mix(in oklab, var(--color-accent) 16%, transparent);
+  border-color: color-mix(in oklab, var(--color-accent) 30%, transparent);
+  color: var(--blog-text);
+}
+
+.BlogNew__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.BlogNew__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.BlogNew__fieldLabel {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--blog-text);
+}
+
+.BlogNew__input,
+.BlogNew__select,
+.BlogNew__textarea {
+  border: 1px solid var(--blog-border);
+  background: color-mix(in oklab, var(--blog-surface) 88%, transparent);
+  color: var(--blog-text);
+  border-radius: 12px;
+  padding: 12px 12px;
+  font: inherit;
+}
+
+.BlogNew__textarea {
+  min-height: 92px;
+  resize: vertical;
+}
+
+.BlogNew__hint {
+  font-size: 0.85rem;
+  color: var(--blog-muted);
+  margin: 6px 0 0;
+}
+
+.BlogNew__seo {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--blog-border);
+}
+
+.BlogNew__seoTitle {
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blog-muted);
+  margin-bottom: 10px;
+}
+
+.BlogNew__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--blog-border);
+  background: color-mix(in oklab, var(--blog-surface) 88%, transparent);
+}
+
+.BlogNew__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--color-accent) 28%, transparent);
+  background: color-mix(in oklab, var(--color-accent) 12%, transparent);
+  color: var(--blog-text);
+  font-weight: 850;
+  font-size: 0.85rem;
+}
+
+.BlogNew__tagRemove {
+  border: none;
+  background: transparent;
+  color: color-mix(in oklab, var(--blog-text) 70%, transparent);
+  cursor: pointer;
+  font-weight: 900;
+  padding: 0 2px;
+}
+
+.BlogNew__tagRemove:hover {
+  color: var(--blog-text);
+}
+
+.BlogNew__tagInput {
+  flex: 1;
+  min-width: 180px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--blog-text);
+  font: inherit;
+  padding: 8px 6px;
+}
+
+@media (max-width: 900px) {
+  .BlogNew__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Body block editor */
+.BlogBody {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  width: 100%;
+  flex: 1;
+}
+
+.BlogBody__stickyTop {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding-top: 6px;
+  padding-bottom: 10px;
+  background: var(--blog-surface);
+}
+
+.BlogBody__stickyMeta {
+  margin-top: 10px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: var(--blog-muted);
+  font-weight: 900;
+  font-size: 0.85rem;
+}
+
+.BlogBody__layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 14px;
+  margin-top: 12px;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.BlogBody__palette {
+  border: 1px solid var(--blog-border);
+  border-radius: 16px;
+  background: color-mix(in oklab, var(--blog-surface) 92%, transparent);
+  padding: 12px;
+  height: fit-content;
+  position: sticky;
+  top: 104px; /* below stickyTop */
+}
+
+.BlogBody__paletteTitle {
+  font-weight: 950;
+  color: var(--blog-text);
+}
+
+.BlogBody__paletteHint {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--blog-muted);
+}
+
+.BlogBody__paletteItem {
+  margin-top: 12px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in oklab, var(--color-accent) 28%, transparent);
+  background: color-mix(in oklab, var(--color-accent) 12%, transparent);
+  padding: 12px;
+  font-weight: 900;
+  color: var(--blog-text);
+  cursor: grab;
+  user-select: none;
+}
+
+.BlogBody__paletteItem:active {
+  cursor: grabbing;
+}
+
+.BlogBody__editor {
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+}
+
+.BlogBody__scrollArea {
+  height: 100%;
+  overflow: auto;
+  padding-right: 4px; /* room for scrollbar */
+  padding-bottom: 18px; /* breathing room above footer */
+}
+
+.BlogBody__footer {
+  padding-top: 10px;
+}
+
+.BlogBody__footerHint {
+  margin: 0;
+}
+
+.BlogBody__blocks {
+  display: grid;
+  gap: 12px;
+}
+
+.BlogBody__dropZone {
+  border: 1px dashed color-mix(in oklab, var(--blog-border) 70%, transparent);
+  border-radius: 14px;
+  padding: 10px 12px;
+  color: color-mix(in oklab, var(--blog-muted) 85%, transparent);
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-align: center;
+  background: color-mix(in oklab, var(--blog-surface) 86%, transparent);
+}
+
+.BlogBody__dropZone:hover {
+  border-color: color-mix(in oklab, var(--color-accent) 40%, transparent);
+}
+
+.BlogBody__block {
+  border: 1px solid var(--blog-border);
+  border-radius: 14px;
+  padding: 12px;
+  background: color-mix(in oklab, var(--blog-surface) 90%, transparent);
+  cursor: grab;
+}
+
+.BlogBody__block:active {
+  cursor: grabbing;
+}
+
+.BlogBody__blockHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.BlogBody__blockTitle {
+  font-weight: 950;
+  color: var(--blog-text);
+}
+
+.BlogBody__blockIndex {
+  color: var(--blog-muted);
+  font-weight: 900;
+}
+
+.BlogBody__removeBtn {
+  border: 1px solid color-mix(in oklab, var(--color-danger) 35%, transparent);
+  background: color-mix(in oklab, var(--color-danger) 10%, transparent);
+  color: color-mix(in oklab, var(--blog-text) 70%, var(--color-danger));
+  border-radius: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.BlogBody__removeBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.BlogBody__textarea {
+  width: 100%;
+  border: 1px solid var(--blog-border);
+  background: color-mix(in oklab, var(--blog-surface) 92%, transparent);
+  color: var(--blog-text);
+  border-radius: 12px;
+  padding: 12px;
+  font: inherit;
+  resize: vertical;
+  min-height: 110px;
+}
+
+.BlogBody__row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.BlogBody__miniField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 160px;
+}
+
+.BlogBody__miniField--grow {
+  flex: 1;
+  min-width: 220px;
+}
+
+.BlogBody__miniLabel {
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: var(--blog-muted);
+}
+
+.BlogBody__miniInput {
+  border: 1px solid var(--blog-border);
+  background: color-mix(in oklab, var(--blog-surface) 92%, transparent);
+  color: var(--blog-text);
+  border-radius: 12px;
+  padding: 10px 10px;
+  font: inherit;
+}
+
+@media (max-width: 900px) {
+  .BlogBody__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .BlogBody__palette {
+    position: relative;
+    top: auto;
+  }
+}
+

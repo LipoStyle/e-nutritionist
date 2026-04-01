@@ -1,12 +1,11 @@
 import { redirect } from "next/navigation";
 import { isAdminUser } from "@/lib/auth/admin";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { logout } from "./admin/actions"; // Adjusted path
+import { logout } from "./admin/actions"; // Ensure this points to your actions.ts
 import { Home, LogOut, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import "@/styles/admin-dashboard.css";
 
-// 1. Define the updated interface where params is a Promise
 interface AdminLayoutProps {
   children: React.ReactNode;
   params: Promise<{ lang: string }>;
@@ -16,13 +15,12 @@ export default async function AdminLayout({
   children,
   params,
 }: AdminLayoutProps) {
-  // 2. Await the params before use
-  const { lang } = await params;
+  const { lang } = await params; // Next.js 15 async params
 
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.getUser();
 
-  // 3. Auth & Admin Protection
+  // Protect the route
   if (error || !data.user) redirect(`/${lang}/admin/login`);
 
   if (!isAdminUser(data.user)) {
@@ -49,6 +47,7 @@ export default async function AdminLayout({
               <span>Live Site</span>
             </Link>
 
+            {/* --- FIXED LOGOUT FORM --- */}
             <form action={logout}>
               <button type="submit" className="nav-icon-link logout-btn">
                 <LogOut size={20} />

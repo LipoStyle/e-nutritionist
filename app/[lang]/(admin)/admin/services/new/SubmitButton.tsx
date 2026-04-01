@@ -3,7 +3,11 @@
 import { useFormStatus } from "react-dom";
 import { Save, Loader2 } from "lucide-react";
 
-export default function SubmitButton() {
+export default function SubmitButton({
+  text = "Publish Service",
+}: {
+  text?: string;
+}) {
   const { pending } = useFormStatus();
 
   return (
@@ -15,12 +19,12 @@ export default function SubmitButton() {
       {pending ? (
         <>
           <Loader2 size={18} className="animate-spin" />
-          Processing Media...
+          Processing...
         </>
       ) : (
         <>
           <Save size={18} />
-          Publish Service
+          {text}
         </>
       )}
     </button>

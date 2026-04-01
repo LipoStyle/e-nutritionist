@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, Languages } from "lucide-react";
-import Link from "next/link";
+import { Languages } from "lucide-react";
 import { createService } from "../actions";
 import FeatureManager from "./FeatureManager";
 import ImagePicker from "./ImagePicker";
@@ -22,9 +21,6 @@ export default function NewServicePage() {
       <form action={createService} className="full-service-form">
         <header className="form-sticky-header">
           <div className="header-left">
-            <Link href="/en/admin/services" className="back-btn">
-              <ArrowLeft size={20} />
-            </Link>
             <h1>Create New Service</h1>
           </div>
           {/* Dynamic Submit Button with Loading States */}

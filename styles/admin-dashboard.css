@@ -111,6 +111,19 @@
   margin-top: 0.5rem;
 }
 
+.admin-header__row {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.admin-header__row p {
+  margin-top: 0;
+  flex: 1;
+}
+
 /* 4. Main Dashboard Grid & Navigation Cards */
 .admin-grid {
   display: grid;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Plus, Trash2, GripVertical } from "lucide-react";
 
 interface Feature {
@@ -8,14 +8,26 @@ interface Feature {
   text: string;
 }
 
-export default function FeatureManager({ lang }: { lang: string }) {
-  const [features, setFeatures] = useState<Feature[]>([]);
+// Add initialData prop
+export default function FeatureManager({
+  lang,
+  initialData = [],
+}: {
+  lang: string;
+  initialData?: string[];
+}) {
+  // Initialize state with existing features if they exist
+  const [features, setFeatures] = useState<Feature[]>(
+    initialData.map((text) => ({ id: crypto.randomUUID(), text })),
+  );
   const [inputValue, setInputValue] = useState("");
 
   const addFeature = () => {
     if (!inputValue.trim()) return;
-    const newFeature = { id: crypto.randomUUID(), text: inputValue.trim() };
-    setFeatures([...features, newFeature]);
+    setFeatures([
+      ...features,
+      { id: crypto.randomUUID(), text: inputValue.trim() },
+    ]);
     setInputValue("");
   };
 
@@ -28,20 +40,17 @@ export default function FeatureManager({ lang }: { lang: string }) {
       <label className="form-label">
         Service Features ({lang.toUpperCase()})
       </label>
-
-      {/* Hidden input to send data to Server Action */}
       <input
         type="hidden"
         name={`features_${lang}`}
         value={JSON.stringify(features.map((f) => f.text))}
       />
-
       <div className="feature-input-wrapper">
         <input
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          placeholder="e.g. 24/7 Support"
+          placeholder="Add a perk..."
           onKeyDown={(e) =>
             e.key === "Enter" && (e.preventDefault(), addFeature())
           }
@@ -50,11 +59,7 @@ export default function FeatureManager({ lang }: { lang: string }) {
           <Plus size={18} /> Add
         </button>
       </div>
-
       <div className="feature-list">
-        {features.length === 0 && (
-          <p className="empty-text">No features added yet.</p>
-        )}
         {features.map((feature, index) => (
           <div key={feature.id} className="feature-item">
             <div className="feature-content">

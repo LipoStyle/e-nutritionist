@@ -3,8 +3,15 @@
 import { useState, useRef } from "react";
 import { Upload, X } from "lucide-react";
 
-export default function ImagePicker() {
-  const [preview, setPreview] = useState<string | null>(null);
+// 1. ADD THIS INTERFACE
+interface ImagePickerProps {
+  initialImage?: string;
+}
+
+// 2. APPLY IT TO THE FUNCTION
+export default function ImagePicker({ initialImage }: ImagePickerProps) {
+  // Use initialImage if provided, otherwise null
+  const [preview, setPreview] = useState<string | null>(initialImage || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,11 +50,9 @@ export default function ImagePicker() {
               <Upload size={24} />
             </div>
             <p>Click to upload cover</p>
-            <span>JPG, PNG or WebP</span>
           </div>
         </div>
       )}
-
       <input
         type="file"
         name="image"
@@ -55,7 +60,6 @@ export default function ImagePicker() {
         onChange={handleFileChange}
         accept="image/*"
         style={{ display: "none" }}
-        required
       />
     </div>
   );

@@ -4,6 +4,7 @@ import Link from "next/link";
 import LanguageSelector from "./LanguageSelector";
 import "@/styles/admin-services.css";
 import DeleteServiceButton from "./DeleteServiceButton";
+import { ArrowLeft } from "lucide-react";
 
 export default async function AdminServicesPage({
   params,
@@ -41,6 +42,9 @@ export default async function AdminServicesPage({
 
   return (
     <div className="services-admin-container">
+      <Link href="/admin" className="back-btn">
+        <ArrowLeft size={16} /> Back to Dashboard
+      </Link>
       <header className="services-header">
         <div className="header-title-area">
           <h1>Service Inventory</h1>
